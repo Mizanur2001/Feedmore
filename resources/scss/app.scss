@@ -47,3 +47,29 @@ section.hero{
         background: $primary-hover;
     }
 }
+
+.cart{
+    background: $secondary;
+}
+
+section.login{
+    background: $secondary;
+    min-height: calc(100vh - 86px);
+    a{
+        color: $primary;
+        &:hover{
+            color: $primary-hover;
+        }
+    }
+}
+
+section.register{
+    background: $secondary;
+    min-height: calc(100vh - 86px);
+    a{
+        color: $primary;
+        &:hover{
+            color: $primary-hover;
+        }
+    }
+}
