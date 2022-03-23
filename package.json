@@ -14,10 +14,16 @@
   "author": "Mizanur Rahaman",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.2",
+    "connect-mongo": "^3.2.0",
+    "dotenv": "^16.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.3",
     "express-ejs-layouts": "^2.5.1",
-    "mongoose": "^6.2.4"
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.2",
+    "mongoose": "^5.9.25",
+    "noty": "^3.2.0-beta-deprecated"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
