@@ -1,0 +1,55 @@
+{
+    "cookie": {
+        "originalMaxAge": 86400000,
+        "expires": "2022-03-25T03:38:24.227Z",
+        "httpOnly": true,
+        "path": "/"
+    },
+    "flash": {},
+    "cart": {
+        "items": {
+            "5eee66eea27a66807cf2bea8": {
+                "items": {
+                    "_id": "5eee66eea27a66807cf2bea8",
+                    "name": "Vegies pizza",
+                    "image": "pizza.png",
+                    "price": 600,
+                    "size": "large"
+                },
+                "qty": 0
+            },
+            "5eee6692a27a66807cf2bea4": {
+                "items": {
+                    "_id": "5eee6692a27a66807cf2bea4",
+                    "name": "Carbonara",
+                    "image": "pizza.png",
+                    "price": 200,
+                    "size": "small"
+                },
+                "qty": 1
+            },
+            "5eee66cfa27a66807cf2bea7": {
+                "items": {
+                    "_id": "5eee66cfa27a66807cf2bea7",
+                    "name": "Paneer pizza",
+                    "image": "pizza.png",
+                    "price": 200,
+                    "size": "small"
+                },
+                "qty": 6
+            },
+            "5eee66c4a27a66807cf2bea6": {
+                "items": {
+                    "_id": "5eee66c4a27a66807cf2bea6",
+                    "name": "Chicken Mushroom",
+                    "image": "pizza.png",
+                    "price": 350,
+                    "size": "medium"
+                },
+                "qty": 6
+            }
+        },
+        "totalQty": 13,
+        "totalPrice": 3500
+    }
+}

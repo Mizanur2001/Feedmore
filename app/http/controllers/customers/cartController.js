@@ -27,6 +27,15 @@ function cartController() {
                 cart.totalPrice = cart.totalPrice + req.body.price
             }
             res.json({ totalQty: req.session.cart.totalQty })
+        },
+        deleteItems(req, res) {
+            let cart = req.session.cart
+            if (cart.items[req.body.items._id].qty != 0) {
+                cart.items[req.body.items._id].qty = cart.items[req.body.items._id].qty - 1
+                cart.totalQty = cart.totalQty - 1
+                cart.totalPrice = cart.totalPrice - req.body.items.price
+            }
+            res.json(cart.items[req.body.items._id].qty)
         }
     }
 }

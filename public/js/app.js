@@ -5235,6 +5235,7 @@ var Noty = __webpack_require__(/*! noty */ "./node_modules/noty/lib/noty.js");
 
 var addToCart = document.querySelectorAll('.add-to-cart');
 var cartCounter = document.getElementById('cartCounter');
+var deleteItems = document.querySelectorAll('.deleteItems');
 
 function update(food) {
   axios.post('/update-cart', food).then(function (res) {
@@ -5253,10 +5254,39 @@ function update(food) {
   });
 }
 
+function delItems(items) {
+  axios.post('/delete-items', items).then(function (res) {
+    var count = res.data;
+
+    if (count == 0) {
+      new Noty({
+        type: 'error',
+        timeout: 1000,
+        text: "No Items to be deleted"
+      }).show();
+    } else {
+      new Noty({
+        type: 'success',
+        timeout: 1000,
+        text: "Items Deleted"
+      }).show();
+    }
+
+    location.reload(true);
+    console.log(res.data);
+  });
+}
+
 addToCart.forEach(function (btn) {
   btn.addEventListener('click', function (e) {
     food = JSON.parse(btn.dataset.food);
     update(food);
+  });
+});
+deleteItems.forEach(function (delBtn) {
+  delBtn.addEventListener('click', function (e) {
+    var items = JSON.parse(delBtn.dataset.items);
+    delItems(items);
   });
 });
 

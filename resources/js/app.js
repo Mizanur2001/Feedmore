@@ -2,6 +2,7 @@ const axios = require('axios');
 const Noty = require('noty')
 const addToCart = document.querySelectorAll('.add-to-cart');
 const cartCounter = document.getElementById('cartCounter')
+const deleteItems = document.querySelectorAll('.deleteItems')
 
 function update(food) {
     axios.post('/update-cart', food).then(res => {
@@ -11,7 +12,7 @@ function update(food) {
             timeout: 1000,
             text: "Added to cart"
         }).show();
-    }).catch(err =>{
+    }).catch(err => {
         new Noty({
             type: 'error',
             timeout: 1000,
@@ -20,9 +21,38 @@ function update(food) {
     })
 }
 
+function delItems(items) {
+    axios.post('/delete-items', items).then(res => {
+        let count = res.data
+        if (count == 0) {
+            new Noty({
+                type: 'error',
+                timeout: 1000,
+                text: "No Items to be deleted"
+            }).show();
+        }
+        else {
+            new Noty({
+                type: 'success',
+                timeout: 1000,
+                text: "Items Deleted"
+            }).show();
+        }
+        location.reload(true);
+        console.log(res.data)
+    })
+}
+
 addToCart.forEach((btn) => {
     btn.addEventListener('click', (e) => {
         food = JSON.parse(btn.dataset.food)
         update(food)
+    })
+})
+
+deleteItems.forEach((delBtn) => {
+    delBtn.addEventListener('click', (e) => {
+        let items = (JSON.parse(delBtn.dataset.items))
+        delItems(items)
     })
 })

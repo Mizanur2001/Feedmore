@@ -1,5 +1,5 @@
 <section class="cart py-16">
-    <%if(session.cart){%>
+    <%if(session.cart && session.cart.totalQty != 0){%>
     <div class="order container mx-auto w-1/2">
         <div class="flex item-cnter border-b border-gray-300 pb-4">
             <img src="/img/cart-black.png" alt="cart">
@@ -15,6 +15,7 @@
                 </div>
                 <span class="flex-1"><%= food.qty%> Pcs</span>
                 <span class="font-bold text-lg">₹<%= food.items.price *food.qty %></span>
+                <img data-items="<%= JSON.stringify(food)%>" class="ml-4 cursor-pointer deleteItems" src="/img/delete.png" alt="delete">
             </div>
             <% }%>
         </div>
