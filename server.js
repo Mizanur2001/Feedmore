@@ -40,6 +40,7 @@ app.use(session({
 
 app.use(flash())
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 //Set Global middleware
 app.use((req,res,next)=>{

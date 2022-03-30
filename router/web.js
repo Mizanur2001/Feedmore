@@ -5,8 +5,10 @@ const cartController = require('../app/http/controllers/customers/cartController
 function initRoutes(app) {
     app.get("/", homeController().index);
     app.get("/login", authController().login);
+    app.post('/login',authController().postLogin)
     app.get('/register', authController().register);
-    app.get('/cart', cartController().index);
+    app.post('/register',authController().postRegister)
+    app.get('/cart',cartController().index);
     app.post('/update-cart',cartController().updateCart);
     app.post('/delete-items',cartController().deleteItems);
 }

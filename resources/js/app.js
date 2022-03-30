@@ -6,12 +6,22 @@ const deleteItems = document.querySelectorAll('.deleteItems')
 
 function update(food) {
     axios.post('/update-cart', food).then(res => {
-        cartCounter.innerText = res.data.totalQty
-        new Noty({
-            type: 'success',
-            timeout: 1000,
-            text: "Added to cart"
-        }).show();
+        if (res.data.message) {
+            new Noty({
+                type: 'error',
+                timeout: 3000,
+                text: "You need to Login First"
+            }).show();
+        }
+        else {
+            cartCounter.innerText = res.data.totalQty
+            new Noty({
+                type: 'success',
+                timeout: 1000,
+                text: "Added to cart"
+            }).show();
+        }   
+        console.log(res.data.message)
     }).catch(err => {
         new Noty({
             type: 'error',
