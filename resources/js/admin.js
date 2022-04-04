@@ -25,6 +25,9 @@ export function initAdmin() {
     }
 
     function generateMarkup(orders) {
+        if (orders.length == 0) {
+            return `<tr><td class="px-4 py-2"><b>No Oreders :(</b></td></tr>`
+        }
         return orders.map(order => {
             return `
             <tr>

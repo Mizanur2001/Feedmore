@@ -3,6 +3,7 @@ const authController = require('../app/http/controllers/authController');
 const cartController = require('../app/http/controllers/customers/cartController');
 const orderControler = require('../app/http/controllers/customers/orderControler');
 const adminOrderControler = require('../app/http/controllers/admin/orderControler');
+const statusControler = require('../app/http/controllers/admin/statusControler');
 
 function initRoutes(app) {
     app.get("/", homeController().index);
@@ -15,7 +16,8 @@ function initRoutes(app) {
     app.post('/delete-items',cartController().deleteItems);
     app.post('/orders',orderControler().store);
     app.get('/customers/orders',orderControler().index);
-    app.get('/admin/orders',adminOrderControler().index)
+    app.get('/admin/orders',adminOrderControler().index);
+    app.post('/admin/order/status',statusControler().update);
 }
 
 module.exports = initRoutes;

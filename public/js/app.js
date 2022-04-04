@@ -5257,6 +5257,10 @@ function initAdmin() {
   };
 
   function generateMarkup(orders) {
+    if (orders.length == 0) {
+      return "<tr><td class=\"px-4 py-2\"><b>No Oreders :(</b></td></tr>";
+    }
+
     return orders.map(function (order) {
       return "\n            <tr>\n                <td class=\"border px-4 py-2\">\n                    <p>".concat(order._id, "</p>\n                    <div>").concat(renderItems(order.items), "</div>\n                </td>\n                <td class=\"border px-4 py-2\">").concat(order.customerId.name, "</td>\n                <td class=\"border px-4 py-2\">").concat(order.address, "</td>\n                <td class=\"border px-4 py-2\">").concat(order.phone, "</td>\n                <td class=\"border px-4 py-2\">\n                    <div>\n                        <form action=\"/admin/order/status\" method=\"POST\">\n                        <input type=\"hidden\" name=\"orderId\" value=\"").concat(order._id, "\">\n                        <select name=\"status\" onchange=\"this.form.submit()\" class=\"block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline\">\n                            <option value=\"order_placed\" ").concat(order.status === 'order_placed' ? 'selected' : '', ">Placed</option>\n                            <option value=\"confirmed\" ").concat(order.status === 'confirmed' ? 'selected' : '', ">Confirmed</option>\n                            <option value=\"delivered\" ").concat(order.status === 'delivered' ? 'selected' : '', ">Delivered</option>\n                            <option value=\"completed\" ").concat(order.status === 'completed' ? 'selected' : '', ">completed</option>\n                        </select>\n                        </form>\n                    </div>\n                </td>\n                <td class=\"border px-4 py-2\">").concat(new Date(order.createdAt).toGMTString(), "</td>\n            </tr>");
     }).join('');
