@@ -5222,6 +5222,49 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./resources/js/admin.js":
+/*!*******************************!*\
+  !*** ./resources/js/admin.js ***!
+  \*******************************/
+/*! exports provided: initAdmin */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initAdmin", function() { return initAdmin; });
+var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+
+function initAdmin() {
+  var orders = [];
+  var markup;
+  var orderTableBody = document.getElementById('orderTableBody');
+  axios.get('/admin/orders', {
+    headers: {
+      "X-Requested-With": "XMLHttpRequest"
+    }
+  }).then(function (res) {
+    orders = res.data;
+    markup = generateMarkup(orders);
+    orderTableBody.innerHTML = markup;
+  })["catch"](function (err) {
+    console.log(err);
+  });
+
+  var renderItems = function renderItems(items) {
+    return Object.values(items).map(function (item) {
+      return "<p class=\"my-2\">".concat(item.items.name, " -> ").concat(item.qty, "</p>");
+    }).join('');
+  };
+
+  function generateMarkup(orders) {
+    return orders.map(function (order) {
+      return "\n            <tr>\n                <td class=\"border px-4 py-2\">\n                    <p>".concat(order._id, "</p>\n                    <div>").concat(renderItems(order.items), "</div>\n                </td>\n                <td class=\"border px-4 py-2\">").concat(order.customerId.name, "</td>\n                <td class=\"border px-4 py-2\">").concat(order.address, "</td>\n                <td class=\"border px-4 py-2\">").concat(order.phone, "</td>\n                <td class=\"border px-4 py-2\">\n                    <div>\n                        <form action=\"/admin/order/status\" method=\"POST\">\n                        <input type=\"hidden\" name=\"orderId\" value=\"").concat(order._id, "\">\n                        <select name=\"status\" onchange=\"this.form.submit()\" class=\"block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline\">\n                            <option value=\"order_placed\" ").concat(order.status === 'order_placed' ? 'selected' : '', ">Placed</option>\n                            <option value=\"confirmed\" ").concat(order.status === 'confirmed' ? 'selected' : '', ">Confirmed</option>\n                            <option value=\"delivered\" ").concat(order.status === 'delivered' ? 'selected' : '', ">Delivered</option>\n                            <option value=\"completed\" ").concat(order.status === 'completed' ? 'selected' : '', ">completed</option>\n                        </select>\n                        </form>\n                    </div>\n                </td>\n                <td class=\"border px-4 py-2\">").concat(new Date(order.createdAt).toGMTString(), "</td>\n            </tr>");
+    }).join('');
+  }
+}
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -5236,6 +5279,9 @@ var Noty = __webpack_require__(/*! noty */ "./node_modules/noty/lib/noty.js");
 var addToCart = document.querySelectorAll('.add-to-cart');
 var cartCounter = document.getElementById('cartCounter');
 var deleteItems = document.querySelectorAll('.deleteItems');
+var alert = document.getElementById('success-alert');
+
+var initAdmin = __webpack_require__(/*! ./admin */ "./resources/js/admin.js");
 
 function update(food) {
   axios.post('/update-cart', food).then(function (res) {
@@ -5252,9 +5298,8 @@ function update(food) {
         timeout: 1000,
         text: "Added to cart"
       }).show();
-    }
+    } //console.log(res.data.message)
 
-    console.log(res.data.message);
   })["catch"](function (err) {
     new Noty({
       type: 'error',
@@ -5282,8 +5327,7 @@ function delItems(items) {
       }).show();
     }
 
-    location.reload(true);
-    console.log(res.data);
+    location.reload(true); //console.log(res.data)
   });
 }
 
@@ -5298,7 +5342,15 @@ deleteItems.forEach(function (delBtn) {
     var items = JSON.parse(delBtn.dataset.items);
     delItems(items);
   });
-});
+}); // Vanishing Alert After 3 second
+
+if (alert) {
+  setTimeout(function () {
+    alert.remove();
+  }, 3000);
+}
+
+initAdmin.initAdmin();
 
 /***/ }),
 

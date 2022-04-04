@@ -5,6 +5,7 @@ function cartController() {
                 req.flash('error', 'You need to login first')
                 return res.redirect('/login');
             }
+            res.header('Cache-Control', 'no-store')
             res.render("customers/cart");
         },
         updateCart(req, res) {
@@ -43,6 +44,9 @@ function cartController() {
                 cart.items[req.body.items._id].qty = cart.items[req.body.items._id].qty - 1
                 cart.totalQty = cart.totalQty - 1
                 cart.totalPrice = cart.totalPrice - req.body.items.price
+            }
+            if(cart.totalQty == 0){
+                delete req.session.cart
             }
             res.json(cart.items[req.body.items._id].qty)
         }

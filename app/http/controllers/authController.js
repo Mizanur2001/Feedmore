@@ -2,6 +2,16 @@ const User = require('../../models/user')
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 function authController() {
+    
+    const _getUrl = ()=>{
+        if(User.role=='castomer'){
+            return '/'
+        }
+        else{
+            return '/admin/orders'
+        }
+    }
+
     return {
         login(req, res) {
             if(!req.session.user){
@@ -35,8 +45,8 @@ function authController() {
                 return res.redirect('/login')
             }
 
-            req.session.user = {email:email,name:user.name};
-            res.redirect('/')
+            req.session.user = {email:email,name:user.name,userId:user._id,role:user.role};
+            res.redirect(_getUrl())
         },
         register(req, res) {
             if(!req.session.user){

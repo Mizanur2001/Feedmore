@@ -3,6 +3,8 @@ const Noty = require('noty')
 const addToCart = document.querySelectorAll('.add-to-cart');
 const cartCounter = document.getElementById('cartCounter')
 const deleteItems = document.querySelectorAll('.deleteItems')
+const alert = document.getElementById('success-alert')
+const initAdmin =require('./admin')
 
 function update(food) {
     axios.post('/update-cart', food).then(res => {
@@ -21,7 +23,7 @@ function update(food) {
                 text: "Added to cart"
             }).show();
         }   
-        console.log(res.data.message)
+        //console.log(res.data.message)
     }).catch(err => {
         new Noty({
             type: 'error',
@@ -49,7 +51,7 @@ function delItems(items) {
             }).show();
         }
         location.reload(true);
-        console.log(res.data)
+        //console.log(res.data)
     })
 }
 
@@ -66,3 +68,12 @@ deleteItems.forEach((delBtn) => {
         delItems(items)
     })
 })
+
+// Vanishing Alert After 3 second
+if(alert){
+    setTimeout(() => {
+        alert.remove()
+    }, 3000);
+}
+
+initAdmin.initAdmin()
