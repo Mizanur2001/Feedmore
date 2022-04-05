@@ -4,7 +4,7 @@ const addToCart = document.querySelectorAll('.add-to-cart');
 const cartCounter = document.getElementById('cartCounter')
 const deleteItems = document.querySelectorAll('.deleteItems')
 const alert = document.getElementById('success-alert')
-const initAdmin =require('./admin')
+const initAdmin = require('./admin')
 
 function update(food) {
     axios.post('/update-cart', food).then(res => {
@@ -22,7 +22,7 @@ function update(food) {
                 timeout: 1000,
                 text: "Added to cart"
             }).show();
-        }   
+        }
         //console.log(res.data.message)
     }).catch(err => {
         new Noty({
@@ -70,10 +70,38 @@ deleteItems.forEach((delBtn) => {
 })
 
 // Vanishing Alert After 3 second
-if(alert){
+if (alert) {
     setTimeout(() => {
         alert.remove()
     }, 3000);
 }
 
 initAdmin.initAdmin()
+
+//Order Status change functionality
+const status_line = document.querySelectorAll('.status_line');
+const StatusChangeHInput = document.getElementById('StatusChangeHInput');
+let orders = StatusChangeHInput ? StatusChangeHInput.value : null
+orders = JSON.parse(orders)
+
+const updateStatus = (orders) => {
+    status_line.forEach(status => {
+        status.classList.remove('step-completed')
+        status.classList.remove('current')
+    })
+    let stepComplete = true
+    status_line.forEach(status => {
+        if (stepComplete) {
+            status.classList.add('step-completed')
+        }
+        if (status.dataset.status == orders.status) {
+            stepComplete = false
+            if (status.nextElementSibling) {
+                status.nextElementSibling.classList.add('current')
+            }
+        }
+    })
+}
+
+
+updateStatus(orders)

@@ -16,6 +16,7 @@ function initRoutes(app) {
     app.post('/delete-items',cartController().deleteItems);
     app.post('/orders',orderControler().store);
     app.get('/customers/orders',orderControler().index);
+    app.get('/customers/orders/:id',orderControler().show);
     app.get('/admin/orders',adminOrderControler().index);
     app.post('/admin/order/status',statusControler().update);
 }

@@ -6,7 +6,7 @@ const orderControler = () => {
                 req.flash('error', 'You need to Login First')
                 return res.redirect('/login')
             }
-            const items = await Orders.find({ customerId: req.session.user.userId },null,{sort:{'createdAt':-1}})
+            const items = await Orders.find({ customerId: req.session.user.userId }, null, { sort: { 'createdAt': -1 } })
             res.header('Cache-Control', 'no-store')
             res.render("customers/orders", { orders: items });
         },
@@ -39,6 +39,18 @@ const orderControler = () => {
                     req.flash('error', 'Something went Wrong')
                     return req.redirect('/cart')
                 })
+            }
+        },
+        async show(req, res) {
+            try {
+                const order = await Orders.findById(req.params.id)
+                if (order.customerId == req.session.user.userId) {
+                    return res.render('customers/singleOrder', { order })
+                }
+                cnsole.log("it is here")
+            }
+            catch (err) {
+                return res.redirect('/customers/orders')
             }
         }
     }
