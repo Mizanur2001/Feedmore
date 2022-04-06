@@ -78,6 +78,12 @@ io.on('connection', (socket) => {
     })
 })
 
+//EventEmitter for Customer
 eventEmitter.on('updateStatus', (data) => {
     io.to(`oredr_${data.id}`).emit(`updateStatus`, data)
+})
+
+//EventEmitter for Admin
+eventEmitter.on('oderPlace', (data) => {
+    io.to('adminRoom').emit('oderPlaced', data)
 })

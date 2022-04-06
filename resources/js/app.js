@@ -76,7 +76,7 @@ if (alert) {
     }, 3000);
 }
 
-initAdmin.initAdmin()
+
 
 //Order Status change functionality
 const status_line = document.querySelectorAll('.status_line');
@@ -108,6 +108,7 @@ updateStatus(orders)
 
 //Socket
 let socket = io()
+initAdmin.initAdmin(socket)
 if (orders) {
     socket.emit('join', `oredr_${orders._id}`)
 }
@@ -124,3 +125,10 @@ socket.on(`updateStatus`,(data)=>{
     const clintTones = new Audio('/tones/clint.mp3')
     clintTones.play()
 })
+
+
+//Admin Socket 
+let adminPath = window.location.pathname
+if(adminPath.includes('admin')){
+    socket.emit('join','adminRoom')
+}

@@ -1,5 +1,6 @@
 const axios = require('axios')
-export function initAdmin() {
+const Noty = require('noty')
+export function initAdmin(socket) {
     let orders = []
     let markup
 
@@ -60,4 +61,18 @@ export function initAdmin() {
                 <td class="border px-4 py-2">${new Date(order.createdAt).toGMTString()}</td>
             </tr>`}).join('')
     }
+
+    //let socket = io()
+    socket.on('oderPlaced', (order) => {
+        const clintTones = new Audio('/tones/adminNotification.mp3')
+        clintTones.play()
+        new Noty({
+            type: 'success',
+            timeout: 2000,
+            text: `New Order!`
+        }).show();
+        orders.unshift(order)
+        orderTableBody.innerHTML = ``
+        orderTableBody.innerHTML = generateMarkup(orders)
+    })
 }
