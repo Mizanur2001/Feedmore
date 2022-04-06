@@ -7,12 +7,14 @@ const path = require('path');
 const PORT = 3300 || process.env.PORT;
 const mongoose = require('mongoose');
 const session = require('express-session')
-const flash = require('express-flash')
+const flash = require('express-flash');
+const { Socket } = require('socket.io');
 const MongoDbStore = require('connect-mongo')(session)
+const EventEmitter = require('events')
 
 //Connecte to dataBase
 const URL = "mongodb://localhost/feedmore";
-mongoose.connect(URL,{useNewUrlParser: true , useUnifiedTopology: true})
+mongoose.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true })
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log('Database connected...');
@@ -27,6 +29,10 @@ let mongoStore = new MongoDbStore({
     mongooseConnection: connection,
     collection: 'sessions'
 })
+
+//EventEmitter
+const eventEmitter = new EventEmitter();
+app.set('eventEmitter', eventEmitter)
 
 //Session config
 app.use(session({
@@ -43,7 +49,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 //Set Global middleware
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
     res.locals.session = req.session
     next()
 })
@@ -59,6 +65,19 @@ app.set('view engine', 'ejs');
 //Routers
 require('./router/web')(app);
 
-app.listen(PORT, () => {
+const Server = app.listen(PORT, () => {
     console.log(`Server is listening at http://localhost:${PORT}`);
 });
+
+
+//Sockit connection
+const io = require('socket.io')(Server)
+io.on('connection', (socket) => {
+    socket.on('join', (roomName) => {
+        socket.join(roomName)
+    })
+})
+
+eventEmitter.on('updateStatus', (data) => {
+    io.to(`oredr_${data.id}`).emit(`updateStatus`, data)
+})

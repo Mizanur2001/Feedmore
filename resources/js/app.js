@@ -105,3 +105,22 @@ const updateStatus = (orders) => {
 
 
 updateStatus(orders)
+
+//Socket
+let socket = io()
+if (orders) {
+    socket.emit('join', `oredr_${orders._id}`)
+}
+
+socket.on(`updateStatus`,(data)=>{
+    const updatedStatus = {...orders}
+    updatedStatus.status = data.status
+    updateStatus(updatedStatus)
+    new Noty({
+        type: 'success',
+        timeout: 2000,
+        text: `${data.status}`
+    }).show();
+    const clintTones = new Audio('/tones/clint.mp3')
+    clintTones.play()
+})

@@ -12,6 +12,8 @@ const statusControler = () => {
                 if (err) {
                     res.redirect('/admin/orders')
                 }
+                const eventEmitter = req.app.get('eventEmitter')
+                eventEmitter.emit('updateStatus',{id:req.body.orderId, status : req.body.status})
                 res.redirect('/admin/orders')
             })
         }
