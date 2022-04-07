@@ -1,6 +1,6 @@
 <section class="cart py-16">
     <%if(session.cart && session.cart.totalQty !=0){%>
-        <div class="order container mx-auto w-1/2">
+        <div class="order container mx-auto lg:w-1/2">
             <div class="flex item-cnter border-b border-gray-300 pb-4">
                 <img src="/img/cart-black.png" alt="cart">
                 <h1 class="font-bold ml-4 text-2xl">Order Summary</h1>
@@ -8,7 +8,7 @@
             <div class="pizza-list">
                 <% for(let food of Object.values(session.cart.items)){%>
                     <div class="flex items-center my-8">
-                        <img class="w-24" src="/img/<%= food.items.image%>" alt="food">
+                        <img class="w-12 md:w-24" src="/img/<%= food.items.image%>" alt="food">
                         <div class="flex-1 ml-4">
                             <h1>
                                 <%= food.items.name%>

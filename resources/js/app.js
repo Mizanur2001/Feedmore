@@ -108,7 +108,6 @@ updateStatus(orders)
 
 //Socket
 let socket = io()
-initAdmin.initAdmin(socket)
 if (orders) {
     socket.emit('join', `oredr_${orders._id}`)
 }
@@ -130,5 +129,6 @@ socket.on(`updateStatus`,(data)=>{
 //Admin Socket 
 let adminPath = window.location.pathname
 if(adminPath.includes('admin')){
+    initAdmin.initAdmin(socket)
     socket.emit('join','adminRoom')
 }

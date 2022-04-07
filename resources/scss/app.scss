@@ -97,7 +97,7 @@ section.status {
     min-height: calc(100vh - 86px);
 }
 .status-box {
-    padding: 60px 0 0;
+    padding: 20px 0 0;
 }
 .status-box ul {
     margin-left: 84px;
@@ -195,8 +195,28 @@ section.status {
     background: $primary;
 }
 
-.status-box ul li small {
-    float: right;
-    font-size: 14px;
-    margin-top: 8px;
+@media(max-width:1050px){
+    .container{
+        max-width: 90%;
+    }
+    table{
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+@media(max-width:768px){
+    .status-box ul li span:before{
+        font-size: 34px;
+    }
+    .singleOrderHead{
+        flex-direction: column;
+    }
+    .singleOrderHead h1{
+        padding-bottom:15px ;
+    }
+    .status-box{
+        padding: 0px;
+    }
 }
