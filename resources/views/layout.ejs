@@ -33,11 +33,18 @@
                             <li> <a href="<%= url%>" class="ml-4 sm:ml-6 text-sm sm:text-lg">Orders </a></li>
                             <li><img class="ml-4 sm:ml-6" src="/img/user.png" alt="user"></li>
                             <li class="ml-1 text-sm sm:text-lg"> <a href="/logout">
-                                    <div class="flex flex-col md:flex-row">
+                                    <div class="flex flex-row md:flex-row">
                                         <div> Welcome </div>
-                                        <div class="md:ml-2">
+                                        <div class="ml-1 md:ml-2">
                                             <b>
-                                                <%= session.user.name%>
+                                                <%let name
+                                                if (session.user.name.includes(' ')) {
+                                                     name = session.user.name.substring(0, session.user.name.indexOf(' '))
+                                                }
+                                                else{
+                                                    name = session.user.name
+                                                }%>
+                                                <%= name%>
                                             </b>
                                         </div>
                                     </div>
