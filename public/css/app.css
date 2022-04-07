@@ -303,6 +303,27 @@ body {
   color: #232323;
 }
 
+nav {
+  padding-left: 18px;
+  padding-right: 10px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
+  right: 0px;
+  background-color: white;
+}
+
+@media (max-width: 650px) {
+  nav {
+    flex-direction: column;
+    padding: 0px;
+  }
+
+  nav .logo {
+    margin-bottom: 3px;
+  }
+}
+
 nav li:last-child a {
   background: #FE5F1E;
   border-radius: 30px;
