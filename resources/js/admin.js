@@ -21,7 +21,7 @@ export function initAdmin(socket) {
 
     const renderItems = (items) => {
         return Object.values(items).map(item => {
-            return `<p class="my-2">${item.items.name} -> ${item.qty}</p>`
+            return `<p class="my-2">${item.items.name} -> ${item.qty}(${item.items.size})</p>`
         }).join('')
     }
 

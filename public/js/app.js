@@ -5254,7 +5254,7 @@ function initAdmin(socket) {
 
   var renderItems = function renderItems(items) {
     return Object.values(items).map(function (item) {
-      return "<p class=\"my-2\">".concat(item.items.name, " -> ").concat(item.qty, "</p>");
+      return "<p class=\"my-2\">".concat(item.items.name, " -> ").concat(item.qty, "(").concat(item.items.size, ")</p>");
     }).join('');
   };
 
