@@ -239,3 +239,70 @@ section.status {
         padding: 0px;
     }
 }
+
+footer {
+    font-family: 'Lato', sans-serif;
+}
+footer .systern img{
+    width: 150px;
+}
+
+footer .systern{
+    margin-bottom: 20px;
+}
+
+footer .addPhoneLoc{
+    margin-bottom: 20px;
+}
+
+.aboutFeedmore {
+    padding-left: 22px;
+}
+
+footer .addPhoneLoc i{
+    background-color:  #33383b;
+	color: #ffffff;
+	font-size: 15px;
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	text-align: center;
+	line-height: 42px;
+	margin: 10px 15px;
+	vertical-align: middle;
+}
+
+footer .addPhoneLoc p{
+    display: inline-block;
+	color: gray;
+    font-weight:bold;
+	vertical-align: middle;
+	margin:0;
+}
+
+footer .footer-icons{
+    margin-top: 25px;
+}
+
+footer .footer-icons a{
+    display: inline-block;
+	width: 35px;
+	height: 35px;
+	cursor: pointer;
+	background-color:  #33383b;
+	border-radius: 2px;
+    border-radius: 50%;
+
+	font-size: 20px;
+	color: #ffffff;
+	text-align: center;
+	line-height: 35px;
+	margin-right: 3px;
+	margin-bottom: 5px;
+}
+
+@media(min-width:768px){
+    .aboutFeedmore {
+        width: 30%;
+    }
+}
