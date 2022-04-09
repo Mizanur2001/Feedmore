@@ -64,6 +64,9 @@ app.set('view engine', 'ejs');
 
 //Routers
 require('./router/web')(app);
+app.use((req,res)=>{
+    res.status(404).render('error/404')
+})
 
 const Server = app.listen(PORT, () => {
     console.log(`Server is listening at http://localhost:${PORT}`);
