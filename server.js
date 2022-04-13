@@ -11,6 +11,7 @@ const flash = require('express-flash');
 const { Socket } = require('socket.io');
 const MongoDbStore = require('connect-mongo')(session)
 const EventEmitter = require('events')
+const hostname = 'localhost'
 
 //Connecte to dataBase
 const URL = process.env.MONGODB_CONNECTION_URL;
@@ -68,8 +69,8 @@ app.use((req,res)=>{
     res.status(404).render('error/404')
 })
 
-const Server = app.listen(PORT, () => {
-    console.log(`Server is listening at http://localhost:${PORT}`);
+const Server = app.listen(PORT,hostname, () => {
+    console.log(`Server is listening at http://${hostname}:${PORT}`);
 });
 
 
