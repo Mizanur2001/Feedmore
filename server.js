@@ -13,7 +13,7 @@ const MongoDbStore = require('connect-mongo')(session)
 const EventEmitter = require('events')
 
 //Connecte to dataBase
-const URL = "mongodb://localhost/feedmore";
+const URL = process.env.MONGODB_CONNECTION_URL;
 mongoose.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true })
 const connection = mongoose.connection;
 connection.once('open', () => {
