@@ -16,6 +16,7 @@
         <table class="w-full table-auto bg-white">
             <thead>
                 <tr>
+                    <th class="px-4 py-2 text-left">Track Order</th>
                     <th class="px-4 py-2 text-left">Order</th>
                     <th class="px-4 py-2 text-left">Phone</th>
                     <th class="px-4 py-2 text-left">Address</th>
@@ -27,6 +28,7 @@
                 <%if(orders.length!=0){%>
                     <%orders.forEach((order)=>{%>
                         <tr>
+                            <td class="border px-4 py2"><a class="link" href="/customers/orders/<%= order._id%>"><img style="display: inline;width: 50px;" src="/img/tracking.png" alt="tracking"></a></td>
                             <td class="border px-4 py2"> <a class="link" href="/customers/orders/<%= order._id%>"><%= order._id%></a> </td>
                             <td class="border px-4 py2"><%= order.phone%></td>
                             <td class="border px-4 py2"><%= order.address%></td>
