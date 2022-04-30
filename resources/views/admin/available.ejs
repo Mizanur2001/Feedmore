@@ -1,0 +1,29 @@
+<section class="menu container mx-auto py-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 col-gap-12 row-gap-16">
+        <% allFoods.forEach(function(e){%>
+            <div class="w-full md:w-64">
+                <img src="/img/<%= e.image%>" class="h-40 mb-4 mx-auto" alt="foods">
+                <div class="text-center">
+                    <h2 class="mb-4 text-lg"><%= e.name%></h2>
+                    <span class="size py-1 px-4 rounded-full uppercase text-xs"><%= e.size%></span>
+                    <div class="flex items-center justify-around mt-6">
+                        <span class="font-bold text-lg">₹<%= e.price%></span>
+                    </div>
+                </div>
+                <form action="/admin/available" method="post">
+                    <div class="flex justify-center py-3 relative">
+                        <div class="mb-3 w-full">
+                            <input type="hidden" name="foodId" value="<%= e._id%>">
+                            <select name="availableStatus" onchange="this.form.submit()" class="availableOptions form-select appearance-none block w-full px-3 py-2 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example"></select>
+                        </div>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                            </svg>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <%})%>
+    </div>
+</section>

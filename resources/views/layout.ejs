@@ -25,12 +25,14 @@
         </div>
         <div>
             <ul class="flex items-center">
-                <li class="ml-4 sm:ml-6 text-sm sm:text-lg"><a href="/">Menu</a></li>
                 <%if(!session.user){%>
+                    <li class="ml-4 sm:ml-6 text-sm sm:text-lg"><a href="/">Menu</a></li>
                     <li class="ml-4 sm:ml-6 text-sm sm:text-lg"><a href="/register">Register</a></li>
                     <li class="ml-4 sm:ml-6 text-sm sm:text-lg"><a href="/login">Login</a></li>
                     <%}else{%>
                         <%if(session.user.role=='customer'){ url='/customers/orders' }else{ url='/admin/orders' }%>
+                        <%if(session.user.role=='customer'){ urlAvl='/' }else{ urlAvl='/admin/available' }%>
+                            <li class="ml-4 sm:ml-6 text-sm sm:text-lg"><a href="<%= urlAvl%>">Menu</a></li>
                             <li> <a href="<%= url%>" class="ml-4 sm:ml-6 text-sm sm:text-lg">Orders </a></li>
                             <li><img class="ml-4 sm:ml-6" src="/img/user.png" alt="user"></li>
                             <li class="ml-1 text-sm sm:text-lg"> <a href="/logout">
@@ -88,7 +90,7 @@
         </div>
         <div class="aboutFeedmore">
             <p class="text-center text-gray-500 text-lg font-bold">About FeedMore</p>
-            <p class="text-black-200 text-sm font-bold">I want to give food to my customers at home.  It's a wonderful opportunity to miss  there mother with her food .  My main goal is to provide homely  food with cheap price . Specialy students and workers who are out of home . it's a new food world with homely taste</p>
+            <p class="text-black-200 text-sm font-bold">I want to give food to my customers at home. It's a wonderful opportunity to miss there mother with her food . My main goal is to provide homely food with cheap price . Specialy students and workers who are out of home . it's a new food world with homely taste</p>
             <p class="pt-10 text-gray-500 font-bold text-lg">FeedMore © 2022</p>
         </div>
     </footer>

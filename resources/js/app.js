@@ -5,6 +5,7 @@ const cartCounter = document.getElementById('cartCounter')
 const deleteItems = document.querySelectorAll('.deleteItems')
 const alert = document.getElementById('success-alert')
 const initAdmin = require('./admin')
+const availableItems = require('./availavle')
 
 function update(food) {
     axios.post('/update-cart', food).then(res => {
@@ -13,6 +14,13 @@ function update(food) {
                 type: 'error',
                 timeout: 3000,
                 text: "You need to Login First"
+            }).show();
+        }
+        else if(res.data.availableFoodMsg){
+            new Noty({
+                type: 'error',
+                timeout: 3000,
+                text: "This food is not available"
             }).show();
         }
         else {
@@ -132,3 +140,6 @@ if(adminPath.includes('admin')){
     initAdmin.initAdmin(socket)
     socket.emit('join','adminRoom')
 }
+
+//Admin Availavle controllers
+availableItems.availableItems()

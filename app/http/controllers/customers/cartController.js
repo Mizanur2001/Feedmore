@@ -1,3 +1,4 @@
+const menu = require('../../../models/menu')
 function cartController() {
     return {
         index(req, res) {
@@ -8,9 +9,13 @@ function cartController() {
             res.header('Cache-Control', 'no-store')
             res.render("customers/cart");
         },
-        updateCart(req, res) {
+        async updateCart(req, res) {
+            const food = await menu.findOne({ _id: req.body._id })
             if (!req.session.user) {
                 return res.json({ message: true })
+            }
+            else if(req.body.availability!=food.availability){
+                return res.json({ availableFoodMsg: true })
             }
             else {
                 if (!req.session.cart) {
