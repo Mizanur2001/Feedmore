@@ -5,10 +5,13 @@ const orderControler = require('../app/http/controllers/customers/orderControler
 const adminOrderControler = require('../app/http/controllers/admin/orderControler');
 const statusControler = require('../app/http/controllers/admin/statusControler');
 const availabelControler = require('../app/http/controllers/admin/availableControler');
+const profileController = require('../app/http/controllers/customers/profileController');
+const logoutController = require('../app/http/controllers/customers/logoutController');
 
 function initRoutes(app) {
     app.get("/", homeController().index);
     app.get("/login", authController().login);
+    app.get("/logout", logoutController().logout);
     app.post('/login',authController().postLogin)
     app.get('/register', authController().register);
     app.post('/register',authController().postRegister);
@@ -22,6 +25,7 @@ function initRoutes(app) {
     app.post('/admin/order/status',statusControler().update);
     app.get('/admin/available',availabelControler().index);
     app.post('/admin/available',availabelControler().update);
+    app.get('/customers/profile',profileController().index);
 }
 
 module.exports = initRoutes;
