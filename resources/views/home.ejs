@@ -3,7 +3,10 @@
         <div class="w-1/2">
             <h6 class="text-lg"><em>Are You Hungry?</em></h6>
             <h1 class="text-3xl md:text-4xl lg:text-6xl font-bold">Don't wait !</h1>
-            <button class="px-2 py-2 md:px-6 md:py-3 rounded-full text-white font-bold text-xs md:text-lg mt-4 btn-primary">Order Now</button>
+            <a href="/cart"><button
+                    class="px-2 py-2 md:px-6 md:py-3 rounded-full text-white font-bold text-xs md:text-lg mt-4 btn-primary">Order
+                    Now</button>
+            </a>
         </div>
         <div class="w-1/2">
             <img src="/img/UPPER.png" alt="hero-pizza">
@@ -15,36 +18,47 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 col-gap-12 row-gap-16">
         <% foodItems.forEach(function(e){%>
             <%if(e.availability=='available'){%>
-            <div class="w-full md:w-64">
-                <img src="/img/<%= e.image%>" class="h-40 mb-4 mx-auto" alt="foods">
-                <div class="text-center">
-                    <h2 class="mb-4 text-lg"><%= e.name%></h2>
-                    <span class="size py-1 px-4 rounded-full uppercase text-xs"><%= e.size%></span>
-                    <div class="flex items-center justify-around mt-6">
-                        <span class="font-bold text-lg">₹<%= e.price%></span>
-                        <button data-food="<%= JSON.stringify(e)%>" class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
-                            <span>+</span>
-                            <span class="ml-6">Add</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <%}else{%>
                 <div class="w-full md:w-64">
-                    <img style="filter: grayscale(0.6);" src="/img/<%= e.image%>" class="h-40 mb-4 mx-auto" alt="foods">
+                    <img src="/img/<%= e.image%>" class="h-40 mb-4 mx-auto" alt="foods">
                     <div class="text-center">
-                        <h2 class="mb-4 text-lg"><%= e.name%></h2>
-                        <span class="size py-1 px-4 rounded-full uppercase text-xs"><%= e.size%></span>
+                        <h2 class="mb-4 text-lg">
+                            <%= e.name%>
+                        </h2>
+                        <span class="size py-1 px-4 rounded-full uppercase text-xs">
+                            <%= e.size%>
+                        </span>
                         <div class="flex items-center justify-around mt-6">
                             <span class="font-bold text-lg">₹<%= e.price%></span>
-                            <button style="border: 2px solid black;" data-food="<%= JSON.stringify(e)%>" class="py-1 px-6 rounded-full flex items-center font-bold">
-                                <span>:(</span>
-                                <span class="ml-6">Unavailable</span>
+                            <button data-food="<%= JSON.stringify(e)%>"
+                                class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
+                                <span>+</span>
+                                <span class="ml-6">Add</span>
                             </button>
                         </div>
                     </div>
                 </div>
-            <%}%>
-            <%})%>
+                <%}else{%>
+                    <div class="w-full md:w-64">
+                        <img style="filter: grayscale(0.6);" src="/img/<%= e.image%>" class="h-40 mb-4 mx-auto"
+                            alt="foods">
+                        <div class="text-center">
+                            <h2 class="mb-4 text-lg">
+                                <%= e.name%>
+                            </h2>
+                            <span class="size py-1 px-4 rounded-full uppercase text-xs">
+                                <%= e.size%>
+                            </span>
+                            <div class="flex items-center justify-around mt-6">
+                                <span class="font-bold text-lg">₹<%= e.price%></span>
+                                <button style="border: 2px solid black;" data-food="<%= JSON.stringify(e)%>"
+                                    class="py-1 px-6 rounded-full flex items-center font-bold">
+                                    <span>:(</span>
+                                    <span class="ml-6">Unavailable</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <%}%>
+                        <%})%>
     </div>
 </section>
