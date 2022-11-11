@@ -7,6 +7,7 @@ const statusControler = require('../app/http/controllers/admin/statusControler')
 const availabelControler = require('../app/http/controllers/admin/availableControler');
 const profileController = require('../app/http/controllers/customers/profileController');
 const logoutController = require('../app/http/controllers/customers/logoutController');
+const privacy = require('../app/http/controllers/admin/privacy');
 
 function initRoutes(app) {
     app.get("/", homeController().index);
@@ -26,6 +27,7 @@ function initRoutes(app) {
     app.get('/admin/available',availabelControler().index);
     app.post('/admin/available',availabelControler().update);
     app.get('/customers/profile',profileController().index);
+    app.get('/privacy',privacy().index);
 }
 
 module.exports = initRoutes;
