@@ -32,7 +32,7 @@ export function initAdmin(socket) {
 
     const renderItems = (items) => {
         return Object.values(items).map(item => {
-            return `<p class="my-2">${item.items.name} -> ${item.qty}(${item.items.size})</p>`
+            return `<p class="my-2 amount font-bold w-40">${item.items.name} -> ${item.qty}(${item.items.size})</p>`
         }).join('')
     }
 
@@ -56,7 +56,12 @@ export function initAdmin(socket) {
             return `
             <tr>
                 <td class="border px-4 py-2">
-                    <p>${order._id}</p>
+                    <p class="flex">
+                        <span class="material-symbols-outlined">
+                            badge
+                        </span>
+                        ${order._id}
+                    </p>
                     <div>${renderItems(order.items)}</div>
                 </td>
                 <td class="border px-4 py-2">
