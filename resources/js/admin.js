@@ -5,6 +5,14 @@ export function initAdmin(socket) {
     let markup
 
     const orderTableBody = document.getElementById('orderTableBody')
+    const totalPriceMarkup = document.getElementById('totalPrice');
+    const refresh = document.getElementById('refresh')
+    if (refresh != null) {
+        refresh.addEventListener('click', () => {
+            location.reload();
+        })
+    }
+    let countTotalPrice = 0;
 
     axios.get('/admin/orders', {
         headers: {
@@ -17,6 +25,7 @@ export function initAdmin(socket) {
             orderTableBody.innerHTML = markup
         }
 
+        totalPriceMarkup.innerHTML = `<h1 class="font-bold text-2xl mb-4 amount"> Total:- ₹ ${countTotalPrice}</h1>`
     }).catch(err => {
         console.log(err)
     })
@@ -25,6 +34,15 @@ export function initAdmin(socket) {
         return Object.values(items).map(item => {
             return `<p class="my-2">${item.items.name} -> ${item.qty}(${item.items.size})</p>`
         }).join('')
+    }
+
+    const renderPrice = (items) => {
+        let sum = 0;
+        Object.values(items).map(item => {
+            sum += item.items.price * item.qty
+            countTotalPrice += item.items.price * item.qty
+        })
+        return `<p class="my-2">${sum}</p>`
     }
 
     function generateMarkup(orders) {
@@ -64,6 +82,7 @@ export function initAdmin(socket) {
                 <td class="border px-4 py-2">${order.address}</td>
                 <td class="border px-4 py-2">${order.phone}</td>
                 <td class="border px-4 py-2">${new Date(order.createdAt).toGMTString()}</td>
+                <td class="border px-4 py-2">${renderPrice(order.items)}</td>
             </tr>`}).join('')
     }
 
