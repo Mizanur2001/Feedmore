@@ -25,6 +25,20 @@ const orderControler = () => {
                 return res.redirect('/cart')
             }
             else {
+
+                //const chacking min qty of food
+
+                for (const itemId in req.session.cart.items) {
+                    const item = req.session.cart.items[itemId];
+                    const { minOrder, name } = item.items;
+                    const { qty } = item;
+
+                    if (minOrder > qty) {
+                        req.flash('error', `Quantity for ${name} should be at least ${minOrder}.`);
+                        return res.redirect('/cart')
+                    }
+                }
+
                 const orders = new Orders({
                     customerId: req.session.user.userId,
                     items: req.session.cart.items,

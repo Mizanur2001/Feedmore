@@ -45,15 +45,22 @@ function cartController() {
         },
         deleteItems(req, res) {
             let cart = req.session.cart
-            if (cart.items[req.body.items._id].qty != 0) {
-                cart.items[req.body.items._id].qty = cart.items[req.body.items._id].qty - 1
+            const foodId = req.body.items._id
+            if (cart.items[foodId].qty != 0) {
+                cart.items[foodId].qty = cart.items[foodId].qty - 1
                 cart.totalQty = cart.totalQty - 1
                 cart.totalPrice = cart.totalPrice - req.body.items.price
             }
+
             if(cart.totalQty == 0){
                 delete req.session.cart
             }
-            res.json(cart.items[req.body.items._id].qty)
+
+            if (cart.items[foodId].qty == 0) {
+                delete cart.items[foodId];
+            }
+
+            res.json(cart)
         }
     }
 }
