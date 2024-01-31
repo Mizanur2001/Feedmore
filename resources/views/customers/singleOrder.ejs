@@ -3,15 +3,50 @@
         <div class="status-box w-2/3 mx-auto">
             <div class="flex singleOrderHead items-center justify-between mb-12">
                 <h1 class="text-xl font-bold">Track delivery status</h1>
-                <h6 class="bg-white py-1 rounded-full px-4 text-green-600 text-xs"> <%= order._id %> </h6>
+                <h6 class="bg-white py-1 rounded-full px-4 text-green-600 text-xs">
+                    <%= order._id %>
+                </h6>
                 <input type="hidden" id="StatusChangeHInput" value="<%= JSON.stringify(order)%>">
             </div>
             <ul class="z-0">
-                <li class="status_line text-sm md:text-xl pb-16 step-completed" data-status="order_placed"><span>Order Placed</span></li>
-                <li class="status_line text-sm md:text-xl pb-16 current" data-status="confirmed"><span>Order confirmation</span></li>
+                <li class="status_line text-sm md:text-xl pb-16 step-completed" data-status="order_placed"><span>Order
+                        Placed</span></li>
+                <li class="status_line text-sm md:text-xl pb-16 current" data-status="confirmed"><span>Order
+                        confirmation</span></li>
                 <li class="status_line text-sm md:text-xl pb-16 " data-status="prepared"><span>Preparation</span></li>
-                <li class="status_line text-sm md:text-xl pb-16" data-status="delivered"><span>Out for delivery </span></li>
+                <li class="status_line text-sm md:text-xl pb-16" data-status="delivered"><span>Out for delivery </span>
+                </li>
                 <li class="status_line text-sm md:text-xl" data-status="completed"><span>Complete</span></li>
             </ul>
+        </div>
+        <div class="pizza-list mt-32 pb-32">
+            <h1 class="text-xl font-bold">Your Orders</h1>
+            <%let totalPrice=0%>
+                <% for(let food of Object.values(order.items)){%>
+                    <div class="flex items-center my-8">
+                        <img class="w-12 md:w-24" src="/img/<%= food.items.image%>" alt="food">
+                        <div class="flex-1 ml-4">
+                            <h1>
+                                <%= food.items.name%>
+                            </h1>
+                            <span>
+                                <%= food.items.size%>
+                            </span>
+                        </div>
+                        <span class="flex-1">
+                            <%= food.qty%> Pcs
+                        </span>
+                        <span class="font-bold text-lg">₹<%= food.items.price *food.qty %></span>
+                        <%totalPrice=food.items.price *food.qty+totalPrice%>
+                    </div>
+                    <% }%>
+                        <div class="text-right py-4">
+                            <span class="text-lg font-bold">Total Amount:</span>
+                            <span class="amount text-2xl font-bold ml-2">₹<%= totalPrice%></span>
+                        </div>
+                        <div class="text-right">
+                            <button class="btn-primary rounded-full py-3 px-5 font-bold mt-6 text-white"><a href="tel:+91-7872727290">Cancel Order</a></button>
+                        </div>
+                       
         </div>
 </section>
