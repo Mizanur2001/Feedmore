@@ -30,6 +30,16 @@ export function initAdmin(socket) {
         console.log(err)
     })
 
+    axios.get('/admin/orders/pricecalculation', {
+        headers: {
+            "X-Requested-With": "XMLHttpRequest"
+        }
+    }).then(res => {
+        console.log(res.data);
+    }).catch(err => {
+        console.log(err)
+    })
+
     const renderItems = (items) => {
         return Object.values(items).map(item => {
             return `<p class="my-2 amount font-bold w-40">${item.items.name} -> ${item.qty}(${item.items.size})</p>`

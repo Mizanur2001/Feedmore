@@ -23,6 +23,7 @@ function initRoutes(app) {
     app.get('/customers/orders',orderControler().index);
     app.get('/customers/orders/:id',orderControler().show);
     app.get('/admin/orders',adminOrderControler().index);
+    app.get('/admin/orders/pricecalculation',adminOrderControler().priceCalculation);
     app.post('/admin/order/status',statusControler().update);
     app.get('/admin/available',availabelControler().index);
     app.post('/admin/available',availabelControler().update);
