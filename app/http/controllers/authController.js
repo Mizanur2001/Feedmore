@@ -45,7 +45,7 @@ function authController() {
                 return res.redirect('/login')
             }
 
-            req.session.user = { email: email, name: user.name, userId: user._id, role: user.role };
+            req.session.user = { email: email, name: user.name, userId: user._id, role: user.role, phone: user?.phone };
             res.redirect(_getUrl())
         },
         register(req, res) {
