@@ -2,22 +2,22 @@ const User = require('../../models/user')
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 function authController() {
-    
-    const _getUrl = ()=>{
-        if(User.role=='castomer'){
+
+    const _getUrl = () => {
+        if (User.role == 'castomer') {
             return '/'
         }
-        else{
+        else {
             return '/admin/orders'
         }
     }
 
     return {
         login(req, res) {
-            if(!req.session.user){
-            res.render("auth/login");
+            if (!req.session.user) {
+                res.render("auth/login");
             }
-            else{
+            else {
                 res.redirect('/')
             }
         },
@@ -25,8 +25,8 @@ function authController() {
             const { email, password } = req.body
 
             if (email == '' || password == '') {
-                req.flash('error','All Field Requred')
-                req.flash('email',email)
+                req.flash('error', 'All Field Requred')
+                req.flash('email', email)
                 return res.redirect('/login')
             }
 
@@ -34,36 +34,37 @@ function authController() {
 
             if (user == null) {
                 req.flash('error', 'Invalid Email id')
-                req.flash('email',email)
+                req.flash('email', email)
                 return res.redirect('/login')
             }
 
-            let compPass = await bcrypt.compare(password,user.password)
-            if(!compPass){
-                req.flash('error','Invalid Email or Password')
-                req.flash('email',email)
+            let compPass = await bcrypt.compare(password, user.password)
+            if (!compPass) {
+                req.flash('error', 'Invalid Email or Password')
+                req.flash('email', email)
                 return res.redirect('/login')
             }
 
-            req.session.user = {email:email,name:user.name,userId:user._id,role:user.role};
+            req.session.user = { email: email, name: user.name, userId: user._id, role: user.role };
             res.redirect(_getUrl())
         },
         register(req, res) {
-            if(!req.session.user){
-            res.render('auth/register')
+            if (!req.session.user) {
+                res.render('auth/register')
             }
-            else{
+            else {
                 res.redirect('/')
             }
         },
         async postRegister(req, res) {
-            const { name, email, password, cpassword } = req.body
+            const { name, email, password, cpassword, phone } = req.body
 
             //valid request
-            if (!name || !email || !password || !cpassword) {
+            if (!name || !email || !password || !cpassword || !phone) {
                 req.flash('error', 'All fields are required')
                 req.flash('name', name)
                 req.flash('email', email)
+                req.flash('phone', phone)
                 return res.redirect('/register')
             }
 
@@ -73,6 +74,7 @@ function authController() {
                 req.flash('error', 'Password Not Matched')
                 req.flash('name', name)
                 req.flash('email', email)
+                req.flash('phone', phone)
                 return res.redirect('/register')
             }
 
@@ -82,9 +84,30 @@ function authController() {
                     req.flash('error', 'Email Alrady Exist')
                     req.flash('name', name)
                     req.flash('email', email)
+                    req.flash('phone', phone)
                     return res.redirect('/register')
                 }
             })
+
+            // Validate phone number format (10-digit Indian format)
+            const phoneRegex = /^[6-9]\d{9}$/;
+            if (!phoneRegex.test(phone)) {
+                req.flash('error', 'Invalid Phone Number');
+                req.flash('name', name);
+                req.flash('email', email);
+                req.flash('phone', phone)
+                return res.redirect('/register');
+            }
+
+            // Check if phone already exists in phone array
+            const phoneExists = await User.findOne({ phone: { $in: [phone] } });
+            if (phoneExists) {
+                req.flash('error', 'Phone Number Already Exists');
+                req.flash('name', name);
+                req.flash('email', email);
+                req.flash('phone', phone)
+                return res.redirect('/register');
+            }
 
             const hashPassword = await bcrypt.hash(password, 10)
 
@@ -95,6 +118,7 @@ function authController() {
                 const user = new User({
                     name: name,
                     email: email,
+                    phone: [phone],
                     password: hashPassword
                 })
 
