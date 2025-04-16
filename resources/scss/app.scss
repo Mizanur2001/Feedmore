@@ -345,5 +345,12 @@ footer .footer-icons a {
         align-items: flex-start;
         width: auto;
     }
-    
+
+}
+
+//Device specific styles
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
