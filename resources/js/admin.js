@@ -12,7 +12,25 @@ export function initAdmin(socket) {
             location.reload();
         })
     }
-    let countTotalPrice = 0;
+
+    axios.get('/admin/orders/pricecalculation', {
+        headers: {
+            "X-Requested-With": "XMLHttpRequest"
+        }
+    }).then(res => {
+        const { dailyTotal, weeklyTotal, monthlyTotal, yearlyTotal, overallTotal } = res.data;
+
+        // Update the totalPriceMarkup element with the totals
+        totalPriceMarkup.innerHTML = `
+            <h1 class="font-bold text-2xl mb-2 amount">Daily Total: ₹ ${dailyTotal}</h1>
+            <p class="text-lg font-bold mb-2 text-blue-700">Weekly Total: ₹ ${weeklyTotal}</p>
+            <p class="text-lg font-bold mb-2 text-purple-600">Monthly Total: ₹ ${monthlyTotal}</p>
+            <p class="text-lg font-bold mb-2">Yearly Total: ₹ ${yearlyTotal}</p>
+            <p class="text-lg font-bold mb-2 amount">Overall Total: ₹ ${overallTotal}</p>
+        `;
+    }).catch(err => {
+        console.log(err)
+    })
 
     axios.get('/admin/orders', {
         headers: {
@@ -24,18 +42,6 @@ export function initAdmin(socket) {
         if (orderTableBody != null) {
             orderTableBody.innerHTML = markup
         }
-
-        totalPriceMarkup.innerHTML = `<h1 class="font-bold text-2xl mb-4 amount"> Total:- ₹ ${countTotalPrice}</h1>`
-    }).catch(err => {
-        console.log(err)
-    })
-
-    axios.get('/admin/orders/pricecalculation', {
-        headers: {
-            "X-Requested-With": "XMLHttpRequest"
-        }
-    }).then(res => {
-        console.log(res.data);
     }).catch(err => {
         console.log(err)
     })
@@ -50,7 +56,6 @@ export function initAdmin(socket) {
         let sum = 0;
         Object.values(items).map(item => {
             sum += item.items.price * item.qty
-            countTotalPrice += item.items.price * item.qty
         })
         return `<p class="my-2">${sum}</p>`
     }

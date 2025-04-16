@@ -2,112 +2,121 @@
 @import '~noty/src/noty.scss';
 @import '~noty/src/themes/mint.scss';
 
-body{
+body {
     font-family: 'Lato', sans-serif;
-    -webkit-font-smoothing : antialiased;
+    -webkit-font-smoothing: antialiased;
     color: $dark;
 }
 
-nav{
+nav {
     padding-left: 18px;
     padding-right: 10px;
     position: sticky;
-    top:0px;
+    top: 0px;
     right: 0px;
     background-color: white;
 }
 
-@media(max-width:650px){
-    nav{
+@media(max-width:650px) {
+    nav {
         flex-direction: column;
-        padding:0px;
+        padding: 0px;
     }
-    nav .logo{
+
+    nav .logo {
         margin-bottom: 3px;
     }
 }
 
-nav li:last-child a{
+nav li:last-child a {
     background: $primary;
     border-radius: 30px;
-    &:hover{
+
+    &:hover {
         background: $primary-hover;
     }
 }
 
-nav li a{
+nav li a {
     transition: $smooth;
-    &:hover{
+
+    &:hover {
         color: $primary;
     }
 }
 
-section.hero{
+section.hero {
     background: $secondary;
 }
 
-.size{
+.size {
     background: $secondary;
 }
 
-.add-to-cart{
+.add-to-cart {
     border: 2px solid $primary;
     color: $primary;
     transition: $smooth;
 
-    &:hover{
+    &:hover {
         color: $pure;
         background: $primary;
     }
-    &:focus{
+
+    &:focus {
         outline: none;
     }
 }
 
-.btn-primary{
+.btn-primary {
     background: $primary;
     transition: $smooth;
-    &:hover{
+
+    &:hover {
         background: $primary-hover;
     }
 }
 
-.cart{
+.cart {
     background: $secondary;
 }
 
-section.login{
+section.login {
     background: $secondary;
     min-height: calc(100vh - 86px);
-    a{
+
+    a {
         color: $primary;
-        &:hover{
+
+        &:hover {
             color: $primary-hover;
         }
     }
 }
 
-section.register{
+section.register {
     background: $secondary;
     min-height: calc(100vh - 86px);
-    a{
+
+    a {
         color: $primary;
-        &:hover{
+
+        &:hover {
             color: $primary-hover;
         }
     }
 }
 
-.amount{
+.amount {
     color: $primary;
 }
 
-.noty_theme__mint{
-    border-radius: 50px!important;
-    padding-left: 10px!important;
+.noty_theme__mint {
+    border-radius: 50px !important;
+    padding-left: 10px !important;
 }
 
-.link{
+.link {
     color: $primary;
 }
 
@@ -115,32 +124,36 @@ section.status {
     background: $secondary;
     min-height: calc(100vh - 86px);
 }
+
 .status-box {
     padding: 20px 0 0;
 }
+
 .status-box ul {
     margin-left: 84px;
 }
+
 .status-box ul li span {
     position: relative;
     padding-left: 20px;
 }
+
 // Dots 
 .status-box ul li span:after {
     content: '';
     position: absolute;
     left: -10px;
-    top:50%;
+    top: 50%;
     background: $dark;
     width: 10px;
     height: 10px;
     border-radius: 50%;
     transform: translateY(-50%);
-    box-shadow:0 0 1px 10px $secondary;
+    box-shadow: 0 0 1px 10px $secondary;
 }
 
 // Icons 
-.status-box ul li span:before{
+.status-box ul li span:before {
     font-family: "Line Awesome Free";
     font-size: 46px;
     font-weight: 600;
@@ -150,6 +163,7 @@ section.status {
     transform: translateY(-50%);
     color: inherit;
 }
+
 .status-box ul li:nth-child(1) span:before {
     content: '\f46d';
 }
@@ -169,26 +183,27 @@ section.status {
 .status-box ul li:nth-child(5) span:before {
     content: '\f582';
 }
+
 .status-box ul li {
     position: relative;
 }
 
 // Line
 .status-box ul li:before {
-   content: '';
-   position: absolute;
-   top: 0;
-   left: -6px;
-   width: 2px;
-   height: 100%;
-   background: $dark;
-   margin-top: 10px;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -6px;
+    width: 2px;
+    height: 100%;
+    background: $dark;
+    margin-top: 10px;
 }
 
 // Last dot 
 .status-box ul li:nth-child(5) span:after {
-    box-shadow:0 20px 1px 20px $secondary; 
-} 
+    box-shadow: 0 20px 1px 20px $secondary;
+}
 
 // line
 .status-box ul li.step-completed:before {
@@ -214,28 +229,32 @@ section.status {
     background: $primary;
 }
 
-@media(max-width:1050px){
-    .container{
+@media(max-width:1050px) {
+    .container {
         max-width: 90%;
     }
-    table{
+
+    table {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
     }
 }
 
-@media(max-width:768px){
-    .status-box ul li span:before{
+@media(max-width:768px) {
+    .status-box ul li span:before {
         font-size: 34px;
     }
-    .singleOrderHead{
+
+    .singleOrderHead {
         flex-direction: column;
     }
-    .singleOrderHead h1{
-        padding-bottom:15px ;
+
+    .singleOrderHead h1 {
+        padding-bottom: 15px;
     }
-    .status-box{
+
+    .status-box {
         padding: 0px;
     }
 }
@@ -243,15 +262,16 @@ section.status {
 footer {
     font-family: 'Lato', sans-serif;
 }
-footer .systern img{
+
+footer .systern img {
     width: 150px;
 }
 
-footer .systern{
+footer .systern {
     margin-bottom: 20px;
 }
 
-footer .addPhoneLoc{
+footer .addPhoneLoc {
     margin-bottom: 20px;
 }
 
@@ -259,50 +279,71 @@ footer .addPhoneLoc{
     padding-left: 22px;
 }
 
-footer .addPhoneLoc i{
-    background-color:  #33383b;
-	color: #ffffff;
-	font-size: 15px;
-	width: 38px;
-	height: 38px;
-	border-radius: 50%;
-	text-align: center;
-	line-height: 42px;
-	margin: 10px 15px;
-	vertical-align: middle;
+footer .addPhoneLoc i {
+    background-color: #33383b;
+    color: #ffffff;
+    font-size: 15px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 42px;
+    margin: 10px 15px;
+    vertical-align: middle;
 }
 
-footer .addPhoneLoc p{
+footer .addPhoneLoc p {
     display: inline-block;
-	color: gray;
-    font-weight:bold;
-	vertical-align: middle;
-	margin:0;
+    color: gray;
+    font-weight: bold;
+    vertical-align: middle;
+    margin: 0;
 }
 
-footer .footer-icons{
+footer .footer-icons {
     margin-top: 25px;
 }
 
-footer .footer-icons a{
+footer .footer-icons a {
     display: inline-block;
-	width: 35px;
-	height: 35px;
-	cursor: pointer;
-	background-color:  #33383b;
-	border-radius: 2px;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    background-color: #33383b;
+    border-radius: 2px;
     border-radius: 50%;
 
-	font-size: 20px;
-	color: #ffffff;
-	text-align: center;
-	line-height: 35px;
-	margin-right: 3px;
-	margin-bottom: 5px;
+    font-size: 20px;
+    color: #ffffff;
+    text-align: center;
+    line-height: 35px;
+    margin-right: 3px;
+    margin-bottom: 5px;
 }
 
-@media(min-width:768px){
+@media(min-width:768px) {
     .aboutFeedmore {
         width: 30%;
     }
+}
+
+.refresh {
+    height: 25px;
+}
+
+#totalPrice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    margin-bottom: 20px;
+}
+
+@media(max-width: 1279px) {
+    #totalPrice {
+        flex-direction: column;
+        align-items: flex-start;
+        width: auto;
+    }
+    
 }
