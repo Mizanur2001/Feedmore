@@ -63,18 +63,31 @@ app.use(expressLayout);
 app.set('views', path.join(__dirname, '/resources/views'));
 app.set('view engine', 'ejs');
 
+
+
 //Routers
-require('./router/web')(app);
-app.use((req,res)=>{
+const serverLoad = true
+if (serverLoad) {
+    app.use((req, res) => {
+        res.status(503).render('error/503')
+    })
+} else {
+    require('./router/web')(app);
+}
+
+//require('./router/web')(app);
+app.use((req, res) => {
     res.status(404).render('error/404')
 })
 
-const Server = app.listen(PORT,hostname, () => {
+
+
+const Server = app.listen(PORT, hostname, () => {
     console.log(`Server is listening at http://${hostname}:${PORT}`);
 });
 
 
-//Sockit connection
+//Socket connection
 const io = require('socket.io')(Server)
 io.on('connection', (socket) => {
     socket.on('join', (roomName) => {
