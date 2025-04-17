@@ -7,6 +7,9 @@ export function initAdmin(socket) {
     const orderTableBody = document.getElementById('orderTableBody')
     const totalPriceMarkup = document.getElementById('totalPrice');
     const refresh = document.getElementById('refresh')
+    const orderTitle = document.getElementById('orders-title')
+    let orderCount = 0
+    
     if (refresh != null) {
         refresh.addEventListener('click', () => {
             location.reload();
@@ -38,9 +41,11 @@ export function initAdmin(socket) {
         }
     }).then(res => {
         orders = res.data
+        orderCount = orders.length
         markup = generateMarkup(orders)
         if (orderTableBody != null) {
             orderTableBody.innerHTML = markup
+            orderTitle.innerText = `All Orders (${orderCount})`;
         }
     }).catch(err => {
         console.log(err)
