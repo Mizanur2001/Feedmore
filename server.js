@@ -66,15 +66,7 @@ app.set('view engine', 'ejs');
 
 
 //Routers
-const serverLoad = process.env.serverLoad
-
-if (serverLoad != "false") {
-    app.use((req, res) => {
-        res.status(503).render('error/503')
-    })
-} else {
-    require('./router/web')(app);
-}
+require('./router/web')(app);
 
 //require('./router/web')(app);
 app.use((req, res) => {
