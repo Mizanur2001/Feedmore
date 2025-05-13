@@ -8,6 +8,7 @@ const availabelControler = require('../app/http/controllers/admin/availableContr
 const profileController = require('../app/http/controllers/customers/profileController');
 const logoutController = require('../app/http/controllers/customers/logoutController');
 const privacy = require('../app/http/controllers/admin/privacy');
+const paymentController = require('../app/http/controllers/payment/paymentController');
 
 function initRoutes(app) {
     app.get("/", homeController().index);
@@ -29,6 +30,7 @@ function initRoutes(app) {
     app.post('/admin/available',availabelControler().update);
     app.get('/customers/profile',profileController().index);
     app.get('/privacy',privacy().index);
+    app.get('/maintenance-payment', paymentController().MaintenancePaymentPage);
 }
 
 module.exports = initRoutes;
