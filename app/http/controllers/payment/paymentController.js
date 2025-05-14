@@ -1,6 +1,8 @@
-const paymentController = ()=>{
-    return{
-        MaintenancePaymentPage(req, res){
+const axios = require('axios');
+
+const paymentController = () => {
+    return {
+        MaintenancePaymentPage(req, res) {
             if (!req.session.user) {
                 return res.redirect('/login')
             }
@@ -8,6 +10,75 @@ const paymentController = ()=>{
                 return res.redirect('/')
             }
             res.render('payment/paymentPage');
+        },
+        MaintenancePaymentInitiate(req, res) {
+            try {
+                const { order_id, status } = req.body
+                if (!order_id || !status) {
+                    return res.status(400).json({
+                        message: "Order ID and status are required",
+                        code: 400
+                    })
+                }
+
+                res.json({
+                    code: 200,
+                    message: "Payment Initiated successfully",
+                    data: {
+                        order_id,
+                        status
+                    }
+                })
+            } catch (error) {
+                return res.status(500).json({
+                    status: false,
+                    message: "Internal server error",
+                    error: error.message,
+                    code: 500
+                })
+
+            }
+        },
+        MaintenancePaymentVerify(req, res) {
+            try {
+                const { order_id, status } = req.body
+                if (!order_id || !status) {
+                    return res.status(400).json({
+                        message: "Order ID and status are required",
+                        code: 400
+                    })
+                }
+
+
+                axios.get(`https://sandbox.cashfree.com/pg/orders/${order_id}`, {
+                // axios.get(`https://api.cashfree.com/pg/orders/${order_id}`, {
+                    headers: {
+                        'x-client-id': process.env.CLIENT_ID,
+                        'x-client-secret': process.env.CLIENT_SECRET,
+                        'x-api-version': '2023-08-01',
+                    }
+                }).then((response) => {
+                    res.json({
+                        data: response.data,
+                        message: "Payment verified successfully",
+                        code: 200
+                    });
+                }).catch(error => {
+                    return res.status(500).json({
+                        message: "Internal server error",
+                        error: error,
+                        code: 500
+                    })
+                })
+            } catch (error) {
+                return res.status(500).json({
+                    status: false,
+                    message: "Internal server error",
+                    error: error.message,
+                    code: 500
+                })
+
+            }
         }
     }
 }
