@@ -1,4 +1,8 @@
 const Orders = require('../../../models/orders')
+const moment = require('moment');
+const Payment = require('../../../models/payment')
+
+
 const orderControler = () => {
     return {
         async index(req, res) {
@@ -10,7 +14,7 @@ const orderControler = () => {
             res.header('Cache-Control', 'no-store')
             res.render("customers/orders", { orders: items });
         },
-        store(req, res) {
+        async store(req, res) {
             if (!req.session.user) {
                 req.flash('error', 'You need to Login First')
                 return res.redirect('/login')
@@ -45,19 +49,56 @@ const orderControler = () => {
                     phone: phone,
                     address: address,
                 })
-                orders.save().then(result => {
+
+                try {
+                    const result = await orders.save();
+
+                    // Calculate total order amount
+                    const cartItems = req.session.cart.items;
+                    let totalAmount = 0;
+                    for (const itemId in cartItems) {
+                        const { qty, items } = cartItems[itemId];
+                        totalAmount += qty * items.price;
+                    }
+
+                    const currentMonth = moment().format('YYYY-MM');
+
+                    // Find existing payment document or create a new one
+                    let paymentDoc = await Payment.findOne({ billingMonth: currentMonth });
+
+                    if (paymentDoc) {
+                        paymentDoc.totalOrderAmount += totalAmount;
+                    } else {
+                        paymentDoc = new Payment({
+                            billingMonth: currentMonth,
+                            totalOrderAmount: totalAmount,
+                            // commissionAmount will be calculated in pre('save')
+                        });
+                    }
+
+                    await paymentDoc.save(); // Triggers the pre('save') hook for commission
+
                     Orders.populate(result, { path: 'customerId' }, (err, placedOrder) => {
-                        req.flash('success', 'Order placed successfully')
-                        delete req.session.cart
+                        if (err) {
+                            req.flash('error', 'Something went wrong while placing the order');
+                            return res.redirect('/cart');
+                        }
+
+                        delete req.session.cart;
+                        req.flash('success', 'Order placed successfully');
+
                         //Emit
                         const eventEmitter = req.app.get('eventEmitter')
                         eventEmitter.emit('oderPlace', placedOrder)
-                        return res.redirect('/customers/orders')
-                    })
-                }).catch(err => {
-                    req.flash('error', 'Something went Wrong')
-                    return req.redirect('/cart')
-                })
+
+                        return res.redirect('/customers/orders');
+                    });
+                } catch (err) {
+                    console.error('Order or payment failed:', err);
+                    req.flash('error', 'Something went wrong');
+                    return res.redirect('/cart');
+                }
+
             }
         },
         async show(req, res) {
