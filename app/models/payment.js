@@ -6,8 +6,15 @@ const paymentSchema = new mongoose.Schema({
     totalOrderAmount: { type: Number, required: true, default: 0 },
     commissionAmount: { type: Number, required: true, default: 0 },
     paid: { type: Boolean, default: false },
-    status: { type: String, enum: ['PAID', 'ACTIVE', 'TERMINATED','INITIATE','NOT_PAID'], default: 'NOT_PAID' },
+    status: { type: String, enum: ['PAID', 'ACTIVE', 'TERMINATED', 'INITIATE', 'NOT_PAID'], default: 'NOT_PAID' },
 }, { timestamps: true })
+
+paymentSchema.pre('save', function (next) {
+    if (this.isModified('totalOrderAmount') || this.isNew) {
+        this.commissionAmount = this.totalOrderAmount * 0.03;
+    }
+    next();
+});
 
 
 module.exports = mongoose.model('Payment', paymentSchema);
