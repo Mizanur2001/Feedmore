@@ -1,15 +1,34 @@
 const axios = require('axios');
+const paymentModel = require('../../../models/payment');
 
 const paymentController = () => {
     return {
-        MaintenancePaymentPage(req, res) {
+        async MaintenancePaymentPage(req, res) {
             if (!req.session.user) {
                 return res.redirect('/login')
             }
             if (req.session.user.role == 'customer') {
                 return res.redirect('/')
             }
-            res.render('payment/paymentPage');
+
+            // Get oldest unpaid bill from the database
+            const unpaidBill = await paymentModel.findOne({
+                paid: false,
+                status: "NOT_PAID"
+            }).sort({ billingMonth: 1 }); // oldest month first
+
+            if (!unpaidBill) {
+                return res.render('payment/paymentPage', {
+                    bill: null,
+                    message: 'No unpaid bills found'
+                });
+            }
+
+
+            res.render('payment/paymentPage', {
+                bill: unpaidBill,
+                message: null
+            });
         },
         MaintenancePaymentInitiate(req, res) {
             try {
@@ -51,7 +70,7 @@ const paymentController = () => {
 
 
                 axios.get(`https://sandbox.cashfree.com/pg/orders/${order_id}`, {
-                // axios.get(`https://api.cashfree.com/pg/orders/${order_id}`, {
+                    // axios.get(`https://api.cashfree.com/pg/orders/${order_id}`, {
                     headers: {
                         'x-client-id': process.env.CLIENT_ID,
                         'x-client-secret': process.env.CLIENT_SECRET,

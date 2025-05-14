@@ -1,5 +1,11 @@
-<div
-    class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto mt-10">
+<div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto mt-10">
+    <%
+        const commissionAmount = bill?.commissionAmount == null ? 0 : bill?.commissionAmount;
+        const gatewayfee = commissionAmount * 0.025;
+        const totalAmount = commissionAmount + gatewayfee;
+        const id = bill?._id == null ? "NOT_GEN" : bill?._id;
+        const date = bill?.billingMonth == null ? "NOT_GEN" : bill?.billingMonth;
+    %>
     <div class="relative flex flex-col bg-white shadow-lg rounded-xl pointer-events-auto dark:bg-neutral-800">
         <div class="relative overflow-hidden min-h-32 bg-gray-900 text-center rounded-t-xl dark:bg-neutral-950">
 
@@ -13,7 +19,6 @@
             </figure>
             <!-- End SVG Background Element -->
         </div>
-
         <!-- Body -->
         <div class="p-4 sm:p-7 overflow-y-auto">
             <div class="text-center">
@@ -21,7 +26,7 @@
                     Payment Summary
                 </h3>
                 <p class="text-sm text-gray-500 dark:text-neutral-500">
-                    Invoice #3682303
+                    Invoice #<%= id %>
                 </p>
             </div>
 
@@ -29,13 +34,13 @@
             <div class="mt-5 sm:mt-10 grid grid-cols-2 sm:grid-cols-3 gap-5">
                 <div>
                     <span class="block text-xs uppercase text-gray-500 dark:text-neutral-500">Amount to pay:</span>
-                    <span class="block text-sm font-medium text-gray-800 dark:text-neutral-200">₹3016.8</span>
+                    <span class="block text-sm font-medium text-gray-800 dark:text-neutral-200">₹<%= totalAmount.toFixed(2) %></span>
                 </div>
                 <!-- End Col -->
 
                 <div>
                     <span class="block text-xs uppercase text-gray-500 dark:text-neutral-500">Generate Date:</span>
-                    <span class="block text-sm font-medium text-gray-800 dark:text-neutral-200">April 22, 2025</span>
+                    <span class="block text-sm font-medium text-gray-800 dark:text-neutral-200"><%= date %></span>
                 </div>
                 <!-- End Col -->
 
@@ -58,21 +63,21 @@
                         class="inline-flex items-center gap-x-2 py-3 px-4 text-sm border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:border-neutral-700 dark:text-neutral-200">
                         <div class="flex items-center justify-between w-full">
                             <span>Payment for Maintenance</span>
-                            <span>₹2964.00</span>
+                            <span>₹<%= commissionAmount %></span>
                         </div>
                     </li>
                     <li
                         class="inline-flex items-center gap-x-2 py-3 px-4 text-sm border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:border-neutral-700 dark:text-neutral-200">
                         <div class="flex items-center justify-between w-full">
                             <span>Tax fee and Gateway fee</span>
-                            <span>₹52.80</span>
+                            <span>₹<%= gatewayfee.toFixed(2) %></span>
                         </div>
                     </li>
                     <li
                         class="inline-flex items-center gap-x-2 py-3 px-4 text-sm font-semibold bg-gray-50 border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200">
                         <div class="flex items-center justify-between w-full">
                             <span>Total Amount</span>
-                            <span>₹3016.80</span>
+                            <span>₹<%= totalAmount.toFixed(2) %></span>
                         </div>
                     </li>
                 </ul>
@@ -81,8 +86,8 @@
             <!-- Button -->
             <div class="mt-5 flex justify-end gap-x-2">
                 <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-                    href="http://localhost:3000/pay?name=feedMore&email=rakib100295@gmail.com&phone=7872727290&amount=1.80" target="_blank">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white"><path d="M560-440q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35ZM280-320q-33 0-56.5-23.5T200-400v-320q0-33 23.5-56.5T280-800h560q33 0 56.5 23.5T920-720v320q0 33-23.5 56.5T840-320H280Zm80-80h400q0-33 23.5-56.5T840-480v-160q-33 0-56.5-23.5T760-720H360q0 33-23.5 56.5T280-640v160q33 0 56.5 23.5T360-400Zm440 240H120q-33 0-56.5-23.5T40-240v-440h80v440h680v80ZM280-400v-320 320Z"/></svg>
+                    href="https://mizanur.in/pay?name=feedMore&email=rakib100295@gmail.com&phone=7872727290&amount=<%= totalAmount.toFixed(2) %>&order_id=<%= id %>" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="http://www.w3.org/2000/svg" width="24px" fill="white"><path d="M560-440q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35ZM280-320q-33 0-56.5-23.5T200-400v-320q0-33 23.5-56.5T280-800h560q33 0 56.5 23.5T920-720v320q0 33-23.5 56.5T840-320H280Zm80-80h400q0-33 23.5-56.5T840-480v-160q-33 0-56.5-23.5T760-720H360q0 33-23.5 56.5T280-640v160q33 0 56.5 23.5T360-400Zm440 240H120q-33 0-56.5-23.5T40-240v-440h80v440h680v80ZM280-400v-320 320Z"/></svg>
                     Pay Now
                 </a>
             </div>
