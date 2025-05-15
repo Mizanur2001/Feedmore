@@ -81,19 +81,19 @@ const paymentController = () => {
                 }
 
 
-                axios.get(`https://sandbox.cashfree.com/pg/orders/${order_id}`, {
-                    // axios.get(`https://api.cashfree.com/pg/orders/${order_id}`, {
+                // axios.get(`https://sandbox.cashfree.com/pg/orders/${order_id}`, {
+                axios.get(`https://api.cashfree.com/pg/orders/${order_id}`, {
                     headers: {
                         'x-client-id': process.env.CLIENT_ID,
                         'x-client-secret': process.env.CLIENT_SECRET,
                         'x-api-version': '2023-08-01',
                     }
                 }).then(async (response) => {
-                    await paymentModel.updateOne({ _id: order_id }, { 
+                    await paymentModel.updateOne({ _id: order_id }, {
                         status: response?.data?.order_status,
                         paid: response?.data?.order_status == "PAID" ? true : false
                     })
-                    
+
                     res.json({
                         data: response.data,
                         message: "Payment verified successfully",
