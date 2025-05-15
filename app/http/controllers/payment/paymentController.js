@@ -30,7 +30,7 @@ const paymentController = () => {
                 message: null
             });
         },
-        MaintenancePaymentInitiate(req, res) {
+        async MaintenancePaymentInitiate(req, res) {
             try {
                 const { order_id, status } = req.body
                 if (!order_id || !status) {
@@ -39,6 +39,18 @@ const paymentController = () => {
                         code: 400
                     })
                 }
+
+                const findBill = await paymentModel.findOne({ _id: order_id })
+                if (!findBill) {
+                    return res.status(202).json({
+                        message: "Bill not found",
+                        code: 202
+                    })
+                }
+
+                //Update the bill status to INITIATE
+                await paymentModel.updateOne({ _id: order_id }, { status: "INITIATE" })
+
 
                 res.json({
                     code: 200,
@@ -76,7 +88,12 @@ const paymentController = () => {
                         'x-client-secret': process.env.CLIENT_SECRET,
                         'x-api-version': '2023-08-01',
                     }
-                }).then((response) => {
+                }).then(async (response) => {
+                    await paymentModel.updateOne({ _id: order_id }, { 
+                        status: response?.data?.order_status,
+                        paid: response?.data?.order_status == "PAID" ? true : false
+                    })
+                    
                     res.json({
                         data: response.data,
                         message: "Payment verified successfully",
