@@ -14,7 +14,7 @@ const paymentController = () => {
             // Get oldest unpaid bill from the database
             const unpaidBill = await paymentModel.findOne({
                 paid: false,
-                status: "NOT_PAID"
+                // status: "NOT_PAID"
             }).sort({ billingMonth: 1 }); // oldest month first
 
             if (!unpaidBill) {
