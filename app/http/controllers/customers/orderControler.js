@@ -68,10 +68,14 @@ const orderControler = () => {
 
                     if (paymentDoc) {
                         paymentDoc.totalOrderAmount += totalAmount;
+                        paymentDoc.paid = false;
+                        paymentDoc.status = "NOT_PAID";
                     } else {
                         paymentDoc = new Payment({
                             billingMonth: currentMonth,
                             totalOrderAmount: totalAmount,
+                            paid: false, 
+                            status: "NOT_PAID",
                             // commissionAmount will be calculated in pre('save')
                         });
                     }

@@ -1,21 +1,33 @@
 const Order = require('../../../models/orders')
+const paymentModel = require('../../../models/payment')
+const moment = require('moment');
 
 const orderControler = () => {
     return {
-        index(req, res) {
+        async index(req, res) {
             if (!req.session.user) {
                 return res.redirect('/login')
             }
             if (req.session.user.role == 'customer') {
                 return res.redirect('/')
             }
+
+            // Check if the payment is paid or not
+            const unpaidBill = await paymentModel.findOne({ paid: false }).sort({ billingMonth: 1 });
+            const currentMonth = moment().format('MM');
+            const BillingMonth = moment(unpaidBill?.billingMonth).format('MM');
+            if (!unpaidBill?.paid && currentMonth != BillingMonth) {
+                return res.redirect('/maintenance-payment')
+            }
+
+
             Order.find({ status: { $ne: 'completed' } }, null, { sort: { 'createdAt': -1 } }).populate('customerId', '-password').exec((err, orders) => {
-                    if (req.xhr) {
-                        return res.json(orders);
-                    } else {
-                        return res.render('admin/order');
-                    }
-                });
+                if (req.xhr) {
+                    return res.json(orders);
+                } else {
+                    return res.render('admin/order');
+                }
+            });
         },
         async priceCalculation(req, res) {
             try {
