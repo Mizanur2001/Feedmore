@@ -7,7 +7,7 @@ const statusControler = require('../app/http/controllers/admin/statusControler')
 const availabelControler = require('../app/http/controllers/admin/availableControler');
 const profileController = require('../app/http/controllers/customers/profileController');
 const logoutController = require('../app/http/controllers/customers/logoutController');
-const privacy = require('../app/http/controllers/admin/privacy');
+const Legal = require('../app/http/controllers/Legal/legalController');
 const paymentController = require('../app/http/controllers/payment/paymentController');
 
 function initRoutes(app) {
@@ -29,7 +29,8 @@ function initRoutes(app) {
     app.get('/admin/available',availabelControler().index);
     app.post('/admin/available',availabelControler().update);
     app.get('/customers/profile',profileController().index);
-    app.get('/privacy',privacy().index);
+    app.get('/privacy',Legal().getPrivacy);
+    app.get('/terms',Legal().getTerms);
     app.get('/maintenance-payment', paymentController().MaintenancePaymentPage);
 }
 
