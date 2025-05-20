@@ -4,7 +4,7 @@ const legalController = () => {
             res.render('Legal/Terms');
         },
         getPrivacy(req, res) {
-            res.render('Legal/Privacy');
+            res.render('Legal/privacy');
         }
     }
 };
