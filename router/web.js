@@ -9,6 +9,7 @@ const profileController = require('../app/http/controllers/customers/profileCont
 const logoutController = require('../app/http/controllers/customers/logoutController');
 const Legal = require('../app/http/controllers/Legal/legalController');
 const paymentController = require('../app/http/controllers/payment/paymentController');
+const analyticsController = require('../app/http/controllers/analytics/analyticsController');
 
 function initRoutes(app) {
     app.get("/", homeController().index);
@@ -28,6 +29,7 @@ function initRoutes(app) {
     app.post('/admin/order/status',statusControler().update);
     app.get('/admin/available',availabelControler().index);
     app.post('/admin/available',availabelControler().update);
+    app.get('/admin/analytics',analyticsController().index)
     app.get('/customers/profile',profileController().index);
     app.get('/privacy',Legal().getPrivacy);
     app.get('/terms',Legal().getTerms);

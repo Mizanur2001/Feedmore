@@ -1,0 +1,123 @@
+<div class="container mx-auto pt-12">
+    <div class="order-price-count">
+        <div class="w-full py-3 px-2 grid gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
+            <!-- Daily Total Card -->
+            <div
+                class="bg-gradient-to-br from-orange-200 via-white to-orange-100 rounded-xl shadow-lg p-6 flex flex-col items-center border border-[#fe5f1e] relative overflow-hidden">
+                <div class="mb-2">
+                    <svg class="w-8 h-8" style="color:#fe5f1e" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M8 7V3m8 4V3m-9 8h10m-12 8h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <span class="text-gray-500 text-sm font-medium mb-2">Daily Total</span>
+                <span class="text-3xl font-extrabold mb-1" style="color:#fe5f1e">
+                    ₹ <%= data.dailyTotal %>
+                </span>
+            </div>
+
+            <!-- Weekly Total Card -->
+            <div
+                class="bg-gradient-to-br from-green-100 via-white to-green-50 rounded-xl shadow-lg p-6 flex flex-col items-center border border-green-200 relative overflow-hidden">
+                <div class="mb-2">
+                    <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18" />
+                    </svg>
+                </div>
+                <span class="text-gray-500 text-sm font-medium mb-2">Weekly Total</span>
+                <span class="text-3xl font-extrabold text-green-600 mb-1">
+                    ₹ <%= data.weeklyTotal %>
+                </span>
+            </div>
+
+            <!-- Monthly Total Card -->
+            <div
+                class="bg-gradient-to-br from-yellow-100 via-white to-yellow-50 rounded-xl shadow-lg p-6 flex flex-col items-center border border-yellow-200 relative overflow-hidden">
+                <div class="mb-2">
+                    <svg class="w-8 h-8 text-yellow-400" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M8 7V3m8 4V3m-9 8h10m-12 8h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <span class="text-gray-500 text-sm font-medium mb-2">Monthly Total</span>
+                <span class="text-3xl font-extrabold text-yellow-600 mb-1">
+                    ₹ <%= data.monthlyTotal %>
+                </span>
+            </div>
+
+            <!-- Yearly Total Card -->
+            <!-- Yearly Total Card -->
+            <div
+                class="bg-gradient-to-br from-purple-100 via-white to-purple-50 rounded-xl shadow-lg p-6 flex flex-col items-center border border-purple-200 relative overflow-hidden">
+                <div class="mb-2">
+                    <!-- Bar Chart Icon for Yearly -->
+                    <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <rect x="3" y="12" width="4" height="8" rx="1" />
+                        <rect x="9" y="8" width="4" height="12" rx="1" />
+                        <rect x="15" y="4" width="4" height="16" rx="1" />
+                    </svg>
+                </div>
+                <span class="text-gray-500 text-sm font-medium mb-2">Yearly Total</span>
+                <span class="text-3xl font-extrabold text-purple-600 mb-1">
+                    ₹ <%= data.yearlyTotal %>
+                </span>
+            </div>
+
+            <!-- Overall Total Card -->
+            <div
+                class="bg-gradient-to-br from-red-100 via-white to-red-50 rounded-xl shadow-lg p-6 flex flex-col items-center border border-red-200 relative overflow-hidden">
+                <div class="mb-2">
+                    <!-- Trophy Icon -->
+                    <svg class="w-8 h-8 text-red-400" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M8 21h8M12 17v4M17 17a5 5 0 01-10 0V5a2 2 0 012-2h6a2 2 0 012 2v12z" />
+                        <circle cx="12" cy="10" r="3" />
+                    </svg>
+                </div>
+                <span class="text-gray-500 text-sm font-medium mb-2">Overall Total</span>
+                <span class="text-3xl font-extrabold text-red-600 mb-1">
+                    ₹ <%= data.overallTotal %>
+                </span>
+            </div>
+
+
+            <!-- Maintenance Charge Card (Monthly Only) -->
+            <div
+                class="bg-gradient-to-br from-pink-100 via-pink-50 to-white rounded-xl shadow-lg p-6 flex flex-col items-center border border-pink-200 relative overflow-hidden">
+                <!-- Icon -->
+                <div class="mb-2">
+                    <svg class="w-8 h-8 text-pink-400" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 8c-1.657 0-3 1.343-3 3 0 1.657 1.343 3 3 3s3-1.343 3-3c0-1.657-1.343-3-3-3zm0 0V4m0 12v4m8-8h-4m-8 0H4">
+                        </path>
+                    </svg>
+                </div>
+                <!-- Badge -->
+                <span
+                    class="absolute top-2 right-2 bg-pink-200 text-pink-700 text-xs font-semibold px-2 py-0.5 rounded-full shadow">3%</span>
+                <span class="text-gray-600 text-sm font-semibold mb-1">Monthly Maintenance</span>
+                <span class="text-xs text-pink-700 font-semibold mb-1">
+                    Billing Month: <%= data.billingMonth%>
+                </span>
+                <span class="text-3xl font-extrabold text-pink-600 mb-1">
+                    ₹ <%= (data.billCommissionAmount).toFixed(2) %>
+                </span>
+                <span class="text-xs text-gray-400 mb-1">
+                    Cal: ₹<%= (data.billTotalOrderAmount).toFixed(2) %> × 3% = ₹<%=
+                            (data.billCommissionAmount).toFixed(2) %>
+                </span>
+                <span class="text-xs text-gray-400 mb-1">
+                    Total: ₹<%= (data.billCommissionAmount).toFixed(2) %> + taxes = <%= ((data.billCommissionAmount *
+                            0.025)+(data.billCommissionAmount)).toFixed(2) %>
+                </span>
+                <span class="text-xs text-gray-400">Calculated on monthly Basic</span>
+            </div>
+        </div>
+    </div>
+</div>
