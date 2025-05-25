@@ -74,7 +74,7 @@ const orderControler = () => {
                         paymentDoc = new Payment({
                             billingMonth: currentMonth,
                             totalOrderAmount: totalAmount,
-                            paid: false, 
+                            paid: false,
                             status: "NOT_PAID",
                             // commissionAmount will be calculated in pre('save')
                         });
@@ -82,6 +82,37 @@ const orderControler = () => {
 
                     await paymentDoc.save(); // Triggers the pre('save') hook for commission
 
+
+                    //Fetch Daily Order Amount
+                    const now = new Date();
+                    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    const results = await Orders.aggregate([
+                        {
+                            $addFields: {
+                                totalPrice: {
+                                    $sum: {
+                                        $map: {
+                                            input: { $objectToArray: "$items" },
+                                            as: "item",
+                                            in: { $multiply: ["$$item.v.qty", "$$item.v.items.price"] }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            $facet: {
+                                daily: [
+                                    { $match: { createdAt: { $gte: startOfDay } } },
+                                    { $group: { _id: null, total: { $sum: "$totalPrice" } } }
+                                ],
+                            }
+                        }
+                    ]);
+                    const dailyTotal = results[0].daily[0]?.total || 0;
+                    
+                    
+                    // Send Data to the event emitter (Using Socket Io)
                     Orders.populate(result, { path: 'customerId' }, (err, placedOrder) => {
                         if (err) {
                             req.flash('error', 'Something went wrong while placing the order');
@@ -94,6 +125,9 @@ const orderControler = () => {
                         //Emit
                         const eventEmitter = req.app.get('eventEmitter')
                         eventEmitter.emit('oderPlace', placedOrder)
+
+                        //Emit for Total totalOrdersAmount (Daly)
+                        eventEmitter.emit('totalOrdersAmount', dailyTotal)
 
                         return res.redirect('/customers/orders');
                     });

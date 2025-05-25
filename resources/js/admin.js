@@ -9,7 +9,7 @@ export function initAdmin(socket) {
     const refresh = document.getElementById('refresh')
     const orderTitle = document.getElementById('orders-title')
     let orderCount = 0
-    
+
     if (refresh != null) {
         refresh.addEventListener('click', () => {
             location.reload();
@@ -21,15 +21,11 @@ export function initAdmin(socket) {
             "X-Requested-With": "XMLHttpRequest"
         }
     }).then(res => {
-        const { dailyTotal, weeklyTotal, monthlyTotal, yearlyTotal, overallTotal } = res.data;
+        const { dailyTotal } = res.data;
 
         // Update the totalPriceMarkup element with the totals
         totalPriceMarkup.innerHTML = `
             <h1 class="font-bold text-2xl mb-2 amount">Daily Total: ₹ ${dailyTotal}</h1>
-            <p class="text-lg font-bold mb-2 text-blue-700">Weekly Total: ₹ ${weeklyTotal}</p>
-            <p class="text-lg font-bold mb-2 text-purple-600">Monthly Total: ₹ ${monthlyTotal}</p>
-            <p class="text-lg font-bold mb-2">Yearly Total: ₹ ${yearlyTotal}</p>
-            <p class="text-lg font-bold mb-2 amount">Overall Total: ₹ ${overallTotal}</p>
         `;
     }).catch(err => {
         console.log(err)
@@ -123,5 +119,13 @@ export function initAdmin(socket) {
         orders.unshift(order)
         orderTableBody.innerHTML = ``
         orderTableBody.innerHTML = generateMarkup(orders)
+    })
+
+
+    socket.on('totalOrdersAmount', (Amount) => {
+        if (totalPriceMarkup) {
+            totalPriceMarkup.innerHTML = `
+            <h1 class="font-bold text-2xl mb-2 amount">Daily Total: ₹ ${Amount}</h1>`
+        }
     })
 }

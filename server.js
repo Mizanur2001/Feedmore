@@ -98,3 +98,8 @@ eventEmitter.on('updateStatus', (data) => {
 eventEmitter.on('oderPlace', (data) => {
     io.to('adminRoom').emit('oderPlaced', data)
 })
+
+//EventEmitter for Total Orders Amount Count
+eventEmitter.on('totalOrdersAmount', (data) => {
+    io.to('adminRoom').emit('totalOrdersAmount', data)
+})
