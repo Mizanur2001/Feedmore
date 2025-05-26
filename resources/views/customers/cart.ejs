@@ -27,16 +27,70 @@
                     <% }%>
             </div>
             <hr>
+            <!--Add Address and Edit Address + payment Section-->
+            <hr>
+            <div class="py-2">
+                <div class="p-2 sm:p-6">
+                    <div class="flex flex-row justify-between items-center mb-4 gap-2">
+                        <h2 class="text-base sm:text-lg font-semibold pb-2">Payment</h2>
+                        <span class="material-symbols-outlined">
+                            receipt_long
+                        </span>
+                    </div>
+                    <hr>
+                    <div class="bg-gradient-to-br from-orange-50 to-white rounded-xl p-6 mt-4">
+                        <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
+                            <span class="material-symbols-outlined">payments</span>
+                            Choose Payment Method
+                        </h3>
+                        <div class="flex flex-col sm:flex-row gap-4 mb-8">
+                            <label
+                                class="flex items-center cursor-pointer bg-white border border-orange-200 rounded-lg px-4 py-3 transition hover:shadow-md">
+                                <input type="radio" name="paymentMethod" value="cod" class="accent-orange-500 mr-3"
+                                    checked>
+                                <span class="text-base font-semibold text-gray-800">Cash on Delivery (COD)</span>
+                            </label>
+                            <label
+                                class="flex items-center cursor-not-allowed bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 opacity-60 gap-2">
+                                <input type="radio" name="paymentMethod" value="online" class="accent-gray-400 mr-3"
+                                    disabled>
+                                <span class="text-base font-semibold text-gray-400 flex items-center gap-2">
+                                    Online Payment
+                                    <span
+                                        class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full border border-green-300 shadow-sm ml-2" style="width: 60px;">
+                                        ₹5 OFF
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="border-t pt-6">
+                            <h4 class="text-base font-bold mb-4 text-gray-700">Bill Summary</h4>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-600">Total Amount</span>
+                                <span class="font-semibold text-gray-800">₹<%= session.cart.totalPrice %></span>
+                            </div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-600">Delivery Fee</span>
+                                <span class="font-semibold text-gray-800">₹0</span>
+                            </div>
+                            <div class="flex justify-between text-lg font-bold mt-4">
+                                <span class="text-orange-600">Grand Total</span>
+                                <span class="text-orange-600">₹<%= session.cart.totalPrice %></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End-->
             <div class="text-right py-4">
                 <div>
-                    <span class="text-lg font-bold">Total Amount:</span>
-                    <span class="amount text-2xl font-bold ml-2">₹<%= session.cart.totalPrice%></span>
-                </div>
-                <div>
                     <form action="/orders" method="POST" class="mt-12">
-                        <span class="block text-red-600 text-sm font-bold mb-2"><%= messages.error%></span>
+                        <span class="block text-red-600 text-sm font-bold mb-2">
+                            <%= messages.error%>
+                        </span>
                         <input type="number" placeholder="Phone Number"
-                            class="border border-gray-400 p-2 w-1/2 mb-4 rounded-full pl-6" name="phone" minlength="10" value="<%= session?.user?.phone[0] %>">
+                            class="border border-gray-400 p-2 w-1/2 mb-4 rounded-full pl-6" name="phone" minlength="10"
+                            value="<%= session?.user?.phone[0] %>">
                         <input type="text" placeholder="Address"
                             class="border border-gray-400 p-2 w-1/2 rounded-full pl-6" name="address">
                         <div>
