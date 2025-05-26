@@ -47,6 +47,7 @@ function refreshCartButton() {
     axios.get('/cart-info').then(res => {
         const data = res.data;
         const cartSection = document.getElementById('cart-btn-section');
+        if (!cartSection) return;
         if (data.count && data.count > 0) {
             let imagesHtml = '';
             (data.images.length ? data.images.slice(0, 3) : [{ image: 'placeholder.png' }]).forEach(function (item) {
