@@ -15,24 +15,25 @@ function initRoutes(app) {
     app.get("/", homeController().index);
     app.get("/login", authController().login);
     app.get("/logout", logoutController().logout);
-    app.post('/login',authController().postLogin)
+    app.post('/login', authController().postLogin)
     app.get('/register', authController().register);
-    app.post('/register',authController().postRegister);
-    app.get('/cart',cartController().index);
-    app.post('/update-cart',cartController().updateCart);
-    app.post('/delete-items',cartController().deleteItems);
-    app.post('/orders',orderControler().store);
-    app.get('/customers/orders',orderControler().index);
-    app.get('/customers/orders/:id',orderControler().show);
-    app.get('/admin/orders',adminOrderControler().index);
-    app.get('/admin/orders/pricecalculation',adminOrderControler().priceCalculation);
-    app.post('/admin/order/status',statusControler().update);
-    app.get('/admin/available',availabelControler().index);
-    app.post('/admin/available',availabelControler().update);
-    app.get('/admin/analytics',analyticsController().index)
-    app.get('/customers/profile',profileController().index);
-    app.get('/privacy',Legal().getPrivacy);
-    app.get('/terms',Legal().getTerms);
+    app.post('/register', authController().postRegister);
+    app.get('/cart', cartController().index);
+    app.post('/update-cart', cartController().updateCart);
+    app.get('/cart-info', cartController().floatingCartInfo);
+    app.post('/delete-items', cartController().deleteItems);
+    app.post('/orders', orderControler().store);
+    app.get('/customers/orders', orderControler().index);
+    app.get('/customers/orders/:id', orderControler().show);
+    app.get('/admin/orders', adminOrderControler().index);
+    app.get('/admin/orders/pricecalculation', adminOrderControler().priceCalculation);
+    app.post('/admin/order/status', statusControler().update);
+    app.get('/admin/available', availabelControler().index);
+    app.post('/admin/available', availabelControler().update);
+    app.get('/admin/analytics', analyticsController().index)
+    app.get('/customers/profile', profileController().index);
+    app.get('/privacy', Legal().getPrivacy);
+    app.get('/terms', Legal().getTerms);
     app.get('/maintenance-payment', paymentController().MaintenancePaymentPage);
 }
 

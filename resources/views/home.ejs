@@ -61,4 +61,38 @@
                     <%}%>
                         <%})%>
     </div>
+
+    <!--Floating Cart Button-->
+    <div id="cart-btn-section" class="sticky bottom-15 left-0 w-full flex justify-center z-50 mt-12"
+        style="display: none;">
+        <a href="/cart">
+            <button
+                class="flex items-center btn-orange transition px-4 py-3 rounded-full text-white font-bold shadow-lg min-w-[260px] focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+                <!-- Product images -->
+                <% let cartItemsArr=[]; let cartCountVal=0; if (typeof session.cart !=='undefined' && session.cart &&
+                    session.cart.items) { for(let key in session.cart.items) { if
+                    (session.cart.items.hasOwnProperty(key)) { cartItemsArr.push({
+                    image:session.cart.items[key].items.image }); cartCountVal +=session.cart.items[key].qty; } } } %>
+                    <div class="flex -space-x-2 mr-4">
+                        <% (cartItemsArr.length ? cartItemsArr.slice(0,3) :
+                            [{image:'cart.png'}]).forEach(function(item, idx){ %>
+                            <img src="/img/<%= item.image %>" alt="item"
+                                class="w-10 h-10 rounded-full border-2 border-white bg-white object-cover">
+                            <% }) %>
+                    </div>
+                    <!-- Cart text -->
+                    <div class="flex flex-col items-start flex-1">
+                        <span class="text-lg font-semibold">View cart</span>
+                        <span class="text-xs font-normal">
+                            <%= cartCountVal || 0 %> Items
+                        </span>
+                    </div>
+                    <!-- Arrow icon -->
+                    <svg class="w-6 h-6 ml-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+            </button>
+        </a>
+    </div>
+
 </section>

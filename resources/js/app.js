@@ -16,7 +16,7 @@ function update(food) {
                 text: "You need to Login First"
             }).show();
         }
-        else if(res.data.availableFoodMsg){
+        else if (res.data.availableFoodMsg) {
             new Noty({
                 type: 'error',
                 timeout: 3000,
@@ -30,6 +30,7 @@ function update(food) {
                 timeout: 1000,
                 text: "Added to cart"
             }).show();
+            refreshCartButton();
         }
         //console.log(res.data.message)
     }).catch(err => {
@@ -40,6 +41,43 @@ function update(food) {
         }).show();
     })
 }
+
+//Update the floating cart button
+function refreshCartButton() {
+    axios.get('/cart-info').then(res => {
+        const data = res.data;
+        const cartSection = document.getElementById('cart-btn-section');
+        if (data.count && data.count > 0) {
+            let imagesHtml = '';
+            (data.images.length ? data.images.slice(0, 3) : [{ image: 'placeholder.png' }]).forEach(function (item) {
+                imagesHtml += `<img src="/img/${item.image}" alt="item" class="w-10 h-10 rounded-full border-2 border-white bg-white object-cover">`;
+            });
+            cartSection.innerHTML = `
+                <a href="/cart">
+                    <button class="flex items-center btn-orange transition px-4 py-3 rounded-full text-white font-bold shadow-lg min-w-[260px] focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+                        <div class="flex -space-x-2 mr-4">${imagesHtml}</div>
+                        <div class="flex flex-col items-start flex-1">
+                            <span class="text-lg font-semibold">View cart</span>
+                            <span class="text-xs font-normal">${data.count || 0} Items</span>
+                        </div>
+                        <svg class="w-6 h-6 ml-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </a>
+            `;
+            cartSection.style.display = 'flex';
+        } else {
+            cartSection.innerHTML = '';
+            cartSection.style.display = 'none';
+        }
+    });
+}
+
+// If the DOM is refreshe the floating cart will not disappear
+document.addEventListener('DOMContentLoaded', function () {
+    refreshCartButton();
+});
 
 function delItems(items) {
     axios.post('/delete-items', items).then(res => {
@@ -120,8 +158,8 @@ if (orders) {
     socket.emit('join', `oredr_${orders._id}`)
 }
 
-socket.on(`updateStatus`,(data)=>{
-    const updatedStatus = {...orders}
+socket.on(`updateStatus`, (data) => {
+    const updatedStatus = { ...orders }
     updatedStatus.status = data.status
     updateStatus(updatedStatus)
     new Noty({
@@ -136,9 +174,9 @@ socket.on(`updateStatus`,(data)=>{
 
 //Admin Socket 
 let adminPath = window.location.pathname
-if(adminPath.includes('admin')){
+if (adminPath.includes('admin')) {
     initAdmin.initAdmin(socket)
-    socket.emit('join','adminRoom')
+    socket.emit('join', 'adminRoom')
 }
 
 //Admin Availavle controllers

@@ -14,7 +14,7 @@ function cartController() {
             if (!req.session.user) {
                 return res.json({ message: true })
             }
-            else if(req.body.availability!=food.availability){
+            else if (req.body.availability != food.availability) {
                 return res.json({ availableFoodMsg: true })
             }
             else {
@@ -43,6 +43,18 @@ function cartController() {
                 res.json({ totalQty: req.session.cart.totalQty })
             }
         },
+        floatingCartInfo(req, res) {
+            const cart = req.session.cart || { items: {} };
+            const images = [];
+            let count = 0;
+            for (let key in cart.items) {
+                if (cart.items.hasOwnProperty(key)) {
+                    images.push({ image: cart.items[key].items.image });
+                    count += cart.items[key].qty;
+                }
+            }
+            res.json({ images, count });
+        },
         deleteItems(req, res) {
             let cart = req.session.cart
             const foodId = req.body.items._id
@@ -52,7 +64,7 @@ function cartController() {
                 cart.totalPrice = cart.totalPrice - req.body.items.price
             }
 
-            if(cart.totalQty == 0){
+            if (cart.totalQty == 0) {
                 delete req.session.cart
             }
 

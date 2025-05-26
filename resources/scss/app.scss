@@ -400,3 +400,15 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+
+.bottom-15{
+    bottom: 15px;
+}
+
+.btn-orange {
+    background-color: #FE5F1E;
+    transition: background 0.2s;
+}
+.btn-orange:hover {
+    background-color: #b23301;
+}
