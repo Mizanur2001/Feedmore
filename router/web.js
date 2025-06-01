@@ -38,6 +38,7 @@ function initRoutes(app) {
     app.get('/maintenance-payment', paymentController().MaintenancePaymentPage);
     app.post('/add-address', addressController().addAddress);
     app.get('/get-address/:userId', addressController().getAddress);
+    app.put('/update-address',addressController().updateAddress);
 }
 
 module.exports = initRoutes;
