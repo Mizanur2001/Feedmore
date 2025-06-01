@@ -4,7 +4,7 @@ const addressController = () => {
     return {
         getAddress: async (req, res) => {
             try {
-                // Validate User ID
+                // Validate User Session
                 if (!req.session.user) {
                     return res.redirect('/login')
                 }
@@ -50,10 +50,12 @@ const addressController = () => {
             }
         },
         addAddress: async (req, res) => {
-            //==================================
-            // toDo : validate user session
-            //==================================
             try {
+                // Validate User Session
+                if (!req.session.user) {
+                    return res.redirect('/login')
+                }
+
                 const { userId, name, phone, addressLine1, addressLine2, city, landmark, postalCode, addressType } = req.body;
                 if (!userId || !name || !phone || !addressLine1 || !city || !landmark || !postalCode || !addressType) {
                     return res.status(400).json({
@@ -134,9 +136,11 @@ const addressController = () => {
         },
         updateAddress: async (req, res) => {
             try {
-                //==================================
-                // toDo : validate user session
-                //==================================
+                // Validate User Session
+                if (!req.session.user) {
+                    return res.redirect('/login')
+                }
+                
                 const { userId, addressId, phone, addressLine1, addressLine2, city, landmark, postalCode, addressType } = req.body;
                 if (!userId || !addressId || !phone || !addressLine1 || !city || !landmark || !postalCode || !addressType) {
                     return res.status(400).json({
