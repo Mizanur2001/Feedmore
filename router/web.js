@@ -10,6 +10,7 @@ const logoutController = require('../app/http/controllers/customers/logoutContro
 const Legal = require('../app/http/controllers/Legal/legalController');
 const paymentController = require('../app/http/controllers/payment/paymentController');
 const analyticsController = require('../app/http/controllers/analytics/analyticsController');
+const addressController = require('../app/http/controllers/customers/addressController')
 
 function initRoutes(app) {
     app.get("/", homeController().index);
@@ -35,6 +36,7 @@ function initRoutes(app) {
     app.get('/privacy', Legal().getPrivacy);
     app.get('/terms', Legal().getTerms);
     app.get('/maintenance-payment', paymentController().MaintenancePaymentPage);
+    app.post('/add-address', addressController().addAddress);
 }
 
 module.exports = initRoutes;
