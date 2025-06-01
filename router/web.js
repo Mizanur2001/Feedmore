@@ -37,6 +37,7 @@ function initRoutes(app) {
     app.get('/terms', Legal().getTerms);
     app.get('/maintenance-payment', paymentController().MaintenancePaymentPage);
     app.post('/add-address', addressController().addAddress);
+    app.get('/get-address/:userId', addressController().getAddress);
 }
 
 module.exports = initRoutes;
