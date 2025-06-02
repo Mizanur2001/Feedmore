@@ -24,9 +24,11 @@ export function initAdmin(socket) {
         const { dailyTotal } = res.data;
 
         // Update the totalPriceMarkup element with the totals
-        totalPriceMarkup.innerHTML = `
+        if (totalPriceMarkup) {
+            totalPriceMarkup.innerHTML = `
             <h1 class="font-bold text-2xl mb-2 amount">Daily Total: ₹ ${dailyTotal}</h1>
         `;
+        }
     }).catch(err => {
         console.log(err)
     })
