@@ -2,53 +2,6 @@ const AddressModal = require('../../../models/addressModel');
 const UserModel = require('../../../models/user');
 const addressController = () => {
     return {
-        getAddress: async (req, res) => {
-            try {
-                // Validate User Session
-                if (!req.session.user) {
-                    return res.redirect('/login')
-                }
-
-                const { userId } = req.params;
-                if (!userId) {
-                    return res.status(400).json({
-                        message: "User ID is required",
-                        code: 400
-                    });
-                }
-
-                // Check User Exit or Not
-                const findUser = await UserModel.findById(userId);
-                if (!findUser) {
-                    return res.status(400).json({
-                        message: "User not found",
-                        code: 400
-                    });
-                }
-
-                // Get Address
-                const address = await AddressModal.findOne({ userId: userId });
-                if (!address) {
-                    return res.status(404).json({
-                        message: "Address not found",
-                        code: 404
-                    });
-                }
-
-                return res.status(200).json({
-                    message: "Address retrieved successfully",
-                    data: address,
-                    code: 200
-                });
-
-            } catch (error) {
-                res.status(500).json({
-                    message: "Internal Server Error",
-                    error: error,
-                    code: 500
-                });
-            }
-        },
         addAddress: async (req, res) => {
             try {
                 // Validate User Session
