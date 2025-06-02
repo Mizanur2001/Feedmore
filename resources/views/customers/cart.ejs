@@ -5,9 +5,6 @@
                 <img src="/img/cart-black.png" alt="cart">
                 <h1 class="font-bold ml-4 text-2xl">Order Summary</h1>
             </div>
-            <%
-                console.log(address)          
-            %>
             <div class="pizza-list">
                 <% for(let food of Object.values(session.cart.items)){%>
                     <div class="flex items-center my-8">
@@ -31,6 +28,69 @@
             </div>
             <hr>
             <!--Add Address and Edit Address + payment Section-->
+            <div class="py-4">
+                <div class="p-2 sm:p-6">
+                    <div class="flex flex-row justify-between items-center mb-4 gap-2">
+                        <h2 class="text-base sm:text-lg font-semibold">Address</h2>
+                        <button
+                            class="border border-green-500 text-green-600 px-3 py-1 rounded hover:bg-green-50 transition font-semibold flex items-center text-sm">
+                            <span class="text-xl mr-1">+</span> Add New
+                        </button>
+                    </div>
+                    <hr class="mb-4">
+                    <div class="flex flex-wrap gap-4 justify-start overflow-x-auto" style="row-gap: 1rem;">
+                        <!-- Address Card -->
+                        <% address?.addressInfo.forEach((addr, index)=> {
+                            const isChecked = index === 0 ? 'checked' : '';
+                            const radioId = `address${index}`;
+                            %>
+                            <div class="border rounded p-4 flex-1 min-w-[220px] max-w-xs bg-white mx-auto sm:mx-0 relative"
+                                style="max-width: 15rem; min-width: 220px; flex-basis: 220px;">
+                                <input type="radio" name="selectedAddress" id="<%= radioId %>"
+                                    class="absolute left-2 top-2" value="<%= addr._id %>" <%=isChecked %> style="top:
+                                22px;">
+                                <label for="<%= radioId %>" class="block pl-6 cursor-pointer">
+                                    <div class="flex justify-between mb-2">
+                                        <span class="font-semibold">Address <%= index+1 %></span>
+                                        <span class="font-semibold">
+                                            <%= addr.addressType %>
+                                        </span>
+                                    </div>
+                                    <hr>
+                                    <div class="text-xs leading-6 py-2" style="font-weight: 200; line-height: 1rem;">
+                                        <div><span class="font-semibold">Phone Number :</span>
+                                            <%= addr.phone %>
+                                        </div>
+                                        <div><span class="font-semibold">Address Line1 :</span>
+                                            <%= addr.addressLine1 %>
+                                        </div>
+                                        <div><span class="font-semibold">Address Line2 :</span>
+                                            <%= addr.addressLine2 %>
+                                        </div>
+                                        <div><span class="font-semibold">City :</span>
+                                            <%= addr.city %>
+                                        </div>
+                                        <div><span class="font-semibold">State :</span>
+                                            <%= addr.state %>
+                                        </div>
+                                        <div><span class="font-semibold">Landmark :</span>
+                                            <%= addr.landmark %>
+                                        </div>
+                                        <div><span class="font-semibold">Pin :</span>
+                                            <%= addr.postalCode %>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 text-right">
+                                        <a href="/address-edit?id=<%= addr._id %>"
+                                            class="text-orange-600 font-semibold hover:underline text-sm">Edit</a>
+                                    </div>
+                                </label>
+                            </div>
+                            <% }); %>
+                    </div>
+                </div>
+            </div>
+            <!--End Address Section-->
             <hr>
             <div class="py-2">
                 <div class="p-2 sm:p-6">
@@ -60,7 +120,8 @@
                                 <span class="text-base font-semibold text-gray-400 flex items-center gap-2">
                                     Online Payment
                                     <span
-                                        class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full border border-green-300 shadow-sm ml-2 text-center" style="width: 100px;">
+                                        class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full border border-green-300 shadow-sm ml-2 text-center"
+                                        style="width: 100px;">
                                         Coming Soon
                                     </span>
                                 </span>
