@@ -1,13 +1,21 @@
 const menu = require('../../../models/menu')
+const AddressModal = require('../../../models/addressModel');
+
 function cartController() {
     return {
-        index(req, res) {
+        async index(req, res) {
             if (!req.session.user) {
                 req.flash('error', 'You need to login first')
                 return res.redirect('/login');
             }
             res.header('Cache-Control', 'no-store')
-            res.render("customers/cart");
+
+            const address = await AddressModal.findOne({ userId: req.session.user.userId });
+            // const address = await AddressModal.findOne({ userId: '6257bd196723dd12d6ef25ca' });
+            
+            res.render("customers/cart",{
+                address: address ? address: [],
+            });
         },
         async updateCart(req, res) {
             const food = await menu.findOne({ _id: req.body._id })

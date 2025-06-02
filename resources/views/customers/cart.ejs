@@ -5,6 +5,9 @@
                 <img src="/img/cart-black.png" alt="cart">
                 <h1 class="font-bold ml-4 text-2xl">Order Summary</h1>
             </div>
+            <%
+                console.log(address)          
+            %>
             <div class="pizza-list">
                 <% for(let food of Object.values(session.cart.items)){%>
                     <div class="flex items-center my-8">
