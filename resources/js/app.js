@@ -153,6 +153,47 @@ const updateStatus = (orders) => {
 
 updateStatus(orders)
 
+// Cart - Address Set to Hidden Input (Address input and Phone input)
+const form = document.querySelector('form[action="/orders"]');
+if (form) {
+    form.addEventListener('submit', function (e) {
+        // e.preventDefault(); // Prevent form from submitting right away
+
+        const selectedAddressInput = document.querySelector('input[name="selectedAddress"]:checked');
+        if (selectedAddressInput) {
+            const selectedAddress = JSON.parse(selectedAddressInput.value);
+            const {
+                addressLine1,
+                addressLine2,
+                landmark,
+                city,
+                postalCode,
+                phone,
+            } = selectedAddress;
+
+            const Address = addressLine1 + "," + addressLine2 + "," + landmark + "," + city + "-" + postalCode;
+
+            // Set the Value of the Address input field
+            const addressInputElement = document.getElementById('address_input');
+            addressInputElement.value = Address;
+
+            //Set the phone number input field
+            const phoneInputElement = document.getElementById('phone_input');
+            phoneInputElement.value = phone;
+        } else {
+            e.preventDefault();
+            new Noty({
+                type: 'error',
+                timeout: 1000,
+                text: "No Address Selected"
+            }).show();
+            // console.log("No address selected");
+        }
+    });
+}
+
+
+
 //Socket
 let socket = io()
 if (orders) {

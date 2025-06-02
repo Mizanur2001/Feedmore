@@ -65,46 +65,45 @@
                                 <div class="border rounded p-4 flex-1 min-w-[220px] max-w-xs bg-white mx-auto sm:mx-0 relative"
                                     style="max-width: 15rem; min-width: 220px; flex-basis: 220px;">
                                     <input type="radio" name="selectedAddress" id="<%= radioId %>"
-                                        class="absolute left-2 top-2" value="<%= addr._id %>" <%=isChecked %>
-                                    style="top:
-                                    22px;">
-                                    <label for="<%= radioId %>" class="block pl-6 cursor-pointer">
-                                        <div class="flex justify-between mb-2">
-                                            <span class="font-semibold">Address <%= index+1 %></span>
-                                            <span class="font-semibold">
-                                                <%= addr.addressType %>
-                                            </span>
-                                        </div>
-                                        <hr>
-                                        <div class="text-xs leading-6 py-2"
-                                            style="font-weight: 200; line-height: 1rem;">
-                                            <div><span class="font-semibold">Phone Number :</span>
-                                                <%= addr.phone %>
+                                        class="absolute left-2 top-2" value="<%= JSON.stringify(addr).replace(/'/g, 
+                                        " &#39;") %>" <%=isChecked %> style="top:22px;">
+                                        <label for="<%= radioId %>" class="block pl-6 cursor-pointer">
+                                            <div class="flex justify-between mb-2">
+                                                <span class="font-semibold">Address <%= index+1 %></span>
+                                                <span class="font-semibold">
+                                                    <%= addr.addressType %>
+                                                </span>
                                             </div>
-                                            <div><span class="font-semibold">Address Line1 :</span>
-                                                <%= addr.addressLine1 %>
+                                            <hr>
+                                            <div class="text-xs leading-6 py-2"
+                                                style="font-weight: 200; line-height: 1rem;">
+                                                <div><span class="font-semibold">Phone Number :</span>
+                                                    <%= addr.phone %>
+                                                </div>
+                                                <div><span class="font-semibold">Address Line1 :</span>
+                                                    <%= addr.addressLine1 %>
+                                                </div>
+                                                <div><span class="font-semibold">Address Line2 :</span>
+                                                    <%= addr.addressLine2 %>
+                                                </div>
+                                                <div><span class="font-semibold">City :</span>
+                                                    <%= addr.city %>
+                                                </div>
+                                                <div><span class="font-semibold">State :</span>
+                                                    <%= addr.state %>
+                                                </div>
+                                                <div><span class="font-semibold">Landmark :</span>
+                                                    <%= addr.landmark %>
+                                                </div>
+                                                <div><span class="font-semibold">Pin :</span>
+                                                    <%= addr.postalCode %>
+                                                </div>
                                             </div>
-                                            <div><span class="font-semibold">Address Line2 :</span>
-                                                <%= addr.addressLine2 %>
+                                            <div class="mt-2 text-right">
+                                                <a href="/address-edit?id=<%= addr._id %>"
+                                                    class="text-orange-600 font-semibold hover:underline text-sm">Edit</a>
                                             </div>
-                                            <div><span class="font-semibold">City :</span>
-                                                <%= addr.city %>
-                                            </div>
-                                            <div><span class="font-semibold">State :</span>
-                                                <%= addr.state %>
-                                            </div>
-                                            <div><span class="font-semibold">Landmark :</span>
-                                                <%= addr.landmark %>
-                                            </div>
-                                            <div><span class="font-semibold">Pin :</span>
-                                                <%= addr.postalCode %>
-                                            </div>
-                                        </div>
-                                        <div class="mt-2 text-right">
-                                            <a href="/address-edit?id=<%= addr._id %>"
-                                                class="text-orange-600 font-semibold hover:underline text-sm">Edit</a>
-                                        </div>
-                                    </label>
+                                        </label>
                                 </div>
                                 <% })}; %>
                     </div>
@@ -168,15 +167,16 @@
             <!--End-->
             <div class="text-right py-4">
                 <div>
-                    <form action="/orders" method="POST" class="mt-12">
-                        <span class="block text-red-600 text-sm font-bold mb-2">
+                    <form action="/orders" method="POST">
+                        <span class="block text-red-600 text-sm font-bold">
                             <%= messages.error%>
                         </span>
                         <input type="number" placeholder="Phone Number"
                             class="border border-gray-400 p-2 w-1/2 mb-4 rounded-full pl-6" name="phone" minlength="10"
-                            value="<%= session?.user?.phone[0] %>">
+                            id="phone_input" hidden>
                         <input type="text" placeholder="Address"
-                            class="border border-gray-400 p-2 w-1/2 rounded-full pl-6" name="address">
+                            class="border border-gray-400 p-2 w-1/2 rounded-full pl-6" name="address"
+                            id="address_input" hidden>
                         <div>
                             <button class="btn-primary rounded-full px-6 py-3 text-white font-bold mt-6" type="submit">
                                 Order Now</button>
