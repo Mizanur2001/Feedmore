@@ -36,6 +36,7 @@ function initRoutes(app) {
     app.get('/privacy', Legal().getPrivacy);
     app.get('/terms', Legal().getTerms);
     app.get('/maintenance-payment', paymentController().MaintenancePaymentPage);
+    app.get('/customers/add-address', addressController().addAddressPage);
     app.post('/add-address', addressController().addAddress);
     // app.get('/get-address/:userId', addressController().getAddress);
     app.put('/update-address',addressController().updateAddress);

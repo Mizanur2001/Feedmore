@@ -1,0 +1,113 @@
+<section class="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-blue-50 px-4">
+    <div class="bg-white shadow-2xl rounded-2xl p-10 w-full max-w-xl">
+        <h1 class="text-3xl font-extrabold text-gray-800 mb-8 text-center tracking-tight">Add Address</h1>
+        <form action="/add-address" method="POST" class="space-y-6">
+            <span class="block text-red-600 text-sm font-bold">
+                <%= messages.error%>
+            </span>
+            <div>
+                <label for="addressLine1" class="block text-gray-700 text-sm font-semibold mb-2">Address Line 1
+                    *</label>
+                <input type="text" id="addressLine1" name="addressLine1" placeholder="Street Address" required
+                    value="<%= formData && formData.addressLine1 ? formData.addressLine1 : '' %>"
+                    class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 transition">
+            </div>
+
+            <div>
+                <input type="text" id="name" name="name" placeholder="Full Name" value="<%= session.user.name %>" hidden
+                    class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 transition">
+            </div>
+
+            <div>
+                <input type="text" id="userId" name="userId" placeholder="User ID" value="<%= session.user.userId %>"
+                    hidden
+                    class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 transition">
+            </div>
+
+            <div>
+                <label for="addressLine2" class="block text-gray-700 text-sm font-semibold mb-2">Address Line
+                    2</label>
+                <input type="text" id="addressLine2" name="addressLine2" placeholder="Apartment, suite, etc. (optional)"
+                    value="<%= formData && formData.addressLine2 ? formData.addressLine2 : '' %>"
+                    class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 transition">
+            </div>
+            <div>
+                <label for="landmark" class="block text-gray-700 text-sm font-semibold mb-2">Landmark *</label>
+                <input type="text" id="landmark" name="landmark" placeholder="Nearest Landmark" required
+                    value="<%= formData && formData.landmark ? formData.landmark : '' %>"
+                    class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 transition">
+            </div>
+            <div>
+                <label for="city" class="block text-gray-700 text-sm font-semibold mb-2">City *</label>
+                <input type="text" id="city" name="city" placeholder="City Name" required
+                    value="<%= formData && formData.city ? formData.city : '' %>"
+                    class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 transition">
+            </div>
+            <div>
+                <label for="postalCode" class="block text-gray-700 text-sm font-semibold mb-2">Postal Code *</label>
+                <input type="number" id="postalCode" name="postalCode" placeholder="Pin Code" required
+                    value="<%= formData && formData.postalCode ? formData.postalCode : '' %>"
+                    class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 transition">
+            </div>
+            <div>
+                <label for="phone" class="block text-gray-700 text-sm font-semibold mb-2">Phone *</label>
+                <input id="phone" type="tel" placeholder="Phone Number" name="phone" required
+                    value="<%= formData && formData.phone ? formData.phone : '' %>"
+                    class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 transition">
+            </div>
+            <!-- Address Type Selector -->
+            <div>
+                <label class="block text-gray-700 text-sm font-semibold mb-2">Address Type *</label>
+                <div class="flex border border-gray-200 rounded-lg overflow-hidden divide-x divide-gray-200 bg-gray-50">
+                    <!-- Home -->
+                    <label class="flex-1 flex items-center justify-center py-4 cursor-pointer transition bg-orange-50"
+                        id="label-home">
+                        <input type="radio" name="addressType" value="home" <%=!formData ||
+                            formData.addressType==='home' ? 'checked' : '' %> class="hidden">
+                        <!-- Home Icon -->
+                        <svg class="h-6 w-6 mr-2 text-orange-500" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path d="M3 12L12 5l9 7" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M9 21V12h6v9" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 21H3" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <span class="font-semibold text-orange-500">Home</span>
+                    </label>
+                    <!-- Work -->
+                    <label class="flex-1 flex items-center justify-center py-4 cursor-pointer transition bg-white"
+                        id="label-work">
+                        <input type="radio" name="addressType" value="work" <%=formData && formData.addressType==='work'
+                            ? 'checked' : '' %>  class="hidden">
+                        <!-- Briefcase Icon -->
+                        <svg class="h-6 w-6 mr-2 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <rect x="3" y="7" width="18" height="13" rx="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        <span class="font-semibold text-gray-700">Work</span>
+                    </label>
+                    <!-- Other -->
+                    <label class="flex-1 flex items-center justify-center py-4 cursor-pointer transition bg-white"
+                        id="label-other">
+                        <input type="radio" name="addressType" value="other" <%=formData &&
+                            formData.addressType==='other' ? 'checked' : '' %> class="hidden">
+                        <!-- Location Pin Icon -->
+                        <svg class="h-6 w-6 mr-2 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path d="M12 21s-6-5.686-6-10a6 6 0 1 1 12 0c0 4.314-6 10-6 10z" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <circle cx="12" cy="11" r="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <span class="font-semibold text-gray-700">Other</span>
+                    </label>
+                </div>
+            </div>
+            <button type="submit"
+                class="w-full px-6 py-3 bg-gradient-to-r from-orange-500 to-blue-500 text-white font-bold rounded-lg shadow-lg hover:from-orange-600 hover:to-blue-600 transition text-lg">
+                Add Address
+            </button>
+        </form>
+    </div>
+</section>

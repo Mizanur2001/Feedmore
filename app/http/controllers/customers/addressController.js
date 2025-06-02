@@ -2,6 +2,14 @@ const AddressModal = require('../../../models/addressModel');
 const UserModel = require('../../../models/user');
 const addressController = () => {
     return {
+        addAddressPage: (req, res) => {
+            if (!req.session.user) {
+                return res.redirect('/login')
+            }
+            res.render('customers/addAddress', {
+                formData: {addressType: 'home'}
+            });
+        },
         addAddress: async (req, res) => {
             try {
                 // Validate User Session
@@ -11,37 +19,37 @@ const addressController = () => {
 
                 const { userId, name, phone, addressLine1, addressLine2, city, landmark, postalCode, addressType } = req.body;
                 if (!userId || !name || !phone || !addressLine1 || !city || !landmark || !postalCode || !addressType) {
-                    return res.status(400).json({
-                        message: "All fields are required",
-                        code: 400
-                    });
+                    req.flash('error', 'All fields are required');
+                    return res.status(400).render('customers/addAddress', {
+                        formData: req.body
+                    })
                 }
 
                 // Check User Exit or Not
                 const findUser = await UserModel.findById(userId);
                 if (!findUser) {
-                    return res.status(400).json({
-                        message: "User not found",
-                        code: 400
-                    });
+                    req.flash('error', 'User not found');
+                    return res.status(400).render('customers/addAddress', {
+                        formData: req.body
+                    })
                 }
 
                 //Check Phone Number Format
                 const phoneRegex = /^(\+91)?[0-9]{10}$/;
                 if (!phoneRegex.test(phone)) {
-                    return res.status(400).json({
-                        message: "Invalid phone number format",
-                        code: 400
-                    });
+                    req.flash('error', 'Invalid phone number');
+                    return res.status(400).render('customers/addAddress', {
+                        formData: req.body
+                    })
                 }
 
                 //Check Postal Code Format
                 const postalCodeRegex = /^[0-9]{6}$/;
                 if (!postalCodeRegex.test(postalCode)) {
-                    return res.status(400).json({
-                        message: "Invalid postal code format",
-                        code: 400
-                    });
+                    req.flash('error', 'Invalid postal code');
+                    return res.status(400).render('customers/addAddress', {
+                        formData: req.body
+                    })
                 }
 
                 //Add Address
@@ -61,10 +69,8 @@ const addressController = () => {
                     // Append to addressInfo array
                     existingAddress.addressInfo.push(addressInfoObj);
                     await existingAddress.save();
-                    return res.status(201).json({
-                        message: "Address added successfully",
-                        code: 201
-                    });
+                    req.flash('success', 'Address added successfully');
+                    return res.status(201).redirect('/cart');
                 } else {
                     // Create new address document
                     const address = new AddressModal({
@@ -73,10 +79,8 @@ const addressController = () => {
                         addressInfo: [addressInfoObj]
                     });
                     await address.save();
-                    return res.status(201).json({
-                        message: "Address added successfully",
-                        code: 201
-                    });
+                    req.flash('success', 'Address added successfully');
+                    return res.status(201).redirect('/cart');
                 }
 
             } catch (error) {
@@ -93,7 +97,7 @@ const addressController = () => {
                 if (!req.session.user) {
                     return res.redirect('/login')
                 }
-                
+
                 const { userId, addressId, phone, addressLine1, addressLine2, city, landmark, postalCode, addressType } = req.body;
                 if (!userId || !addressId || !phone || !addressLine1 || !city || !landmark || !postalCode || !addressType) {
                     return res.status(400).json({

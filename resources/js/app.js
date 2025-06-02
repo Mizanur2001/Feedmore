@@ -193,6 +193,62 @@ if (form) {
 }
 
 
+// Add Address - Highlighting the selected address type
+document.addEventListener('DOMContentLoaded', function () {
+    const labels = [
+        document.getElementById('label-home'),
+        document.getElementById('label-work'),
+        document.getElementById('label-other')
+    ].filter(Boolean);
+
+    if (labels.length === 0) return;
+
+    const spans = labels.map(l => l.querySelector('span'));
+    const svgs = labels.map(l => l.querySelector('svg'));
+    const radios = document.querySelectorAll('input[name="addressType"]');
+
+    // --- ADD THIS BLOCK: set highlight on page load ---
+    radios.forEach((radio, idx) => {
+        if (radio.checked) {
+            labels[idx].classList.add('bg-orange-50');
+            labels[idx].classList.remove('bg-white');
+            spans[idx].classList.add('text-orange-500');
+            spans[idx].classList.remove('text-gray-700');
+            svgs[idx].classList.add('text-orange-500');
+            svgs[idx].classList.remove('text-gray-400');
+        } else {
+            labels[idx].classList.remove('bg-orange-50');
+            labels[idx].classList.add('bg-white');
+            spans[idx].classList.remove('text-orange-500');
+            spans[idx].classList.add('text-gray-700');
+            svgs[idx].classList.remove('text-orange-500');
+            svgs[idx].classList.add('text-gray-400');
+        }
+    });
+    // --- END BLOCK ---
+
+    labels.forEach((label, idx) => {
+        label.addEventListener('click', function () {
+            labels.forEach((l, i) => {
+                l.classList.remove('bg-orange-50');
+                l.classList.add('bg-white');
+                spans[i].classList.remove('text-orange-500');
+                spans[i].classList.add('text-gray-700');
+                svgs[i].classList.remove('text-orange-500');
+                svgs[i].classList.add('text-gray-400');
+            });
+            this.classList.add('bg-orange-50');
+            this.classList.remove('bg-white');
+            spans[idx].classList.add('text-orange-500');
+            spans[idx].classList.remove('text-gray-700');
+            svgs[idx].classList.add('text-orange-500');
+            svgs[idx].classList.remove('text-gray-400');
+            radios[idx].checked = true;
+        });
+    });
+});
+
+
 
 //Socket
 let socket = io()
