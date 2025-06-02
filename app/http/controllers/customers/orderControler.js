@@ -20,11 +20,12 @@ const orderControler = () => {
                 return res.redirect('/login')
             }
             const { address, phone } = req.body
+            const phoneRegex = /^(\+91)?[0-9]{10}$/;
             if (!address || !phone) {
                 req.flash('error', 'All Field Required')
                 return res.redirect('/cart')
             }
-            else if (phone.length != 10) {
+            else if (!phoneRegex.test(phone)) {
                 req.flash('error', 'Invalid Phone Number')
                 return res.redirect('/cart')
             }
