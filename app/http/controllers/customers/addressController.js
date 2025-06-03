@@ -7,7 +7,7 @@ const addressController = () => {
                 return res.redirect('/login')
             }
             res.render('customers/addAddress', {
-                formData: {addressType: 'home'}
+                formData: { addressType: 'home' }
             });
         },
         addAddress: async (req, res) => {
@@ -90,6 +90,29 @@ const addressController = () => {
                     code: 500
                 });
             }
+        },
+        editAddressPage: async (req, res) => {
+            if (!req.session.user) {
+                return res.redirect('/login')
+            }
+
+            const { id } = req.params;
+
+            const address = await AddressModal.findOne({ userId: req.session.user.userId });
+            if (!address) {
+                return res.status(404).redirect('/cart');
+            }
+
+            const addressInfo = address.addressInfo.id(id);
+            if (!addressInfo) {
+                return res.status(404).redirect('/cart');
+            }
+
+            res.render('customers/editAddress', {
+                addressInfo: addressInfo,
+            });
+
+
         },
         updateAddress: async (req, res) => {
             try {
