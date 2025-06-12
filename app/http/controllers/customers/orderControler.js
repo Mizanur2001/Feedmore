@@ -1,5 +1,6 @@
 const Orders = require('../../../models/orders')
 const moment = require('moment');
+const momentTimezone = require('moment-timezone');
 const Payment = require('../../../models/payment')
 
 
@@ -49,6 +50,7 @@ const orderControler = () => {
                     items: req.session.cart.items,
                     phone: phone,
                     address: address,
+                    orderTime: momentTimezone().tz('Asia/Kolkata').format('dddd, DD-MM-YYYY, h:mm:ss a'),
                 })
 
                 try {
