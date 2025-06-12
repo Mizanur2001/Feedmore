@@ -60,7 +60,7 @@ export function initAdmin(socket) {
         Object.values(items).map(item => {
             sum += item.items.price * item.qty
         })
-        return `<p class="my-2">${sum}</p>`
+        return `<p class="my-2"> ₹ ${sum}</p>`
     }
 
     function generateMarkup(orders) {
@@ -105,7 +105,16 @@ export function initAdmin(socket) {
                 <td class="border px-4 py-2">${order.address}</td>
                 <td class="border px-4 py-2">${order.phone}</td>
                 <td class="border px-4 py-2">${new Date(order.createdAt).toGMTString()}</td>
-                <td class="border px-4 py-2">${renderPrice(order.items)}</td>
+                <td class="border px-4 py-2 align-middle">
+                    <div class="flex flex-col items-start space-y-1">
+                        <span class="text-lg font-semibold py-1 amount">
+                            ${renderPrice(order.items)}
+                        </span>
+                        <span class="inline-block text-xs font-medium text-black bg-yellow-500 px-2 py-0.5 rounded">
+                            ${order.paymentType}
+                        </span>
+                    </div>
+                </td> 
             </tr>`}).join('')
     }
 
