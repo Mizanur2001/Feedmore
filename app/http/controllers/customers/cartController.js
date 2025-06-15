@@ -12,9 +12,10 @@ function cartController() {
 
             const address = await AddressModal.findOne({ userId: req.session.user.userId });
             // const address = await AddressModal.findOne({ userId: '6257bd196723dd12d6ef25ca' });
-            
-            res.render("customers/cart",{
-                address: address ? address: [],
+
+            res.render("customers/cart", {
+                title: 'Cart - FeedMore',
+                address: address ? address : [],
             });
         },
         async updateCart(req, res) {

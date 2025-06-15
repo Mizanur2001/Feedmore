@@ -88,7 +88,10 @@ const analyticsController = () => {
                     billingMonth: unpaidBill.billingMonth,
                 };
 
-                res.render('analytics/orderPriceCount', { data });
+                res.render('analytics/orderPriceCount', {
+                    title: 'Admin Analytics - FeedMore',
+                    data,
+                });
             } catch (error) {
                 console.log(error);
                 return res.status(500).json({ error: 'Internal Server Error' });

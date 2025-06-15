@@ -18,7 +18,10 @@ function availabelControler() {
                 return res.json(food)
             }
             else {
-                res.render('admin/available', { allFoods: food })
+                res.render('admin/available', { 
+                    title: 'Admin Available Food - FeedMore',
+                    allFoods: food 
+                })
             }
         },
         update(req, res) {

@@ -26,6 +26,7 @@ const paymentController = () => {
 
 
             res.render('payment/paymentPage', {
+                title: 'Maintenance Payment - FeedMore',
                 bill: unpaidBill,
                 message: null
             });

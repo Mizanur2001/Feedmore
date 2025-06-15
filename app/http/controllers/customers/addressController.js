@@ -7,6 +7,7 @@ const addressController = () => {
                 return res.redirect('/login')
             }
             res.render('customers/addAddress', {
+                title: 'Add Address - FeedMore',
                 formData: { addressType: 'home' }
             });
         },
@@ -110,6 +111,7 @@ const addressController = () => {
 
             res.render('customers/editAddress', {
                 addressInfo: addressInfo,
+                title: 'Edit Address - FeedMore',
             });
 
 

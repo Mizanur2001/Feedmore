@@ -25,7 +25,9 @@ const orderControler = () => {
                 if (req.xhr) {
                     return res.json(orders);
                 } else {
-                    return res.render('admin/order');
+                    return res.render('admin/order', {
+                        title: 'Admin Orders - FeedMore',
+                    });
                 }
             });
         },

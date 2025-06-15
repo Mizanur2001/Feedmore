@@ -13,7 +13,10 @@ const orderControler = () => {
             }
             const items = await Orders.find({ customerId: req.session.user.userId }, null, { sort: { 'createdAt': -1 } })
             res.header('Cache-Control', 'no-store')
-            res.render("customers/orders", { orders: items });
+            res.render("customers/orders", {
+                title: 'Customers Orders History - FeedMore',
+                orders: items
+            });
         },
         async store(req, res) {
             if (!req.session.user) {
@@ -113,8 +116,8 @@ const orderControler = () => {
                         }
                     ]);
                     const dailyTotal = results[0].daily[0]?.total || 0;
-                    
-                    
+
+
                     // Send Data to the event emitter (Using Socket Io)
                     Orders.populate(result, { path: 'customerId' }, (err, placedOrder) => {
                         if (err) {
@@ -146,9 +149,12 @@ const orderControler = () => {
             try {
                 const order = await Orders.findById(req.params.id)
                 if (order.customerId == req.session.user.userId) {
-                    return res.render('customers/singleOrder', { order })
+                    return res.render('customers/singleOrder', { 
+                        order,
+                        title: 'Order Details - FeedMore',
+                    })
                 }
-                cnsole.log("it is here")
+                // console.log("it is here")
             }
             catch (err) {
                 return res.redirect('/customers/orders')

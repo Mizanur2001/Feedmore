@@ -15,7 +15,9 @@ function authController() {
     return {
         login(req, res) {
             if (!req.session.user) {
-                res.render("auth/login");
+                res.render("auth/login", {
+                    title: 'Login - FeedMore',
+                });
             }
             else {
                 res.redirect('/')
@@ -50,7 +52,9 @@ function authController() {
         },
         register(req, res) {
             if (!req.session.user) {
-                res.render('auth/register')
+                res.render('auth/register', {
+                    title: 'Register - FeedMore',
+                })
             }
             else {
                 res.redirect('/')

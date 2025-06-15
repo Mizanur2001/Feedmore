@@ -5,7 +5,9 @@ const profileController = () => {
                 req.flash('error', 'Login First to view you profile')
                 return res.redirect('/login')
             }
-            res.render('customers/profile')
+            res.render('customers/profile',{
+                title: 'Profile - FeedMore',
+            })
         }
     }
 }
