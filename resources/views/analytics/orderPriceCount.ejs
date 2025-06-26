@@ -13,7 +13,7 @@
                 </div>
                 <span class="text-gray-500 text-sm font-medium mb-2">Daily Total</span>
                 <span class="text-3xl font-extrabold mb-1" style="color:#fe5f1e">
-                    ₹ <%= data.dailyTotal %>
+                    ₹ <%= Number(data.dailyTotal).toLocaleString('en-IN') %>
                 </span>
             </div>
 
@@ -28,7 +28,7 @@
                 </div>
                 <span class="text-gray-500 text-sm font-medium mb-2">Weekly Total</span>
                 <span class="text-3xl font-extrabold text-green-600 mb-1">
-                    ₹ <%= data.weeklyTotal %>
+                    ₹ <%= Number(data.weeklyTotal).toLocaleString('en-IN') %>
                 </span>
             </div>
 
@@ -44,7 +44,7 @@
                 </div>
                 <span class="text-gray-500 text-sm font-medium mb-2">Monthly Total</span>
                 <span class="text-3xl font-extrabold text-yellow-600 mb-1">
-                    ₹ <%= data.monthlyTotal %>
+                    ₹ <%= Number(data.monthlyTotal).toLocaleString('en-IN') %>
                 </span>
             </div>
 
@@ -63,7 +63,7 @@
                 </div>
                 <span class="text-gray-500 text-sm font-medium mb-2">Yearly Total</span>
                 <span class="text-3xl font-extrabold text-purple-600 mb-1">
-                    ₹ <%= data.yearlyTotal %>
+                    ₹ <%= Number(data.yearlyTotal).toLocaleString('en-IN') %>
                 </span>
             </div>
 
@@ -81,7 +81,7 @@
                 </div>
                 <span class="text-gray-500 text-sm font-medium mb-2">Overall Total</span>
                 <span class="text-3xl font-extrabold text-red-600 mb-1">
-                    ₹ <%= data.overallTotal %>
+                    ₹ <%= Number(data.overallTotal).toLocaleString('en-IN') %>
                 </span>
             </div>
 
@@ -106,15 +106,20 @@
                     Billing Month: <%= data.billingMonth%>
                 </span>
                 <span class="text-3xl font-extrabold text-pink-600 mb-1">
-                    ₹ <%= (data.billCommissionAmount).toFixed(2) %>
+                    ₹ <%= Number(data.billCommissionAmount).toLocaleString('en-IN', { minimumFractionDigits: 2,
+                        maximumFractionDigits: 2 }) %>
                 </span>
                 <span class="text-xs text-gray-400 mb-1">
-                    Cal: ₹<%= (data.billTotalOrderAmount).toFixed(2) %> × 3% = ₹<%=
-                            (data.billCommissionAmount).toFixed(2) %>
+                    Cal: ₹<%= Number(data.billTotalOrderAmount).toLocaleString('en-IN', { minimumFractionDigits: 2,
+                        maximumFractionDigits: 2 }) %> × 3% = ₹<%=
+                            Number(data.billCommissionAmount).toLocaleString('en-IN', { minimumFractionDigits: 2,
+                            maximumFractionDigits: 2 }) %>
                 </span>
                 <span class="text-xs text-gray-400 mb-1">
-                    Total: ₹<%= (data.billCommissionAmount).toFixed(2) %> + taxes = <%= ((data.billCommissionAmount *
-                            0.025)+(data.billCommissionAmount)).toFixed(2) %>
+                    Total: ₹<%= Number(data.billCommissionAmount).toLocaleString('en-IN', { minimumFractionDigits: 2,
+                        maximumFractionDigits: 2 }) %> + taxes = <%= Number((data.billCommissionAmount *
+                            0.025)+(data.billCommissionAmount)).toLocaleString('en-IN', { minimumFractionDigits: 2,
+                            maximumFractionDigits: 2 }) %>
                 </span>
                 <span class="text-xs text-gray-400">Calculated on monthly Basic</span>
             </div>
