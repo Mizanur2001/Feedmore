@@ -70,12 +70,6 @@ const analyticsController = () => {
                     // status: "NOT_PAID"
                 }).sort({ billingMonth: 1 }); // oldest month first
 
-                if (!unpaidBill) {
-                    return res.render('payment/paymentPage', {
-                        bill: null,
-                        message: 'No unpaid bills found'
-                    });
-                }
 
                 const data = {
                     dailyTotal,
@@ -83,9 +77,9 @@ const analyticsController = () => {
                     monthlyTotal,
                     yearlyTotal,
                     overallTotal,
-                    billTotalOrderAmount: unpaidBill.totalOrderAmount,
-                    billCommissionAmount: unpaidBill.commissionAmount,
-                    billingMonth: unpaidBill.billingMonth,
+                    billTotalOrderAmount: unpaidBill?.totalOrderAmount || 0,
+                    billCommissionAmount: unpaidBill?.commissionAmount || 0,
+                    billingMonth: unpaidBill?.billingMonth || "N/A",
                 };
 
                 res.render('analytics/orderPriceCount', {
