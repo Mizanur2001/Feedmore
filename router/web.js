@@ -11,6 +11,7 @@ const Legal = require('../app/http/controllers/Legal/legalController');
 const paymentController = require('../app/http/controllers/payment/paymentController');
 const analyticsController = require('../app/http/controllers/analytics/analyticsController');
 const addressController = require('../app/http/controllers/customers/addressController')
+const paymentProcessing = require('../app/http/controllers/PhonePayPayment/loadingPageController')
 
 function initRoutes(app) {
     app.get("/", homeController().index);
@@ -41,6 +42,7 @@ function initRoutes(app) {
     // app.get('/get-address/:userId', addressController().getAddress);
     app.post('/update-address', addressController().updateAddress);
     app.get('/customers/edit-address/:id', addressController().editAddressPage);
+    app.get('/customers/payment-processing', paymentProcessing().showLoadingPage);
 }
 
 module.exports = initRoutes;

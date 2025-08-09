@@ -1,0 +1,98 @@
+<div class="flex items-center justify-center flex-col">
+    <style>
+        /* NEW: Animation to show money moving from the bank to the card */
+        @keyframes deduct-animation {
+            0% {
+                /* Start over the bank, but invisible */
+                transform: translate(0, 0) scale(1);
+                opacity: 0;
+            }
+
+            20% {
+                /* Appear over the bank */
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+
+            80% {
+                /* Move to the card, then shrink and fade out */
+                transform: translate(80px, 24px) scale(0);
+                opacity: 0;
+            }
+
+            100% {
+                /* Stay invisible until the next loop cycle */
+                transform: translate(80px, 24px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* NEW: Class to apply the deduct animation */
+        .animate-deduct {
+            animation: deduct-animation 2.5s ease-in-out infinite;
+        }
+
+        /* Original spin animation (unchanged) */
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+    </style>
+    <div class="bg-white rounded-2xl shadow-2xl p-10 flex flex-col items-center space-y-8 w-full max-w-md">
+        <div class="relative flex items-center justify-center h-32 w-full">
+            <img src="https://img.icons8.com/color/96/000000/bank-card-back-side.png" alt="Card"
+                class="w-28 h-20 animate-bounce drop-shadow-lg" />
+            <img src="https://img.icons8.com/color/96/bank-building.png" alt="Bank"
+                class="w-16 h-16 absolute left-32 top-2 drop-shadow-lg" />
+            <img src="https://img.icons8.com/fluency/48/money.png" alt="Money"
+                class="w-10 h-10 absolute left-36 top-6 animate-deduct drop-shadow-lg" />
+        </div>
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 border-4 border-blue-300 border-t-blue-600 rounded-full animate-spin shadow-lg"></div>
+            <span class="text-blue-700 font-bold text-xl animate-pulse">Processing Payment...</span>
+        </div>
+        <p class="text-gray-500 text-center text-base">
+            Please wait while we complete your transaction.<br>
+            <span class="text-blue-400">Do not refresh or close this window.</span>
+        </p>
+    </div>
+    <form id="paymentForm" action="/api/v1/tools/payment/phonepe/initiate" method="post" class="invisible">
+        <input name="amount" value=<%=session.cart.totalPrice*100 %>>
+        <input name="orderId" value=<%=session.merchantOrderId %>>
+        <input name="userId" value=<%=session.user.userId %>>
+        <button value="submit">BTN</button>
+    </form>
+</div>
+
+<script>
+    if (window.location.search.includes('checkout')) {
+        window.onload = function () {
+            const form = document.getElementById('paymentForm');
+            const formData = new URLSearchParams(new FormData(form)).toString();
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.data && data.data.redirectUrl) {
+                        window.location.href = data.data.redirectUrl;
+                    } else {
+                        alert('Payment initiation failed.');
+                    }
+                })
+                .catch(() => {
+                    alert('Payment initiation failed.');
+                });
+        };
+    }
+</script>

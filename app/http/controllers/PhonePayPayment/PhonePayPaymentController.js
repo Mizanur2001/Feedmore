@@ -41,7 +41,7 @@ const phonepePaymentController = () => {
         async newPayment(req, res) {
             try {
                 const { amount, orderId, message, userId } = req.body;
-                if (amount <= 0) {
+                if (amount <= 0 || !amount) {
                     return res.status(400).json({ status: false, message: "Invalid amount", code: 400 });
                 }
 
@@ -131,8 +131,8 @@ const phonepePaymentController = () => {
                         'Content-Type': "application/json"
                     }
                 });
-                
-                
+
+
                 //Update transaction status and transactionId
                 await transactionModel.updateOne(
                     { merchantOrderId: orderId },
