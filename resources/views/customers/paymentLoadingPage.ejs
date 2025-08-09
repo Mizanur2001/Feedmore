@@ -61,10 +61,11 @@
             <span class="text-blue-400">Do not refresh or close this window.</span>
         </p>
     </div>
+    <!--Making Payment-->
     <form id="paymentForm" action="/api/v1/tools/payment/phonepe/initiate" method="post" class="invisible">
-        <input name="amount" value=<%=session.cart.totalPrice*100 %>>
-        <input name="orderId" value=<%=session.merchantOrderId %>>
-        <input name="userId" value=<%=session.user.userId %>>
+        <input name="amount" value=<%=session?.cart?.totalPrice*100 %>>
+        <input name="orderId" value=<%=session?.merchantOrderId %>>
+        <input name="userId" value=<%=session?.user?.userId %>>
         <button value="submit">BTN</button>
     </form>
 </div>
@@ -87,7 +88,8 @@
                     if (data.data && data.data.redirectUrl) {
                         window.location.href = data.data.redirectUrl;
                     } else {
-                        alert('Payment initiation failed.');
+                        window.location.href = '/cart'
+                        // alert('Payment initiation failed.');
                     }
                 })
                 .catch(() => {

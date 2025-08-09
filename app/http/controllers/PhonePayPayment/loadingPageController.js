@@ -9,8 +9,10 @@ const loadingPageController = () => {
                 }
 
                 // Generate a unique Transaction ID and add to session
-                const merchantOrderId = 'FMT-' + uuidv4();
-                req.session.merchantOrderId = merchantOrderId;
+                if (!req?.session?.merchantOrderId) {
+                    const merchantOrderId = 'FMT-' + uuidv4();
+                    req.session.merchantOrderId = merchantOrderId;
+                }
 
                 res.render('customers/paymentLoadingPage', {
                     title: 'Payment Processing...',
