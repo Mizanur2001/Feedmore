@@ -116,6 +116,12 @@ const phonepePaymentController = () => {
                     return res.status(400).json({ status: false, message: "Invalid orderId", code: 400 });
                 }
 
+                //Find transaction by orderId
+                const existingTransaction = await transactionModel.findOne({ merchantOrderId: orderId });
+                if (!existingTransaction) {
+                    return res.status(404).json({ status: false, message: "Transaction not found", code: 404 });
+                }
+
                 const token_response = await getAccessToken(req, res);
                 const token = token_response?.access_token;
 
