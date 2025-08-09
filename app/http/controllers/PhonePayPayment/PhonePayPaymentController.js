@@ -1,5 +1,7 @@
 const axios = require('axios');
+const momentTimezone = require('moment-timezone');
 const querystring = require('querystring');
+const transactionModel = require('../../../models/transaction');
 const clientId = process.env.PHONEPE_MERCHANT_ID;
 const clientSecret = process.env.PHONEPE_SALT_KEY;
 const Authorization_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/v1/oauth/token";
@@ -38,13 +40,23 @@ const phonepePaymentController = () => {
     return {
         async newPayment(req, res) {
             try {
-                const { amount, orderId, message } = req.body;
+                const { amount, orderId, message, userId } = req.body;
                 if (amount <= 0) {
                     return res.status(400).json({ status: false, message: "Invalid amount", code: 400 });
                 }
 
                 if (!orderId) {
-                    return res.status(400).json({ status: false, message: "Invalid orderId", code: 400 });
+                    return res.status(400).json({ status: false, message: "orderId Required", code: 400 });
+                }
+
+                if (!userId) {
+                    return res.status(400).json({ status: false, message: "userId Required", code: 400 });
+                }
+
+                // find marchantOrderId exit or not
+                const existingTransaction = await transactionModel.findOne({ merchantOrderId: orderId });
+                if (existingTransaction) {
+                    return res.status(400).json({ status: false, message: "TransactionId already exists", code: 400 });
                 }
 
                 const token_response = await getAccessToken(req, res);
@@ -69,6 +81,18 @@ const phonepePaymentController = () => {
                         'Content-Type': "application/json"
                     }
                 });
+
+
+                // Save transaction details to the database
+                const newTransaction = new transactionModel({
+                    userId: userId,
+                    amount: amount,
+                    status: response?.data?.state || 'PENDING',
+                    merchantOrderId: orderId,
+                    phonepeOrderId: response?.data?.orderId || '',
+                    date: momentTimezone().tz('Asia/Kolkata').format('dddd, DD-MM-YYYY, h:mm:ss a'),
+                });
+                await newTransaction.save();
 
                 res.status(200).json({
                     status: true,
@@ -101,6 +125,18 @@ const phonepePaymentController = () => {
                         'Content-Type': "application/json"
                     }
                 });
+                
+                
+                //Update transaction status and transactionId
+                await transactionModel.updateOne(
+                    { merchantOrderId: orderId },
+                    {
+                        status: response?.data?.state,
+                        transactionId: response?.data?.paymentDetails[0]?.transactionId,
+                        paymentMode: response?.data?.paymentDetails[0]?.paymentMode
+                    }
+                );
+
 
                 res.status(200).json({
                     status: true,
