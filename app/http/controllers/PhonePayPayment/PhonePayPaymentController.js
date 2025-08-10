@@ -146,7 +146,7 @@ const phonepePaymentController = () => {
 
                 res.status(200).json({
                     status: true,
-                    data: response.data,
+                    data: response.data.state,
                     code: 200,
                 })
 
