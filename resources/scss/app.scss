@@ -417,3 +417,14 @@ input::-webkit-inner-spin-button {
 input[type="radio"]:checked {
     accent-color: #FE5F1E;
 }
+
+//Cart Loader Animation
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

@@ -199,6 +199,16 @@
                 </div>
             </div>
             <%}%>
+
+                <!--Loader-->
+                <div id="payment-loader"
+                    style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(255,255,255,0.8); z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column; display:none;">
+                    <div class="loader"
+                        style="border: 8px solid #f3f3f3; border-top: 8px solid #ff9800; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite;">
+                    </div>
+                    <p class="mt-4 text-lg font-semibold text-orange-600">Processing your order, please wait...</p>
+                </div>
+
 </section>
 
 
@@ -239,6 +249,7 @@
 <!-- if the Parameters are "?online_payment=redirect" then verify the payment and place Order-->
 <script>
     if (window.location.search.includes('online_payment=redirect')) {
+        document.getElementById('payment-loader').style.display = 'flex';
         const errorMessage = document.getElementById('error_message');
 
         if (!"<%= session.merchantOrderId %>") {
@@ -258,6 +269,7 @@
                     fetch('/session/delete/merchant-order-id', {
                         method: 'POST',
                     }).then(() => {
+                        document.getElementById('payment-loader').style.display = 'none';
                         errorMessage.textContent = 'Payment failed. Please try again.';
                     })
                 }
@@ -266,6 +278,7 @@
                     fetch('/session/delete/merchant-order-id', {
                         method: 'POST',
                     }).then(() => {
+                        document.getElementById('payment-loader').style.display = 'none';
                         errorMessage.textContent = 'Payment is pending. Please wait.(suggestion: Use COD)';
                     })
                 }
@@ -277,6 +290,7 @@
                         credentials: 'include',
                         headers: { 'Content-Type': 'application/json' }
                     }).then((data) => {
+                        document.getElementById('payment-loader').style.display = 'none';
                         const submitButton = document.querySelector('.cart form button[type="submit"]');
                         if (submitButton) {
                             submitButton.click();
