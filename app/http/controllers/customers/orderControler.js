@@ -2,6 +2,7 @@ const Orders = require('../../../models/orders')
 const moment = require('moment');
 const momentTimezone = require('moment-timezone');
 const Payment = require('../../../models/payment')
+const transactionModel = require('../../../models/transaction')
 
 
 const orderControler = () => {
@@ -48,13 +49,28 @@ const orderControler = () => {
                     }
                 }
 
+
                 const orders = new Orders({
                     customerId: req.session.user.userId,
                     items: req.session.cart.items,
                     phone: phone,
                     address: address,
                     orderTime: momentTimezone().tz('Asia/Kolkata').format('dddd, DD-MM-YYYY, h:mm:ss a'),
+                    paymentType: req.session?.paymentType ? req.session.paymentType : "COD"
                 })
+
+
+                //Add order Id to Transaction db
+                if (req.session?.paymentType === 'Online') {
+                    await transactionModel.updateOne(
+                        { merchantOrderId: req.session.merchantOrderId },
+                        { $set: { foodOrderId: orders._id } }
+                    )
+                }
+
+                //Delete session variables
+                delete req.session.paymentType
+                delete req.session.merchantOrderId
 
                 try {
                     const result = await orders.save();
@@ -149,7 +165,7 @@ const orderControler = () => {
             try {
                 const order = await Orders.findById(req.params.id)
                 if (order.customerId == req.session.user.userId) {
-                    return res.render('customers/singleOrder', { 
+                    return res.render('customers/singleOrder', {
                         order,
                         title: 'Order Details - FeedMore',
                     })
