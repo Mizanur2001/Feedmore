@@ -252,20 +252,22 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ orderId })
-                
+
             }).then(res => res.json()).then(data => {
                 if (data.data == 'FAILED') {
                     fetch('/session/delete/merchant-order-id', {
                         method: 'POST',
-                    });
-                    errorMessage.textContent = 'Payment failed. Please try again.';
+                    }).then(() => {
+                        errorMessage.textContent = 'Payment failed. Please try again.';
+                    })
                 }
 
                 if (data.data == 'PENDING') {
                     fetch('/session/delete/merchant-order-id', {
                         method: 'POST',
-                    });
-                    errorMessage.textContent = 'Payment is pending. Please wait.(suggestion: Use COD)';
+                    }).then(() => {
+                        errorMessage.textContent = 'Payment is pending. Please wait.(suggestion: Use COD)';
+                    })
                 }
 
                 if (data.data == 'COMPLETED') {
