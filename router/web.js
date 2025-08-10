@@ -12,6 +12,7 @@ const paymentController = require('../app/http/controllers/payment/paymentContro
 const analyticsController = require('../app/http/controllers/analytics/analyticsController');
 const addressController = require('../app/http/controllers/customers/addressController')
 const paymentProcessing = require('../app/http/controllers/PhonePayPayment/loadingPageController')
+const sessionManager = require('../app/http/controllers/PhonePayPayment/sessionManager');
 
 function initRoutes(app) {
     app.get("/", homeController().index);
@@ -43,6 +44,8 @@ function initRoutes(app) {
     app.post('/update-address', addressController().updateAddress);
     app.get('/customers/edit-address/:id', addressController().editAddressPage);
     app.get('/customers/payment-processing', paymentProcessing().showLoadingPage);
+    app.post('/session/delete/merchant-order-id', sessionManager().deleteMarchantOrderId);
+    app.post('/session/add/payment-type', sessionManager().addPaymentType);
 }
 
 module.exports = initRoutes;

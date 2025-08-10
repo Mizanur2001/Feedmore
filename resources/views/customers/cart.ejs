@@ -204,21 +204,39 @@
 
 <!--if select online payment then redirect to Link-->
 <script>
+    // Save selected address before redirecting for online payment
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.querySelector('.cart form');
         if (!form) return;
+
         form.addEventListener('submit', function (e) {
             const onlinePayment = document.querySelector('input[name="paymentMethod"][value="online"]');
             if (onlinePayment && onlinePayment.checked) {
+                // Save selected address value to localStorage
+                const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+                if (selectedAddress) {
+                    localStorage.setItem('selectedAddressValue', selectedAddress.value);
+                }
                 e.preventDefault();
                 window.location.href = "/customers/payment-processing?checkout";
             }
         });
+
+        // On page load, restore selected address from localStorage
+        const savedAddress = localStorage.getItem('selectedAddressValue');
+        if (savedAddress) {
+            const addressRadios = document.querySelectorAll('input[name="selectedAddress"]');
+            addressRadios.forEach(radio => {
+                if (radio.value === savedAddress) {
+                    radio.checked = true;
+                }
+            });
+        }
     });
 </script>
 
 
-<!-- if the Parameters are "?online_payment=redirect" then verify the payment-->
+<!-- if the Parameters are "?online_payment=redirect" then verify the payment and place Order-->
 <script>
     if (window.location.search.includes('online_payment=redirect')) {
         const errorMessage = document.getElementById('error_message');
@@ -234,22 +252,36 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ orderId })
-
+                
             }).then(res => res.json()).then(data => {
-                // delete session
-                "<%= session.merchantOrderId = null %>"
                 if (data.data == 'FAILED') {
+                    fetch('/session/delete/merchant-order-id', {
+                        method: 'POST',
+                    });
                     errorMessage.textContent = 'Payment failed. Please try again.';
                 }
+
                 if (data.data == 'PENDING') {
+                    fetch('/session/delete/merchant-order-id', {
+                        method: 'POST',
+                    });
                     errorMessage.textContent = 'Payment is pending. Please wait.(suggestion: Use COD)';
                 }
+
                 if (data.data == 'COMPLETED') {
-                    "<%= session.paymentType='Online' %>"
-                    const submitButton = document.querySelector('.cart form button[type="submit"]');
-                    if (submitButton) {
-                        submitButton.click();
-                    }
+                    localStorage.clear();
+                    fetch('/session/add/payment-type', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: { 'Content-Type': 'application/json' }
+                    }).then((data) => {
+                        const submitButton = document.querySelector('.cart form button[type="submit"]');
+                        if (submitButton) {
+                            submitButton.click();
+                        }
+                    }).catch(err => {
+                        console.error('Error adding payment type:', err);
+                    });
                 }
             }).catch(err => {
                 console.error('Payment verification failed:', err);
