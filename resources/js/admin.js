@@ -105,14 +105,14 @@ export function initAdmin(socket) {
                 <td class="border px-4 py-2">${order.address}</td>
                 <td class="border px-4 py-2">${order.phone}</td>
                 <td class="border px-4 py-2">
-                    ${order.orderTime && /^[A-Za-z]+, \d{2}-\d{2}-\d{4}, \d{1,2}:\d{2}:\d{2} (am|pm)$/i.test(order.orderTime)? order.orderTime : new Date(order.createdAt).toGMTString()}
+                    ${order.orderTime && /^[A-Za-z]+, \d{2}-\d{2}-\d{4}, \d{1,2}:\d{2}:\d{2} (am|pm)$/i.test(order.orderTime) ? order.orderTime : new Date(order.createdAt).toGMTString()}
                 </td>
                 <td class="border px-4 py-2 align-middle">
                     <div class="flex flex-col items-start space-y-1">
                         <span class="text-lg font-semibold py-1 amount">
                             ${renderPrice(order.items)}
                         </span>
-                        <span class="inline-block text-xs font-medium text-black bg-yellow-500 px-2 py-0.5 rounded">
+                        <span class="inline-block text-xs font-medium px-2 py-0.5 rounded ${order.paymentType == 'COD' ? 'text-black bg-yellow-500' : 'text-white bg-green-400'}">
                             ${order.paymentType}
                         </span>
                     </div>
