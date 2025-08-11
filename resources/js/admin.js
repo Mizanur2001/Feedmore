@@ -101,9 +101,9 @@ export function initAdmin(socket) {
                         </div>
                     </div>
                 </td>
-                <td class="border px-4 py-2">${order.customerId.name}</td>
                 <td class="border px-4 py-2">${order.address}</td>
                 <td class="border px-4 py-2">${order.phone}</td>
+                <td class="border px-4 py-2">${order.customerId.name}</td>
                 <td class="border px-4 py-2">
                     ${order.orderTime && /^[A-Za-z]+, \d{2}-\d{2}-\d{4}, \d{1,2}:\d{2}:\d{2} (am|pm)$/i.test(order.orderTime) ? order.orderTime : new Date(order.createdAt).toGMTString()}
                 </td>
