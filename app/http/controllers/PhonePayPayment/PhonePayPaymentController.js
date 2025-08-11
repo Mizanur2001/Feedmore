@@ -5,14 +5,14 @@ const transactionModel = require('../../../models/transaction');
 const clientId = process.env.PHONEPE_MERCHANT_ID;
 const clientSecret = process.env.PHONEPE_SALT_KEY;
 //SandBOX
-// const Authorization_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/v1/oauth/token";
-// const CreatePayment_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/checkout/v2/pay";
-// const verifyPayment_BASE_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/checkout/v2/order"; // /{orderId}/status
+const Authorization_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/v1/oauth/token";
+const CreatePayment_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/checkout/v2/pay";
+const verifyPayment_BASE_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/checkout/v2/order"; // /{orderId}/status
 
 //Production
-const Authorization_URL = "https://api.phonepe.com/apis/identity-manager/v1/oauth/token";
-const CreatePayment_URL = "https://api.phonepe.com/apis/pg/checkout/v2/pay";
-const verifyPayment_BASE_URL = "https://api.phonepe.com/apis/pg/checkout/v2/order"; // /{orderId}/status
+// const Authorization_URL = "https://api.phonepe.com/apis/identity-manager/v1/oauth/token";
+// const CreatePayment_URL = "https://api.phonepe.com/apis/pg/checkout/v2/pay";
+// const verifyPayment_BASE_URL = "https://api.phonepe.com/apis/pg/checkout/v2/order"; // /{orderId}/status
 
 
 // Authorization to Get Access Token
@@ -73,7 +73,8 @@ const phonepePaymentController = () => {
                     type: "PG_CHECKOUT",
                     message: message || "Payment for order Default Message",
                     merchantUrls: {
-                        redirectUrl: "https://feedmore.in/cart?online_payment=redirect"
+                        redirectUrl: "http://localhost:3300/cart?online_payment=redirect"
+                        // redirectUrl: "https://feedmore.in/cart?online_payment=redirect"
                     }
                 };
 
