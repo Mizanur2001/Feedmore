@@ -4,9 +4,15 @@ const querystring = require('querystring');
 const transactionModel = require('../../../models/transaction');
 const clientId = process.env.PHONEPE_MERCHANT_ID;
 const clientSecret = process.env.PHONEPE_SALT_KEY;
-const Authorization_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/v1/oauth/token";
-const CreatePayment_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/checkout/v2/pay";
-const verifyPayment_BASE_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/checkout/v2/order"; // /{orderId}/status
+//SandBOX
+// const Authorization_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/v1/oauth/token";
+// const CreatePayment_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/checkout/v2/pay";
+// const verifyPayment_BASE_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/checkout/v2/order"; // /{orderId}/status
+
+//Production
+const Authorization_URL = "https://api.phonepe.com/apis/identity-manager/v1/oauth/token";
+const CreatePayment_URL = "https://api.phonepe.com/apis/pg/checkout/v2/pay";
+const verifyPayment_BASE_URL = "https://api.phonepe.com/apis/pg/checkout/v2/order"; // /{orderId}/status
 
 
 // Authorization to Get Access Token
