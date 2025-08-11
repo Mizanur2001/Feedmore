@@ -223,6 +223,24 @@
             const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
             const errorMessage = document.getElementById('error_message');
 
+            // Populate hidden fields from selected address
+            if (selectedAddress) {
+                try {
+                    const addr = JSON.parse(selectedAddress.value);
+                    document.getElementById('address_input').value =
+                        addr.addressLine1 + ', ' +
+                        addr.addressLine2 + ', ' +
+                        addr.landmark + ', ' +
+                        addr.city + ' - ' +
+                        addr.postalCode;
+                    document.getElementById('phone_input').value = addr.phone;
+                } catch (err) {
+                    errorMessage.textContent = "Address parsing error.";
+                    e.preventDefault();
+                    return;
+                }
+            }
+
             // Prevent online payment if no address is selected
             if (onlinePayment && onlinePayment.checked) {
                 if (!selectedAddress) {
