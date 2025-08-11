@@ -73,7 +73,7 @@ const phonepePaymentController = () => {
                     type: "PG_CHECKOUT",
                     message: message || "Payment for order Default Message",
                     merchantUrls: {
-                        redirectUrl: "http://localhost:3300/cart?online_payment=redirect"
+                        redirectUrl: "https://feedmore.in/cart?online_payment=redirect"
                     }
                 };
 
