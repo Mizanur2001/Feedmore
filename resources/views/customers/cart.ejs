@@ -214,19 +214,23 @@
 
 <!--if select online payment then redirect to Link-->
 <script>
-    // Save selected address before redirecting for online payment
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.querySelector('.cart form');
         if (!form) return;
 
         form.addEventListener('submit', function (e) {
             const onlinePayment = document.querySelector('input[name="paymentMethod"][value="online"]');
+            const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+            const errorMessage = document.getElementById('error_message');
+
+            // Prevent online payment if no address is selected
             if (onlinePayment && onlinePayment.checked) {
-                // Save selected address value to localStorage
-                const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
-                if (selectedAddress) {
-                    localStorage.setItem('selectedAddressValue', selectedAddress.value);
+                if (!selectedAddress) {
+                    e.preventDefault();
+                    errorMessage.textContent = "Please select an address before proceeding to online payment.";
+                    return;
                 }
+                localStorage.setItem('selectedAddressValue', selectedAddress.value);
                 e.preventDefault();
                 window.location.href = "/customers/payment-processing?checkout";
             }
