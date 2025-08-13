@@ -42,11 +42,7 @@ app.use(session({
     resave: false,
     store: mongoStore,
     saveUninitialized: false,
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24,  //life 24 hour
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-        secure: process.env.NODE_ENV === 'production' ? true : false
-    }
+    cookie: { maxAge: 1000 * 60 * 60 * 24 }  //life 24 hour
     //cookie: { maxAge: 1000 *10 } //life 10 seconds
 }))
 
