@@ -63,14 +63,14 @@ const orderControler = () => {
                 //Add order Id to Transaction db
                 if (req.session?.paymentType === 'Online') {
                     await transactionModel.updateOne(
-                        { merchantOrderId: req.session.merchantOrderId },
+                        { orderId: req.session.orderId },
                         { $set: { foodOrderId: orders._id } }
                     )
                 }
 
                 //Delete session variables
                 delete req.session.paymentType
-                delete req.session.merchantOrderId
+                delete req.session.orderId
 
                 try {
                     const result = await orders.save();

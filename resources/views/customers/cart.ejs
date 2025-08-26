@@ -133,14 +133,13 @@
                                 <span class="text-base font-semibold text-gray-800">Cash on Delivery (COD)</span>
                             </label>
                             <label
-                                class="flex items-center cursor-not-allowed bg-white border border-orange-200 rounded-lg px-4 py-3 gap-2 transition opacity-50"
+                                class="flex items-center cursor-pointer bg-white border border-orange-200 rounded-lg px-4 py-3 gap-2 transition hover:shadow-md"
                                 aria-disabled="true" title="Online payments are temporarily disabled.">
-                                <input type="radio" name="paymentMethod" value="online" class="accent-orange-500 mr-3"
-                                    disabled>
+                                <input type="radio" name="paymentMethod" value="online" class="accent-orange-500 mr-3">
                                 <span class="text-base font-semibold text-gray-800 flex items-center gap-2">
                                     Online Payment
                                     <span
-                                        class="bg-gray-200 text-gray-600 text-xs font-bold px-2 py-0.5 rounded-full border border-gray-200 shadow-sm ml-2 text-center"
+                                        class="bg-green-400 text-white text-xs font-bold px-2 py-0.5 rounded-full border border-gray-200 shadow-sm ml-2 text-center"
                                         style="width: 80px;">
                                         β Test
                                     </span>
@@ -212,3 +211,135 @@
                 </div>
 
 </section>
+
+
+<script>
+
+    const updatePaymentType = async () => {
+        const response = await fetch('/session/add/payment-type', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        });
+        return response;
+    }
+
+    const addOrderIdToSession = async (orderId) => {
+        const response = await fetch('/session/add/order-id', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ orderId })
+        });
+        return response;
+    }
+
+    const verifyPayment = async (orderId) => {
+        const errorMessage = document.getElementById("error_message");
+        const orderForm = document.querySelector("form[action='/orders']");
+
+        const response = await fetch('/api/v1/tools/payment/customers/cashfree/verify', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ orderId })
+        });
+        const data = await response.json();
+
+        switch (data?.orderStatus) {
+            case "PAID":
+                const response = await updatePaymentType();
+                const data = await response.json();
+                if (data.status) {
+                    localStorage.setItem('orderId', orderId);
+                    orderForm.submit();
+                } else {
+                    errorMessage.textContent = "Failed to update payment type in session. Please contact support.";
+                }
+                break;
+
+            case "ACTIVE":
+                errorMessage.textContent = "Payment not completed. You dropped the payment.";
+                break;
+
+            case "EXPIRED":
+                errorMessage.textContent = "Payment expired. Please try again.";
+                break;
+
+            case "TERMINATED":
+                errorMessage.textContent = "Payment session terminated. Please initiate a new payment.";
+                break;
+
+            case "TERMINATION_REQUESTED":
+                errorMessage.textContent = "Payment termination in process. Please wait or try again later.";
+                break;
+
+            default:
+                errorMessage.textContent = "❓ Unknown payment status. Please contact support.";
+                break;
+        }
+
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const orderForm = document.querySelector("form[action='/orders']");
+        const paymentLoader = document.getElementById("payment-loader");
+        const errorMessage = document.getElementById("error_message");
+
+        orderForm.addEventListener("submit", async function (e) {
+            const paymentMethod = document.querySelector("input[name='paymentMethod']:checked").value;
+
+            if (paymentMethod === "online") {
+                e.preventDefault(); // stop normal form submit
+
+                // Show loader
+                paymentLoader.style.display = "flex";
+
+                try {
+                    // Get selected address radio button value
+                    const selectedAddressRadio = document.querySelector("input[name='selectedAddress']:checked");
+                    if (!selectedAddressRadio) {
+                        errorMessage.textContent = "Please select a delivery address before proceeding with payment.";
+                        paymentLoader.style.display = "none";
+                        return;
+                    }
+
+                    // Parse address JSON
+                    const selectedAddress = JSON.parse(selectedAddressRadio.value);
+
+                    // Call backend to initiate payment
+                    const response = await fetch("/api/v1/tools/payment/customers/cashfree/initiate", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            amount: "<%= session?.cart?.totalPrice %>",
+                            customerName: "<%= session?.user?.name %>",
+                            customerEmail: "<%= session?.user?.email %>",
+                            customerPhone: selectedAddress.phone,
+                            userId: "<%= session?.user?.userId %>"
+                        })
+                    });
+
+                    const result = await response.json();
+                    if (!result.status) throw new Error(result.message);
+
+                    const cashfree = Cashfree({ mode: "sandbox" }); //production
+                    cashfree.checkout({
+                        paymentSessionId: result.data.payment_session_id,
+                        redirectTarget: "_modal"
+                    }).then(() => {
+                        paymentLoader.style.display = "none";
+                        verifyPayment(result?.data?.order_id);
+                    }).catch((err) => {
+                        paymentLoader.style.display = "none";
+                        errorMessage.textContent = "Payment failed: " + err.message;
+                        throw new Error("Payment failed: " + err.message);
+                    });
+
+                } catch (err) {
+                    console.error("Payment error:", err);
+                    alert("Payment failed: " + err.message);
+                    paymentLoader.style.display = "none";
+                }
+            }
+        });
+    });
+
+</script>

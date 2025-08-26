@@ -80,6 +80,8 @@ const userPaymentController = () => {
                     })
                     await newTransaction.save()
 
+                    req.session.orderId = orderId;
+
                     res.status(200).json({
                         status: true,
                         message: "Payment initiated successfully",
@@ -90,7 +92,7 @@ const userPaymentController = () => {
                     res.status(500).json({
                         status: false,
                         message: "Payment initiation failed",
-                        error: error.response.data.message,
+                        error: error?.response?.data?.message,
                         code: 500
                     });
                 });
@@ -99,7 +101,7 @@ const userPaymentController = () => {
                 return res.status(500).json({
                     status: false,
                     message: "Internal server error",
-                    error: error.message,
+                    error: error?.message,
                     code: 500
                 })
             }
