@@ -1,6 +1,6 @@
 {
   "name": "feedmore",
-  "version": "1.23.18",
+  "version": "1.24.18",
   "description": "This is online food home delivery application",
   "main": "server.js",
   "scripts": {
@@ -16,6 +16,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "bcrypt": "^5.0.1",
+    "cashfree-pg": "^5.0.8",
     "connect-mongo": "^3.2.0",
     "dotenv": "^16.0.0",
     "ejs": "^3.1.6",
