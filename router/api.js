@@ -4,8 +4,8 @@ const phonepePaymentController = require('../app/http/controllers/PhonePayPaymen
 const apiRouter = (app) => {
     app.post('/api/v1/tools/payment/initiate', paymentController().MaintenancePaymentInitiate);
     app.post('/api/v1/tools/payment/verify', paymentController().MaintenancePaymentVerify);
-    app.post('/api/v1/tools/payment/phonepe/initiate', phonepePaymentController().newPayment);
-    app.post('/api/v1/tools/payment/phonepe/verify', phonepePaymentController().verifyPayment);
+    // app.post('/api/v1/tools/payment/phonepe/initiate', phonepePaymentController().newPayment);
+    // app.post('/api/v1/tools/payment/phonepe/verify', phonepePaymentController().verifyPayment);
 }
 
 module.exports = apiRouter;
