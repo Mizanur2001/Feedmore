@@ -223,15 +223,6 @@
         return response;
     }
 
-    const addOrderIdToSession = async (orderId) => {
-        const response = await fetch('/session/add/order-id', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ orderId })
-        });
-        return response;
-    }
-
     const verifyPayment = async (orderId) => {
         const errorMessage = document.getElementById("error_message");
         const orderForm = document.querySelector("form[action='/orders']");
