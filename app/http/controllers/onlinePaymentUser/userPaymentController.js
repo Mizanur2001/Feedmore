@@ -76,6 +76,7 @@ const userPaymentController = () => {
                         customerPhone,
                         customerEmail,
                         orderId,
+                        items: req.session?.cart?.items || {},
                         date: momentTimezone().tz('Asia/Kolkata').format('dddd, DD-MM-YYYY, h:mm:ss a'),
                     })
                     await newTransaction.save()

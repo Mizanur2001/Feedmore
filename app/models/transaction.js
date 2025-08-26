@@ -9,6 +9,7 @@ const transactionSchema = new mongoose.Schema({
     foodOrderId: { type: mongoose.Schema.Types.ObjectId, ref: 'Order' },
     status: { type: String, enum: ['PAID', 'ACTIVE', 'TERMINATED', 'INITIATE', 'NOT_PAID'], default: 'NOT_PAID' },
     orderId: { type: String, required: true, unique: true },
+    items: { type: Object },
     date: { type: String, required: true },
 });
 
