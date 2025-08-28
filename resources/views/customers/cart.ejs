@@ -226,6 +226,7 @@
     const verifyPayment = async (orderId) => {
         const errorMessage = document.getElementById("error_message");
         const orderForm = document.querySelector("form[action='/orders']");
+        const paymentLoader = document.getElementById("payment-loader");
 
         const response = await fetch('/api/v1/tools/payment/customers/cashfree/verify', {
             method: "POST",
@@ -239,30 +240,36 @@
                 const response = await updatePaymentType();
                 const data = await response.json();
                 if (data.status) {
-                    localStorage.setItem('orderId', orderId);
+                    paymentLoader.style.display = "none";
                     orderForm.submit();
                 } else {
+                    paymentLoader.style.display = "none";
                     errorMessage.textContent = "Failed to update payment type in session. Please contact support.";
                 }
                 break;
 
             case "ACTIVE":
+                paymentLoader.style.display = "none";
                 errorMessage.textContent = "Payment not completed. You dropped the payment.";
                 break;
 
             case "EXPIRED":
+                paymentLoader.style.display = "none";
                 errorMessage.textContent = "Payment expired. Please try again.";
                 break;
 
             case "TERMINATED":
+                paymentLoader.style.display = "none";
                 errorMessage.textContent = "Payment session terminated. Please initiate a new payment.";
                 break;
 
             case "TERMINATION_REQUESTED":
+                paymentLoader.style.display = "none";
                 errorMessage.textContent = "Payment termination in process. Please wait or try again later.";
                 break;
 
             default:
+                paymentLoader.style.display = "none";
                 errorMessage.textContent = "❓ Unknown payment status. Please contact support.";
                 break;
         }
@@ -316,7 +323,6 @@
                         paymentSessionId: result.data.payment_session_id,
                         redirectTarget: "_modal"
                     }).then(() => {
-                        paymentLoader.style.display = "none";
                         verifyPayment(result?.data?.order_id);
                     }).catch((err) => {
                         paymentLoader.style.display = "none";
