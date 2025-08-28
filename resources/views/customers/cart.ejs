@@ -318,7 +318,7 @@
                     const result = await response.json();
                     if (!result.status) throw new Error(result.message);
 
-                    const cashfree = Cashfree({ mode: "sandbox" }); //production
+                    const cashfree = Cashfree({ mode: "production" }); //production or sandbox
                     cashfree.checkout({
                         paymentSessionId: result.data.payment_session_id,
                         redirectTarget: "_modal"

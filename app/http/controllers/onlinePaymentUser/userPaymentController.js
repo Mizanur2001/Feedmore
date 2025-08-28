@@ -66,7 +66,8 @@ const userPaymentController = () => {
                     }
                 }
 
-                let cashfree = new Cashfree(Cashfree.SANDBOX, process.env.CASHFREE_USER_PAYMENT_CLIENT_ID, process.env.CASHFREE_USER_PAYMENT_CLIENT_SECRET);
+                // let cashfree = new Cashfree(Cashfree.SANDBOX, process.env.CASHFREE_USER_PAYMENT_CLIENT_ID, process.env.CASHFREE_USER_PAYMENT_CLIENT_SECRET);
+                let cashfree = new Cashfree(Cashfree.PRODUCTION, process.env.CASHFREE_USER_PAYMENT_CLIENT_ID, process.env.CASHFREE_USER_PAYMENT_CLIENT_SECRET);
 
                 cashfree.PGCreateOrder(request).then(async (response) => {
                     const newTransaction = new transactionModel({
@@ -124,7 +125,8 @@ const userPaymentController = () => {
                 }
 
 
-                let cashfree = new Cashfree(Cashfree.SANDBOX, process.env.CASHFREE_USER_PAYMENT_CLIENT_ID, process.env.CASHFREE_USER_PAYMENT_CLIENT_SECRET);
+                // let cashfree = new Cashfree(Cashfree.SANDBOX, process.env.CASHFREE_USER_PAYMENT_CLIENT_ID, process.env.CASHFREE_USER_PAYMENT_CLIENT_SECRET);
+                let cashfree = new Cashfree(Cashfree.PRODUCTION, process.env.CASHFREE_USER_PAYMENT_CLIENT_ID, process.env.CASHFREE_USER_PAYMENT_CLIENT_SECRET);
                 cashfree.PGFetchOrder(orderId).then(async (response) => {
                     await transactionModel.findOneAndUpdate({ orderId }, { status: response.data.order_status });
                     res.status(200).json({
