@@ -3,7 +3,10 @@ const { otpMailTemplate } = require("../../public/template/email/otp");
 const { orderPlacedTemplate } = require("../../public/template/email/orderPlaced")
 
 const transpoter = nodemailer.createTransport({
-    service: 'gmail',
+    // service: 'gmail',
+    host: "smtp.gmail.com",
+    port: 465,            // use 465 for SSL
+    secure: true,
     auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_PASS,
