@@ -1,46 +1,91 @@
-<section class="orders light-section" style="background-color: #F8F8F8;">
-    <div class="container mx-auto pt-12">
-        <h1 class="font-bold text-lg mb-4">All Orders</h1>
-       <%if(messages.success){%>
-        <div id="success-alert" class="flex items-center bg-green-500 text-white text-sm font-bold px-4 py-3"
-            role="alert">
-            <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                <path
-                    d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z" />
-            </svg>
-            <p>
-                <%= messages.success%>
-            </p>
-        </div>
-        <%}%>
-        <table class="w-full table-auto bg-white">
-            <thead>
-                <tr>
-                    <th class="px-4 py-2 text-left">Track Order</th>
-                    <th class="px-4 py-2 text-left">Order</th>
-                    <th class="px-4 py-2 text-left">Phone</th>
-                    <th class="px-4 py-2 text-left">Address</th>
-                    <th class="px-4 py-2 text-left">Time</th>
-                </tr>
-            </thead>
-
-            <body>
-                <%if(orders.length!=0){%>
-                    <%orders.forEach((order)=>{%>
-                        <tr>
-                            <td class="border px-4 py2"><a class="link" href="/customers/orders/<%= order._id%>"><img style="display: inline;width: 50px;" src="/img/tracking.png" alt="tracking"></a></td>
-                            <td class="border px-4 py2"> <a class="link" href="/customers/orders/<%= order._id%>"><%= order._id%></a> </td>
-                            <td class="border px-4 py2"><%= order.phone%></td>
-                            <td class="border px-4 py2"><%= order.address%></td>
-                            <td class="border px-4 py2"><%= order.orderTime && /^[A-Za-z]+, \d{2}-\d{2}-\d{4}, \d{1,2}:\d{2}:\d{2} (am|pm)$/i.test(order.orderTime)? order.orderTime : new Date(order.createdAt).toGMTString()%></td>
-                        </tr>
-                    <%})%>
-                <%}else{%>
-                    <tr>
-                        <td class="p-4"><span>No orders found!</span></td>
-                    </tr>
-                <%}%>
-            </body>
-        </table>
+<section class="orders light-section py-8 sm:py-12 bg-[#F8F8F8]">
+    <div class="container mx-auto px-2 sm:px-4">
+        <h1 class="font-bold text-xl sm:text-2xl mb-6 sm:mb-8">Past Orders</h1>
+        <% if (orders.length !==0) { %>
+            <% orders.forEach(order=> { %>
+                <div class="bg-white rounded-lg shadow p-4 sm:p-6 mb-6 sm:mb-8 flex flex-col gap-4">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 flex-wrap">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-4 w-full md:w-auto">
+                            <!-- Multiple Item Images as Squares, overlapping -->
+                            <div class="flex relative mb-2 sm:mb-0 flex-wrap">
+                                <% Object.keys(order.items).forEach((itemId, idx)=> {
+                                    const itemObj = order.items[itemId];
+                                    const zIndex = 10 - idx;
+                                    %>
+                                    <img src="/img/<%= itemObj.items.image %>" alt="<%= itemObj.items.name %>"
+                                        class="w-16 h-16 sm:w-20 md:w-24 md:h-24 object-cover rounded-lg border border-gray-200 shadow
+                                        <% if(idx !== 0) { %> -ml-6 sm:-ml-6 md:-ml-8 <% } %> transition-all duration-300" {style="z-index:<%= zIndex %>;" } />
+                                    <% }) %>
+                            </div>
+                            <div class="flex-1 min-w-[180px]">
+                                <h2 class="font-bold text-base sm:text-xl md:text-2xl break-words">
+                                    <%= Object.values(order.items).map(i=> i.items.name).join(', ') %>
+                                </h2>
+                                <p class="text-gray-500 text-sm sm:text-base">
+                                    <%= order.address.split(',')[0] %>
+                                </p>
+                                <p class="text-xs sm:text-sm text-gray-400">
+                                    ORDER #<%= order._id %>
+                                </p>
+                                <a href="/customers/orders/<%= order._id %>"
+                                    class="text-orange-600 font-semibold mt-2 inline-block text-xs sm:text-base">VIEW
+                                    DETAILS</a>
+                            </div>
+                        </div>
+                        <div class="text-left md:text-right w-full md:w-auto mt-2 md:mt-0">
+                            <p class="text-gray-600 font-semibold text-xs sm:text-base">
+                                Ordered on <%= order.orderTime %>
+                            </p>
+                            <span
+                                class="inline-flex items-center px-2 py-1 bg-green-100 text-green-600 rounded-full text-xs sm:text-sm font-bold mt-1">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                                <%= order.status.toUpperCase() %>
+                            </span>
+                            <span
+                                class="inline-flex items-center px-2 py-1 rounded-full text-xs sm:text-sm font-bold mt-2
+                                <% if(order.paymentType.toUpperCase() === 'COD'){ %> bg-yellow-100 text-yellow-700 <% } else { %> bg-green-100 text-green-600 <% } %>">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <rect x="3" y="7" width="18" height="10" rx="2" stroke-width="2" />
+                                    <circle cx="12" cy="12" r="3" stroke-width="2" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 7v2M17 7v2M7 17v-2M17 17v-2" />
+                                </svg>
+                                <%= order.paymentType.toUpperCase() %>
+                            </span>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+                        <div>
+                            <% Object.keys(order.items).forEach(itemId=> { %>
+                                <% const itemObj=order.items[itemId]; %>
+                                    <div class="text-base sm:text-lg">
+                                        <%= itemObj.items.name %> x <%= itemObj.qty %>
+                                    </div>
+                                    <% }) %>
+                        </div>
+                        <div class="font-bold text-base sm:text-lg text-gray-700 mt-2 md:mt-0">
+                            Total Paid: ₹ <%= Object.values(order.items).reduce((sum, itemObj)=> sum +
+                                itemObj.items.price * itemObj.qty, 0) %>
+                        </div>
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-2 md:gap-4 mt-4">
+                        <button
+                            class="bg-orange-600 text-white px-4 py-2 rounded font-semibold hover:bg-orange-700 text-xs sm:text-base"
+                            onclick="{window.location.href='/'}">REORDER</button>
+                        <button
+                            class="border border-orange-600 text-orange-600 px-4 py-2 rounded font-semibold hover:bg-orange-50 text-xs sm:text-base"
+                            onclick="{window.location.href='tel:+917872727290'}">HELP</button>
+                    </div>
+                </div>
+                <% }) %>
+                    <% } else { %>
+                        <div class="bg-white p-8 rounded shadow text-center text-gray-500">
+                            No orders found!
+                        </div>
+                        <% } %>
     </div>
 </section>
