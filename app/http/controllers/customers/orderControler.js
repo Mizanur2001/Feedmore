@@ -3,6 +3,7 @@ const moment = require('moment');
 const momentTimezone = require('moment-timezone');
 const Payment = require('../../../models/payment')
 const transactionModel = require('../../../models/transaction')
+const Mail = require("../../../services/email");
 
 
 const orderControler = () => {
@@ -151,7 +152,16 @@ const orderControler = () => {
                         //Emit for Total totalOrdersAmount (Daly)
                         eventEmitter.emit('totalOrdersAmount', dailyTotal)
 
+                        //Send Email To Customer
+                        Mail.orderPlacedSuccess(
+                            req.session.user.email,
+                            req.session.user.name,
+                            result._id,
+                            result.orderTime
+                        ).catch(e => console.error('Order email failed:', e));
+
                         return res.redirect('/customers/orders');
+
                     });
                 } catch (err) {
                     console.error('Order or payment failed:', err);

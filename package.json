@@ -1,6 +1,6 @@
 {
   "name": "feedmore",
-  "version": "1.26.21",
+  "version": "1.27.21",
   "description": "This is online food home delivery application",
   "main": "server.js",
   "scripts": {
@@ -27,6 +27,7 @@
     "moment": "^2.30.1",
     "moment-timezone": "^0.6.0",
     "mongoose": "^5.9.25",
+    "nodemailer": "^7.0.5",
     "noty": "^3.2.0-beta-deprecated",
     "socket.io": "^4.4.1",
     "uuid": "^11.1.0"
