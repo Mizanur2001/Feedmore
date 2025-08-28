@@ -153,12 +153,12 @@ const orderControler = () => {
                         eventEmitter.emit('totalOrdersAmount', dailyTotal)
 
                         //Send Email To Customer
-                        Mail.orderPlacedSuccess(
-                            req.session.user.email,
-                            req.session.user.name,
-                            result._id,
-                            result.orderTime
-                        ).catch(e => console.error('Order email failed:', e));
+                        // Mail.orderPlacedSuccess(
+                        //     req.session.user.email,
+                        //     req.session.user.name,
+                        //     result._id,
+                        //     result.orderTime
+                        // ).catch(e => console.error('Order email failed:', e));
 
                         return res.redirect('/customers/orders');
 
