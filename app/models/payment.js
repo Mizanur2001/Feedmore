@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 
 const paymentSchema = new mongoose.Schema({
+    transactionId: { type: String, required: true, unique: true },
     billingMonth: { type: String, required: true },
     totalOrderAmount: { type: Number, required: true, default: 0 },
     commissionAmount: { type: Number, required: true, default: 0 },

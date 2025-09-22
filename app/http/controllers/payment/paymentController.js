@@ -17,6 +17,12 @@ const paymentController = () => {
                 // status: "NOT_PAID"
             }).sort({ billingMonth: 1 }); // oldest month first
 
+            //Change Transaction Id for every new request
+            if (unpaidBill) {
+                unpaidBill.transactionId = `TRANS_${Date.now()}`;
+                await unpaidBill.save();
+            }
+
             if (!unpaidBill) {
                 return res.render('payment/paymentPage', {
                     bill: null,
@@ -41,7 +47,7 @@ const paymentController = () => {
                     })
                 }
 
-                const findBill = await paymentModel.findOne({ _id: order_id })
+                const findBill = await paymentModel.findOne({ transactionId: order_id })
                 if (!findBill) {
                     return res.status(202).json({
                         message: "Bill not found",
@@ -50,7 +56,7 @@ const paymentController = () => {
                 }
 
                 //Update the bill status to INITIATE
-                await paymentModel.updateOne({ _id: order_id }, { status: "INITIATE" })
+                await paymentModel.updateOne({ transactionId: order_id }, { status: "INITIATE" })
 
 
                 res.json({
@@ -90,7 +96,7 @@ const paymentController = () => {
                         'x-api-version': '2023-08-01',
                     }
                 }).then(async (response) => {
-                    await paymentModel.updateOne({ _id: order_id }, {
+                    await paymentModel.updateOne({ transactionId: order_id }, {
                         status: response?.data?.order_status,
                         paid: response?.data?.order_status == "PAID" ? true : false
                     })
