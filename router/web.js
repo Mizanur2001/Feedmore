@@ -21,6 +21,8 @@ function initRoutes(app) {
     app.post('/login', authController().postLogin)
     app.get('/register', authController().register);
     app.post('/register', authController().postRegister);
+    app.get('/forgot-password-verify-email', authController().forgotPassword);
+    app.post('/forgot-password-send-otp', authController().sendOtp);
     app.get('/cart', cartController().index);
     app.post('/update-cart', cartController().updateCart);
     app.get('/cart-info', cartController().floatingCartInfo);
