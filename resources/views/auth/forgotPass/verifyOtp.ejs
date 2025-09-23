@@ -1,0 +1,188 @@
+<section
+    class="bg-gradient-to-b from-white via-gray-50 to-gray-100 flex items-center justify-center md:height-screen height-media-70-vh height-min-100-vh-86px">
+    <div class="w-full max-w-3xl mx-auto px-6">
+        <div class="bg-white shadow-xl rounded-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
+            <!-- Left: Illustration / Branding -->
+            <div class="hidden md:flex items-center justify-center bg-gradient-to-br from-green-600 to-green-500 p-8">
+                <div class="text-center text-white px-4">
+                    <svg class="w-16 h-16 mx-auto mb-4" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7v7c0 5 5 9 10 9s10-4 10-9V7L12 2z" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M12 11v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M12 7h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <h2 class="text-2xl font-semibold">Recover your account</h2>
+                    <p class="mt-2 text-sm opacity-90">Enter the OTP sent to your email. The OTP is valid for 15
+                        minutes.</p>
+                </div>
+            </div>
+
+            <!-- Right: Form -->
+            <div class="p-8">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800">Verify OTP</h3>
+                    <p class="text-sm text-gray-500 mt-1">No worries — it happens. Provide your OTP and we'll take it
+                        from there.</p>
+                </div>
+
+                <% if (messages.error) { %>
+                    <div id="server-error"
+                        class="mb-4 rounded-md bg-red-50 border border-red-200 p-3 text-sm text-red-700">
+                        <%= messages.error %>
+                    </div>
+                    <% } %>
+
+                        <% if (messages.success) { %>
+                            <div id="server-success"
+                                class="mb-4 rounded-md bg-green-50 border border-green-200 p-3 text-sm text-green-700">
+                                <%= messages.success %>
+                            </div>
+                            <% } %>
+
+                                <form id="forgot-form" action="/verify-otp" method="POST" class="space-y-5">
+                                    <div>
+                                        <label for="otp-digit-1"
+                                            class="block text-sm font-medium text-gray-700 mb-1">One-Time
+                                            Password (OTP)</label>
+
+                                        <!-- allow wrapping so the inputs never overflow the card; keep each input fixed width -->
+                                        <div id="otp-group" class="flex flex-wrap gap-2 items-center">
+                                            <input inputmode="numeric" pattern="\d" maxlength="1"
+                                                autocomplete="one-time-code"
+                                                class="otp-digit w-12 h-12 flex-shrink-0 text-center border border-gray-300 rounded-lg px-0 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                                id="otp-digit-1" aria-label="OTP digit 1">
+                                            <input inputmode="numeric" pattern="\d" maxlength="1"
+                                                class="otp-digit w-12 h-12 flex-shrink-0 text-center border border-gray-300 rounded-lg px-0 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                                id="otp-digit-2" aria-label="OTP digit 2">
+                                            <input inputmode="numeric" pattern="\d" maxlength="1"
+                                                class="otp-digit w-12 h-12 flex-shrink-0 text-center border border-gray-300 rounded-lg px-0 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                                id="otp-digit-3" aria-label="OTP digit 3">
+                                            <input inputmode="numeric" pattern="\d" maxlength="1"
+                                                class="otp-digit w-12 h-12 flex-shrink-0 text-center border border-gray-300 rounded-lg px-0 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                                id="otp-digit-4" aria-label="OTP digit 4">
+                                            <input inputmode="numeric" pattern="\d" maxlength="1"
+                                                class="otp-digit w-12 h-12 flex-shrink-0 text-center border border-gray-300 rounded-lg px-0 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                                id="otp-digit-5" aria-label="OTP digit 5">
+                                            <input inputmode="numeric" pattern="\d" maxlength="1"
+                                                class="otp-digit w-12 h-12 flex-shrink-0 text-center border border-gray-300 rounded-lg px-0 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                                id="otp-digit-6" aria-label="OTP digit 6">
+                                        </div>
+
+                                        <!-- hidden field to submit combined OTP -->
+                                        <input type="hidden" name="otp" id="otp" required>
+                                        <input type="hidden" name="email" id="email">
+                                        <input type="hidden" name="password" id="password">
+                                    </div>
+
+                                    <div class="flex items-center justify-between">
+                                        <button type="submit"
+                                            class="inline-flex items-center justify-center gap-2 btn-primary bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                            </svg>
+                                            Verify OTP
+                                        </button>
+
+                                        <a class="text-sm text-gray-500 hover:text-gray-700" href="/login">
+                                            Back to Login
+                                        </a>
+                                    </div>
+
+                                    <p class="text-xs text-gray-400">We will never share your email. By continuing you
+                                        agree to our privacy policy.</p>
+                                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    (function () {
+        const digits = Array.from(document.querySelectorAll('.otp-digit'));
+        const hidden = document.getElementById('otp');
+        const form = document.getElementById('forgot-form');
+        let serverError = document.getElementById('server-error');
+        const serverSuccess = document.getElementById('server-success');
+
+        // get the Email and Password from local storage
+        const email = localStorage.getItem('reset_email') || '';
+        const password = localStorage.getItem('reset_password') || '';
+        document.getElementById('email').value = email;
+        document.getElementById('password').value = password;
+
+        // If server rendered a success message (verification succeeded), clear stored sensitive data.
+        if (serverSuccess) {
+            localStorage.removeItem('reset_email');
+            localStorage.removeItem('reset_password');
+            setTimeout(() => {
+                window.location.href = '/login';
+            }, 3000);
+        }
+
+        function focusNext(index) {
+            if (index < digits.length - 1) digits[index + 1].focus();
+        }
+        function focusPrev(index) {
+            if (index > 0) digits[index - 1].focus();
+        }
+
+        function showError(msg) {
+            if (!serverError) {
+                serverError = document.createElement('div');
+                serverError.id = 'server-error';
+                serverError.className = 'mb-4 rounded-md bg-red-50 border border-red-200 p-3 text-sm text-red-700';
+                form.parentNode.insertBefore(serverError, form);
+            }
+            serverError.textContent = msg;
+        }
+
+        digits.forEach((el, idx) => {
+            el.addEventListener('input', (e) => {
+                const v = e.target.value.replace(/\D/g, '');
+                e.target.value = v ? v.charAt(0) : '';
+                if (e.target.value) focusNext(idx);
+            });
+
+            el.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value) {
+                    focusPrev(idx);
+                } else if (e.key === 'ArrowLeft') {
+                    focusPrev(idx);
+                    e.preventDefault();
+                } else if (e.key === 'ArrowRight') {
+                    focusNext(idx);
+                    e.preventDefault();
+                }
+            });
+
+            el.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const paste = (e.clipboardData || window.clipboardData).getData('text').trim();
+                const digitsOnly = paste.replace(/\D/g, '').slice(0, digits.length);
+                for (let i = 0; i < digitsOnly.length; i++) {
+                    digits[i].value = digitsOnly[i];
+                }
+                if (digitsOnly.length < digits.length) {
+                    digits[Math.min(digitsOnly.length, digits.length - 1)].focus();
+                } else {
+                    digits[digits.length - 1].focus();
+                }
+            });
+        });
+
+        form.addEventListener('submit', (e) => {
+            hidden.value = digits.map(d => d.value).join('');
+            if (hidden.value.length !== digits.length) {
+                e.preventDefault();
+                showError('Please enter the 6-digit OTP.');
+                return;
+            }
+        });
+
+        if (digits.length) digits[0].focus();
+    })();
+</script>

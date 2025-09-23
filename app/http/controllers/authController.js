@@ -203,6 +203,73 @@ function authController() {
                 req.flash('error', 'Something went wrong');
                 return res.redirect('/choose-password');
             }
+        },
+        async verifyOtp(req, res) {
+            try {
+                if (!req.session.user) {
+                    res.render("auth/forgotPass/verifyOtp", {
+                        title: 'Forgot Password - FeedMore',
+                    });
+                }
+                else {
+                    res.redirect('/')
+                }
+            } catch (error) {
+                req.flash('error', 'Something went wrong');
+                return res.redirect('/verify-otp');
+            }
+        },
+        async postVerifyOtp(req, res) {
+            try {
+                const { email, otp, password } = req.body;
+                if (!email || !otp || !password) {
+                    req.flash('error', 'All fields are required');
+                    return res.redirect('/verify-otp');
+                }
+
+                //Check Strong Password
+                const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+                if (!passwordRegex.test(password)) {
+                    req.flash('error', 'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.');
+                    return res.redirect('/verify-otp');
+                }
+
+                //check all otp and if any otp matches then we will allow user to change password
+                //check if user already exists
+                const findUserOTP = await OtpModel.find({ email: email.toLowerCase().trim() })
+
+                if (!findUserOTP || findUserOTP.length === 0) {
+                    req.flash('error', "OTP Expired.")
+                    return res.redirect('/verify-otp');
+                }
+
+                //check all otp and if any otp matches then we will allow user to login
+                let otpMatched = false;
+                findUserOTP.forEach((otpData) => {
+                    if (otpData.otp == otp) {
+                        otpMatched = true;
+                    }
+                });
+
+                if (!otpMatched) {
+                    req.flash('error', "Invalid OTP.")
+                    return res.redirect('/verify-otp');
+                }
+
+                // If OTP is valid, update user password
+                const hashedPassword = await bcrypt.hash(password, 10);
+                await User.updateOne({ email: email.toLowerCase().trim() }, { password: hashedPassword });
+
+                //Delete all OTPs for this user
+                await OtpModel.deleteMany({ email: email.toLowerCase().trim() });
+
+                req.flash('success', 'Success Redirecting To Login...');
+                return res.redirect('/verify-otp'); // Handle route From frontend "/login"
+
+            } catch (error) {
+                req.flash('error', 'Something went wrong');
+                return res.redirect('/verify-otp');
+            }
         }
     }
 }
