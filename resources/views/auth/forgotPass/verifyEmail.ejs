@@ -1,4 +1,5 @@
-<section class="bg-gradient-to-b from-white via-gray-50 to-gray-100 flex items-center justify-center md:height-screen height-media-70-vh height-min-100-vh-86px">
+<section
+    class="bg-gradient-to-b from-white via-gray-50 to-gray-100 flex items-center justify-center md:height-screen height-media-70-vh height-min-100-vh-86px">
     <div class="w-full max-w-3xl mx-auto px-6">
         <div class="bg-white shadow-xl rounded-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
             <!-- Left: Illustration / Branding -->
@@ -41,7 +42,8 @@
                             </div>
                             <% } %>
 
-                                <form id="forgot-form" action="/forgot-password-send-otp" method="POST" class="space-y-5">
+                                <form id="forgot-form" action="/forgot-password-send-otp" method="POST"
+                                    class="space-y-5">
                                     <label class="block text-sm font-medium text-gray-700">
                                         Email
                                         <div class="mt-1 relative">
@@ -100,6 +102,13 @@
                     err.textContent = 'Please enter a valid email address.';
                     form.parentNode.insertBefore(err, form);
                     email.focus();
+                    return;
+                }
+
+                try {
+                    localStorage.setItem('reset_email', email.value);
+                } catch (e) {
+                    console.warn('Unable to save email to localStorage', e);
                 }
             });
         })();

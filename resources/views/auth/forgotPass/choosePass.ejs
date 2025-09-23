@@ -1,0 +1,202 @@
+<section
+    class="bg-gradient-to-b from-white via-gray-50 to-gray-100 flex items-center justify-center md:height-screen height-media-70-vh height-min-100-vh-86px">
+    <div class="w-full max-w-4xl">
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+            <!-- Left panel (green) -->
+            <div class="hidden md:flex items-center justify-center bg-gradient-to-br from-green-600 to-green-500 p-8"
+                style="width: 50%;">
+                <div class="text-center text-white px-4">
+                    <svg class="w-16 h-16 mx-auto mb-4" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7v7c0 5 5 9 10 9s10-4 10-9V7L12 2z" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M12 11v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M12 7h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <h2 class="text-2xl font-semibold">Recover your account</h2>
+                    <p class="mt-2 text-sm opacity-90">Enter a new secure password for your account. Make sure it’s at
+                        least 8 characters and includes letters and numbers.</p>
+                </div>
+            </div>
+
+            <!-- Right panel (form) -->
+            <div class="md:w-1/2 p-8 md:p-10">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold text-slate-800">Set a new password</h3>
+                    <p class="mt-2 text-sm text-slate-500">No worries — it happens. Provide a strong password and
+                        confirm it below.</p>
+                </div>
+
+                <% if (messages.error) { %>
+                    <div class="mb-4 rounded-md bg-red-50 border border-red-200 text-red-700 px-4 py-3 text-sm">
+                        <%= messages.error %>
+                    </div>
+                    <% } %>
+
+                        <% if (messages.success) { %>
+                            <div
+                                class="mb-4 rounded-md bg-green-50 border border-green-200 text-green-700 px-4 py-3 text-sm">
+                                <%= messages.success %>
+                            </div>
+                            <% } %>
+
+                                <form id="set-password-form" class="space-y-4" novalidate>
+                                    <div>
+                                        <label for="password" class="block text-sm font-medium text-slate-700 mb-2">New
+                                            password</label>
+                                        <div class="relative">
+                                            <!-- input gets extra right padding so the eye button sits inside -->
+                                            <input id="password" name="password" type="password"
+                                                autocomplete="new-password"
+                                                class="peer block w-full rounded-xl border border-slate-200 px-4 py-3 pr-12 text-slate-800 placeholder-slate-400 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 focus:outline-none"
+                                                placeholder="Enter new password" required>
+                                            <button type="button" id="togglePwd" aria-label="Show password"
+                                                class="absolute right-3 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-8 h-8 rounded-md bg-transparent border-0 text-slate-400 hover:text-slate-600 focus:outline-none"
+                                                style="top: 10px; right: 6px;">
+                                                <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                </svg>
+                                                <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-5 w-5 hidden" viewBox="0 0 24 24" fill="currentColor">
+                                                    <path
+                                                        d="M3.98 8.223A10.97 10.97 0 002.458 12c1.274 4.057 5.064 7 9.542 7 1.95 0 3.78-.48 5.4-1.324l1.412 1.412A11.94 11.94 0 0112 21C7.522 21 3.732 18.057 2.458 14c.45-1.435 1.16-2.75 2.06-3.777L3.98 8.223zM20.072 4.928L4.928 20.072l1.414 1.414L21.486 6.342 20.072 4.928z" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <p id="pwdError" class="mt-2 text-sm hidden"></p>
+                                    </div>
+
+                                    <div>
+                                        <label for="confirmPassword"
+                                            class="block text-sm font-medium text-slate-700 mb-2">Confirm
+                                            password</label>
+                                        <input id="confirmPassword" name="confirm_password" type="password"
+                                            autocomplete="new-password"
+                                            class="block w-full rounded-xl border border-slate-200 px-4 py-3 text-slate-800 placeholder-slate-400 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 focus:outline-none"
+                                            placeholder="Repeat your password" required>
+                                        <p id="matchMsg" class="mt-2 text-sm hidden"></p>
+                                    </div>
+
+                                    <div class="flex items-center justify-between gap-4">
+                                        <button type="submit"
+                                            class="w-40 inline-flex items-center justify-center gap-2 rounded-full text-white font-semibold px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-200 hover:bg-orange-800 btn-primary">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 11c-1.657 0-3 1.567-3 3.5S10.343 18 12 18s3-1.567 3-3.5S13.657 11 12 11z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M7 11V7a5 5 0 0110 0v4" />
+                                            </svg>
+                                            Set password
+                                        </button>
+
+                                        <a href="/forgot-password-verify-email"
+                                            class="text-sm text-slate-600 hover:text-slate-800">Back</a>
+                                    </div>
+                                </form>
+
+                                <p class="mt-6 text-xs text-slate-400">By continuing you agree to our privacy policy.
+                                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    (function () {
+        const pwd = document.getElementById('password');
+        const confirmPwd = document.getElementById('confirmPassword');
+        const toggle = document.getElementById('togglePwd');
+        const eyeOpen = document.getElementById('eyeOpen');
+        const eyeClosed = document.getElementById('eyeClosed');
+        const matchMsg = document.getElementById('matchMsg');
+        const pwdError = document.getElementById('pwdError');
+        const form = document.getElementById('set-password-form');
+        if (!pwd || !confirmPwd || !toggle || !form) return;
+
+        // Toggle password visibility
+        toggle.addEventListener('click', () => {
+            const isText = pwd.type === 'text';
+            pwd.type = isText ? 'password' : 'text';
+            eyeOpen.classList.toggle('hidden');
+            eyeClosed.classList.toggle('hidden');
+            toggle.setAttribute('aria-label', isText ? 'Show password' : 'Hide password');
+            toggle.setAttribute('aria-pressed', String(!isText));
+        });
+
+        // Password strength check regex:
+        // at least 8 chars, one upper, one lower, one digit, one special char
+        const strongPwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+
+        function showPwdError(msg, ok) {
+            if (!pwdError) return;
+            pwdError.classList.remove('hidden');
+            pwdError.textContent = msg;
+            pwdError.classList.toggle('text-green-600', !!ok);
+            pwdError.classList.toggle('text-red-600', !ok);
+        }
+
+        function checkMatch() {
+            if (!confirmPwd.value) {
+                matchMsg.classList.add('hidden');
+                return;
+            }
+            const match = pwd.value === confirmPwd.value;
+            matchMsg.classList.remove('hidden');
+            matchMsg.textContent = match ? 'Passwords match' : 'Passwords do not match';
+            matchMsg.classList.toggle('text-green-600', match);
+            matchMsg.classList.toggle('text-red-600', !match);
+        }
+
+        pwd.addEventListener('input', () => {
+            // live strength feedback
+            if (!pwd.value) {
+                pwdError.classList.add('hidden');
+            } else if (strongPwdRegex.test(pwd.value)) {
+                showPwdError('Strong password', true);
+            } else {
+                showPwdError('Password must be at least 8 characters and include uppercase, lowercase, number and special character.', false);
+            }
+            checkMatch();
+        });
+
+        confirmPwd.addEventListener('input', checkMatch);
+
+        // On submit validate strength and match, then save to localStorage
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const value = pwd.value || '';
+            const confirmValue = confirmPwd.value || '';
+
+            if (!strongPwdRegex.test(value)) {
+                showPwdError('Password must be at least 8 characters and include uppercase, lowercase, number and special character.', false);
+                return;
+            }
+            if (value !== confirmValue) {
+                matchMsg.classList.remove('hidden');
+                matchMsg.textContent = 'Passwords do not match';
+                matchMsg.classList.add('text-red-600');
+                return;
+            }
+
+            // Save to localStorage (key name can be changed to suit your app)
+            try {
+                localStorage.setItem('reset_password', value);
+                showPwdError('Password saved locally', true);
+                matchMsg.classList.remove('hidden');
+                matchMsg.textContent = 'Passwords match';
+                matchMsg.classList.add('text-green-600');
+                window.location.href = '/verify-otp';
+            } catch (err) {
+                showPwdError('Failed to save password locally', false);
+            }
+        });
+    })();
+</script>

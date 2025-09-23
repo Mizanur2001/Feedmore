@@ -182,11 +182,26 @@ function authController() {
                 ).catch(e => console.error('OTP email failed:', e));
 
                 req.flash('success', 'OTP sent to your email');
-                return res.redirect('/forgot-password-verify-email');
-                
+                return res.redirect('/choose-password');
+
             } catch (error) {
                 req.flash('error', 'Something went wrong');
                 return res.redirect('/forgot-password-verify-email');
+            }
+        },
+        async ChoosePassword(req, res) {
+            try {
+                if (!req.session.user) {
+                    res.render("auth/forgotPass/choosePass", {
+                        title: 'Forgot Password - FeedMore',
+                    });
+                }
+                else {
+                    res.redirect('/')
+                }
+            } catch (error) {
+                req.flash('error', 'Something went wrong');
+                return res.redirect('/choose-password');
             }
         }
     }
