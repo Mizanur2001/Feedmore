@@ -57,8 +57,9 @@ exports.otpMailTemplate = (name, otp) => {
         }
         .logo img{
             width:64px; 
-            height:auto;
+            height:64px;
             display:block;
+            border-radius:15px;
         }
         .title{
             font-size:18px;
