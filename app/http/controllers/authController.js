@@ -1,6 +1,10 @@
 const User = require('../../models/user')
+const OtpModel = require('../../models/otp')
 const bcrypt = require('bcrypt');
 const session = require('express-session');
+const Mail = require("../../services/email");
+
+
 function authController() {
 
     const _getUrl = () => {
@@ -24,31 +28,37 @@ function authController() {
             }
         },
         async postLogin(req, res) {
-            const { email, password } = req.body
+            try {
+                const { email, password } = req.body
 
-            if (email == '' || password == '') {
-                req.flash('error', 'All Field Requred')
-                req.flash('email', email)
+                if (email == '' || password == '') {
+                    req.flash('error', 'All Field Requred')
+                    req.flash('email', email)
+                    return res.redirect('/login')
+                }
+
+                let user = await User.findOne({ email: email })
+
+                if (user == null) {
+                    req.flash('error', 'Invalid Email id')
+                    req.flash('email', email)
+                    return res.redirect('/login')
+                }
+
+                let compPass = await bcrypt.compare(password, user.password)
+                if (!compPass) {
+                    req.flash('error', 'Invalid Email or Password')
+                    req.flash('email', email)
+                    return res.redirect('/login')
+                }
+
+                req.session.user = { email: email, name: user.name, userId: user._id, role: user.role, phone: user?.phone };
+                res.redirect(_getUrl())
+            } catch (err) {
+                console.log(err)
+                req.flash('error', 'Something Went Wrong')
                 return res.redirect('/login')
             }
-
-            let user = await User.findOne({ email: email })
-
-            if (user == null) {
-                req.flash('error', 'Invalid Email id')
-                req.flash('email', email)
-                return res.redirect('/login')
-            }
-
-            let compPass = await bcrypt.compare(password, user.password)
-            if (!compPass) {
-                req.flash('error', 'Invalid Email or Password')
-                req.flash('email', email)
-                return res.redirect('/login')
-            }
-
-            req.session.user = { email: email, name: user.name, userId: user._id, role: user.role, phone: user?.phone };
-            res.redirect(_getUrl())
         },
         register(req, res) {
             if (!req.session.user) {
@@ -133,6 +143,50 @@ function authController() {
                     console.log(err)
                     return res.redirect('/register')
                 })
+            }
+        },
+        async forgotPassword(req, res) {
+            if (!req.session.user) {
+                res.render("auth/forgotPass/verifyEmail", {
+                    title: 'Forgot Password - FeedMore',
+                });
+            }
+            else {
+                res.redirect('/')
+            }
+        },
+        async sendOtp(req, res) {
+            try {
+                const { email } = req.body;
+                const user = await User.findOne({ email });
+                if (!user) {
+                    req.flash('error', 'User not found');
+                    return res.redirect('/forgot-password-verify-email');
+                }
+
+                // Generate OTP
+                const otp = Math.floor(100000 + Math.random() * 900000);
+                const otpEntry = new OtpModel({
+                    email: email,
+                    otp: otp,
+                    type: "forgetPass"
+                });
+                await otpEntry.save();
+
+                // Send OTP via email
+                const UserName = user.name;
+                Mail.sendOtp(
+                    email,
+                    UserName,
+                    otp
+                ).catch(e => console.error('OTP email failed:', e));
+
+                req.flash('success', 'OTP sent to your email');
+                return res.redirect('/forgot-password-verify-email');
+                
+            } catch (error) {
+                req.flash('error', 'Something went wrong');
+                return res.redirect('/forgot-password-verify-email');
             }
         }
     }
