@@ -428,3 +428,15 @@ input[type="radio"]:checked {
         transform: rotate(360deg);
     }
 }
+
+//=============== Custom Styles ===============
+
+.height-min-100-vh-86px{
+    height: calc(100vh - 86px);
+}
+
+@media (max-width: 768px) {
+    .height-media-70-vh{
+        height: 70vh;
+    }
+}
