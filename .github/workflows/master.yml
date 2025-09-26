@@ -1,0 +1,55 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches: 
+      - none
+
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Node.js for Backend
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      # Install dependencies
+      - name: Install Backend dependencies
+        run: |
+          npm install 
+
+
+      # Install SSH keys for server access
+      - name: Install ssh keys
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      
+      # Deploy
+      - name: Deploy
+        run: |
+          ssh ${{ secrets.USER_NAME }}@${{ secrets.SERVER_IP }} << 'EOF'
+            cd /var/www/Ashsheefa/Backend
+            git pull https://github.com/Mizanur2001/Feedmore.git
+            npm install 
+            pm2 restart feedMore
+          EOF
+
+    env:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      USER_NAME: ${{ secrets.USER_NAME }}
+      SERVER_IP: ${{ secrets.SERVER_IP }}
