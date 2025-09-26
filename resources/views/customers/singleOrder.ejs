@@ -19,34 +19,97 @@
                 <li class="status_line text-sm md:text-xl" data-status="completed"><span>Complete</span></li>
             </ul>
         </div>
-        <div class="pizza-list mt-32 pb-32">
-            <h1 class="text-xl font-bold">Your Orders</h1>
-            <%let totalPrice=0%>
-                <% for(let food of Object.values(order.items)){%>
-                    <div class="flex items-center my-8">
-                        <img class="w-12 md:w-24" src="/img/<%= food.items.image%>" alt="food">
-                        <div class="flex-1 ml-4">
-                            <h1>
-                                <%= food.items.name%>
-                            </h1>
-                            <span>
-                                <%= food.items.size%>
-                            </span>
+        <div class="pizza-list mt-32 pb-12">
+            <div class="rounded-3xl bg-white/70 backdrop-blur shadow-xl px-8 py-8 border border-white/40">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-3">
+                        <span
+                            class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-green-100 text-2xl text-green-600">🍽️</span>
+                        <div>
+                            <h1 class="text-xl font-semibold text-gray-900">Your Orders</h1>
+                            <p class="text-sm text-gray-500">Freshly prepared, served with care</p>
                         </div>
-                        <span class="flex-1">
-                            <%= food.qty%> Pcs
-                        </span>
-                        <span class="font-bold text-lg">₹<%= food.items.price *food.qty %></span>
-                        <%totalPrice=food.items.price *food.qty+totalPrice%>
                     </div>
-                    <% }%>
-                        <div class="text-right py-4">
-                            <span class="text-lg font-bold">Total Amount:</span>
-                            <span class="amount text-2xl font-bold ml-2">₹<%= totalPrice%></span>
+                    <span class="hidden text-sm font-medium uppercase tracking-wide text-gray-400 md:block">Order
+                        summary</span>
+                </div>
+                <div class="space-y-5">
+                    <%let totalPrice=0%>
+                        <% for(let food of Object.values(order.items)){%>
+                            <div
+                                class="flex flex-col gap-4 rounded-2xl border border-gray-100 bg-white px-5 py-4 shadow-sm transition hover:shadow-md md:flex-row md:items-center">
+                                <div class="flex items-center gap-4">
+                                    <img class="h-16 w-16 rounded-2xl object-cover ring-2 ring-green-100"
+                                        src="/img/<%= food.items.image%>" alt="food">
+                                    <div>
+                                        <h2 class="text-lg font-semibold text-gray-800">
+                                            <%= food.items.name%>
+                                        </h2>
+                                        <span class="text-xs uppercase tracking-wider text-gray-500">Size • <%=
+                                                food.items.size%></span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-1 items-center justify-between gap-4 md:ml-auto">
+                                    <span
+                                        class="inline-flex items-center rounded-full bg-orange-50 px-4 py-2 text-sm font-medium text-orange-600">
+                                        <%= food.qty%> pcs
+                                    </span>
+                                    <span class="text-lg font-bold text-gray-900">₹<%= food.items.price *food.qty %>
+                                    </span>
+                                </div>
+                                <%totalPrice=food.items.price *food.qty+totalPrice%>
+                            </div>
+                            <% }%>
+                </div>
+                <div class="mt-10 rounded-2xl border border-gray-100 bg-white px-6 py-6 shadow-sm">
+                    <h3 class="pb-4 text-base font-semibold text-slate-900 border-b border-slate-200">Bill Summary</h3>
+                    <div class="mt-5 space-y-3 text-sm text-slate-600">
+                        <div class="flex items-center justify-between">
+                            <span>Total Amount</span>
+                            <span class="font-medium text-slate-800">₹<%= totalPrice%></span>
                         </div>
-                        <div class="text-right">
-                            <button class="btn-primary rounded-full py-3 px-5 font-bold mt-6 text-white"><a href="tel:+918509136439">Cancel Order</a></button>
+                        <div class="flex items-center justify-between">
+                            <span>Delivery Fee</span>
+                            <span class="font-medium text-slate-800">₹0</span>
                         </div>
-                       
+                    </div>
+                    <div class="mt-5 flex items-center justify-between border-t border-slate-200 pt-4">
+                        <span class="text-base font-semibold text-slate-900">Grand Total</span>
+                        <span class="text-xl font-bold text-orange-500">₹<%= totalPrice%></span>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div class="mt-6 flex justify-end pb-12">
+            <div
+                class="rounded-3xl bg-gradient-to-r from-green-50 via-white to-green-100 shadow-lg px-6 py-6 w-full md:w-2/3">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm uppercase tracking-wide text-gray-500">Need help?</p>
+                        <h2 class="text-lg font-semibold text-gray-800">Talk to our support team</h2>
+                    </div>
+                    <div class="hidden md:block text-4xl text-green-500">☎</div>
+                </div>
+                <% if(order.status!=='order_placed' ){ %>
+                    <p class="mt-3 text-sm text-gray-600"> Your order is being processed so, we can’t make any changes
+                        at the moment. But you can contact our support team for further assistance.</p>
+                    <%}else{%>
+                        <p class="mt-3 text-sm text-gray-600">
+                            We can update or cancel the order for you while it’s still being prepared.
+                        </p>
+                        <%}%>
+                            <div class="mt-5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                                <span class="text-sm text-gray-500">Available 9am – 10pm IST</span>
+                                <button
+                                    class="inline-flex items-center justify-center rounded-full py-3 px-8 font-semibold text-white transition-all duration-200 <% if(order.status !=='order_placed'){ %>bg-gray-300 text-gray-500 cursor-not-allowed hover:bg-gray-300 border border-gray-200<% }else{ %>bg-green-500 hover:bg-green-600 shadow-md shadow-green-200<% } %>"
+                                    <% if(order.status==='order_placed' ){
+                                    %>onclick="window.location.href='tel:+917872727290'"
+                                    <% } %>>
+                                        <span class="mr-3 text-lg">📞</span>
+                                        Call +91 78727 27290
+                                </button>
+                            </div>
+            </div>
+        </div>
+    </div>
 </section>
