@@ -43,7 +43,7 @@ jobs:
       - name: Deploy
         run: |
           ssh ${{ secrets.USER_NAME }}@${{ secrets.SERVER_IP }} << 'EOF'
-            cd /var/www/Ashsheefa/Backend
+            cd /var/www/feedMore
             git pull https://github.com/Mizanur2001/Feedmore.git
             npm install 
             pm2 restart feedMore
