@@ -123,6 +123,16 @@ function authController() {
                 return res.redirect('/register');
             }
 
+            //Strong Password Check
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+            if (!passwordRegex.test(password)) {
+                req.flash('error', 'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.');
+                req.flash('name', name);
+                req.flash('email', email);
+                req.flash('phone', phone);
+                return res.redirect('/register');
+            }
+
             const hashPassword = await bcrypt.hash(password, 10)
 
             let user = await User.findOne({ email: email });
