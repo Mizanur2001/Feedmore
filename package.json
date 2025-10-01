@@ -1,6 +1,6 @@
 {
   "name": "feedmore",
-  "version": "1.32.24",
+  "version": "1.33.24",
   "description": "This is online food home delivery application",
   "main": "server.js",
   "scripts": {
