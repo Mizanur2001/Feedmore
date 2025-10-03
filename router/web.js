@@ -13,6 +13,7 @@ const analyticsController = require('../app/http/controllers/analytics/analytics
 const addressController = require('../app/http/controllers/customers/addressController')
 const paymentProcessing = require('../app/http/controllers/PhonePayPayment/loadingPageController')
 const sessionManager = require('../app/http/controllers/onlinePaymentUser/sessionManager');
+const razorpayController = require('../app/http/controllers/razorpay/razorpayController');
 
 function initRoutes(app) {
     app.get("/", homeController().index);
@@ -51,6 +52,7 @@ function initRoutes(app) {
     app.get('/customers/payment-processing', paymentProcessing().showLoadingPage);
     app.post('/session/add/payment-type', sessionManager().addPaymentType);
     // app.post('/session/delete/merchant-order-id', sessionManager().deleteMarchantOrderId);
+    app.get('/razorpay', razorpayController().index);
 }
 
 module.exports = initRoutes;
