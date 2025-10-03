@@ -3,9 +3,6 @@ const crypto = require('crypto');
 
 const razorpayController = () => {
     return {
-        index(req, res) {
-            res.render('razorpay/razorpayCheckout');
-        },
         async createOrder(req, res) {
             try {
                 const { amountInPaise } = req.body;
